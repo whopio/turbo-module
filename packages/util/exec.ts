@@ -95,6 +95,7 @@ const getCommand = async (
   results: ResultType
 ) => {
   const parts: string[] = [strings.shift()!];
+
   for (const idx in strings) {
     const variable = vars[idx];
     parts.push(
