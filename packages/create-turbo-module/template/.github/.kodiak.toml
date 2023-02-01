@@ -14,7 +14,7 @@ blocking_labels = ["no automerge"]
 [merge.message]
 title = "pull_request_title"
 body = "pull_request_body"
-include_coauthors = true
+include_coauthors = false
 include_pr_number = true
 body_type = "markdown"
 strip_html_comments = true
