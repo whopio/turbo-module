@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "pack:swc": "swc ./src/**/*.ts ./src/*.ts -d dist",
-    "pack:ncc": "ncc -m -o . build dist/index.js --license licenses.txt",
+    "pack:ncc": "ncc -m -o out build dist/index.js --license licenses.txt",
     "pack": "pnpm run pack:swc && pnpm run pack:ncc"
   },
   "keywords": [],
