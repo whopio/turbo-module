@@ -9,6 +9,10 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: whop
 
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
 jobs:
   release:
     name: Publish to npm and release on github
