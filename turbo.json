@@ -15,7 +15,9 @@
     },
     "dev": {
       "cache": false
+    },
+    "test": {
+      "dependsOn": ["build"]
     }
-  },
-  "globalDependencies": ["$VERSION", "$GITHUB_TOKEN", "$INITIAL_COMMIT"]
+  }
 }
