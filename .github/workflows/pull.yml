@@ -30,12 +30,7 @@ jobs:
           check-latest: true
           cache: pnpm
       - name: Install all packages
-        run: pnpm i
-      - name: Cache install
-        uses: actions/cache@v3
-        with:
-          key: ${{ runner.os }}-${{ github.sha }}-install
-          path: /**/node_modules
+        run: pnpm install
   
   lint:
     name: Lint repository
@@ -43,19 +38,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Restore install
-        uses: actions/cache@v3
-        with:
-          key: ${{ runner.os }}-${{ github.sha }}-install
-          path: /**/node_modules
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
           cache: pnpm
+      - name: Install all packages
+        run: pnpm install
       - name: Run eslint
-        run: npx eslint ./
+        run: pnpx eslint ./
 
   build:
     name: Build packages
@@ -72,10 +64,7 @@ jobs:
           node-version: 16
           check-latest: true
           cache: pnpm
-      - name: Restore install
-        uses: actions/cache@v3
-        with:
-          key: ${{ runner.os }}-${{ github.sha }}-install
-          path: /**/node_modules
+      - name: Install all packages
+        run: pnpm install
       - name: Build packages
         run: pnpm turbo build
