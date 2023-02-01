@@ -1,6 +1,6 @@
-import { bash, command } from "../util/exec";
+import { bash, command } from "@local/util/exec";
+import isCanary from "@local/util/is-canary";
 import { outputJson, readJson } from "../util/fse";
-import isCanary from "../util/is-canary";
 
 /**
  * this script will get the root package.json to determine what
