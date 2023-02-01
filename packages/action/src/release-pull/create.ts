@@ -68,7 +68,7 @@ const addCommentToClosed = async (number: number, replacement: number) => {
   });
 };
 
-const pull_labels = ["no automerge", "keep up-to-date"];
+const pull_labels = ["auto-release-pr", "keep up-to-date"];
 
 export const createPull = async (prerelease: boolean) => {
   const title = prerelease ? canaryReleaseTitle : fullReleaseTitle;

@@ -1062,7 +1062,7 @@ var addCommentToClosed = function() {
     };
 }();
 var pull_labels = [
-    "no automerge",
+    "auto-release-pr",
     "keep up-to-date"
 ];
 var createPull = function() {
