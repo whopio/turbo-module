@@ -18,6 +18,7 @@ const release = async () => {
     repo,
     owner,
     tag_name: "v" + version,
+    name: "v" + version,
     body: message,
     target_commitish: commit_hash,
     prerelease,
