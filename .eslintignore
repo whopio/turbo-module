@@ -1,1 +1,5 @@
 .eslintrc.js
+dist
+*.index.js
+index.js
+*.d.ts
