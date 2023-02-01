@@ -93,7 +93,9 @@ const getCommand = async (
   vars: BashVars[],
   results: ResultType
 ) => {
-  const parts: string[] = [strings.shift()!];
+  const first = strings.shift();
+  if (!first) return "";
+  const parts: string[] = [first];
   for (const idx in strings) {
     const variable = vars[idx];
     parts.push(

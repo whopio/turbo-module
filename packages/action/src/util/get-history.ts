@@ -1,6 +1,6 @@
 import { octo, owner, repo } from "../context";
 
-const gql = ([...strings]: TemplateStringsArray, ...vars: any[]) => {
+const gql = ([...strings]: TemplateStringsArray, ...vars: unknown[]) => {
   if (!strings.length) return "";
   const parts = [strings.shift()];
   for (const idx in strings) {
