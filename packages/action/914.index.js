@@ -530,7 +530,7 @@ var check_generator = undefined && undefined.__generator || function(thisArg, bo
 };
 function _templateObject() {
     var data = _taggedTemplateLiteral([
-        "\n          pnpm view \n            ",
+        "\n          npm view \n            ",
         "@",
         "\n        "
     ]);

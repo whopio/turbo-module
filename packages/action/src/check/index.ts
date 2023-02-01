@@ -23,7 +23,7 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
     try {
       const [res] = await bash`
         ${command`
-          pnpm view 
+          npm view 
             ${packageJson.name}@${isCanary(rootVersion) ? "canary" : "latest"}
         `}
       `;
