@@ -4,7 +4,7 @@ import getCodeOwners from "../util/get-codeowners";
 
 const types = ["patch", "minor", "major"] as const;
 
-type ReleaseTypes = typeof types[number];
+type ReleaseTypes = (typeof types)[number];
 
 const getPackageJson = async (ref?: string) => {
   const { data: content } = await octo.rest.repos.getContent({
@@ -111,7 +111,9 @@ const runAction = async () => {
     const type = comment.body.slice(1) as ReleaseTypes;
     for (const packageCodeOwner of packageCodeOwners) {
       if (teamOwnershipRegex.test(packageCodeOwner) && comment.user) {
-        const [, org, team_slug] = teamOwnershipRegex.exec(packageCodeOwner)!;
+        const [, org, team_slug] =
+          teamOwnershipRegex.exec(packageCodeOwner) || [];
+        if (!org || !team_slug) continue;
         try {
           const {
             data: { state },

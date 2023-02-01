@@ -87,7 +87,10 @@ function* generator(getNext) {
     }
 }
 const getCommand = async (strings, vars, results) => {
-    const parts = [strings.shift()];
+    const first = strings.shift();
+    if (!first)
+        return "";
+    const parts = [first];
     for (const idx in strings) {
         const variable = vars[idx];
         parts.push(`${typeof variable === "function" ? await variable(results) : variable}`);

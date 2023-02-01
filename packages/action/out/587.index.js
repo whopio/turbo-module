@@ -590,7 +590,7 @@ var performUpdate = function() {
 var teamOwnershipRegex = /^@(.*)\/(.*)$/;
 var runAction = function() {
     var _ref = type_asyncToGenerator(function() {
-        var _ref, comment, packageCodeOwners, type, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, packageCodeOwner, _comment_user, _teamOwnershipRegex_exec, org, team_slug, _ref1, state, e, err;
+        var _ref, comment, packageCodeOwners, type, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, packageCodeOwner, _comment_user, _ref1, org, team_slug, _ref2, state, e, err;
         return type_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -637,7 +637,11 @@ var runAction = function() {
                         3,
                         10
                     ];
-                    _teamOwnershipRegex_exec = _slicedToArray(teamOwnershipRegex.exec(packageCodeOwner), 3), org = _teamOwnershipRegex_exec[1], team_slug = _teamOwnershipRegex_exec[2];
+                    _ref1 = _slicedToArray(teamOwnershipRegex.exec(packageCodeOwner) || [], 3), org = _ref1[1], team_slug = _ref1[2];
+                    if (!org || !team_slug) return [
+                        3,
+                        12
+                    ];
                     _state.label = 5;
                 case 5:
                     _state.trys.push([
@@ -655,7 +659,7 @@ var runAction = function() {
                         })
                     ];
                 case 6:
-                    _ref1 = _state.sent(), state = _ref1.data.state;
+                    _ref2 = _state.sent(), state = _ref2.data.state;
                     if (state !== "active") return [
                         3,
                         12
