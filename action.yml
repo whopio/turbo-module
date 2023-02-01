@@ -9,7 +9,7 @@ inputs:
     description: "The action to perform ('check', 'release', 'sync', 'update')"
     required: true
   token:
-    description: "Github access token, 'update' requires access to the .gihub folder"
+    description: "Github access token"
     required: true
   initial-commit:
     description: "Initial commit SHA to track for releases"
