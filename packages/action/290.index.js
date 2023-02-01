@@ -359,7 +359,7 @@ var checkPackage = function() {
                             "".concat(packageJson.name, ":")
                         ].concat(_toConsumableArray(args)));
                     };
-                    if (packageJson.private) {
+                    if (packageJson.private !== false) {
                         log("Skipping private package");
                         return [
                             2

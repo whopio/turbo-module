@@ -1386,7 +1386,7 @@ var getReleaseMessage = function() {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var GITHUB_ACTION_USERNAME = "gituhb-actions[bot]";
+var GITHUB_ACTION_USERNAME = "github-actions[bot]";
 var isActionUser = function(user) {
     return (user === null || user === void 0 ? void 0 : user.login) === GITHUB_ACTION_USERNAME;
 };
