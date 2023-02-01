@@ -47,6 +47,7 @@ jobs:
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'
       - name: Github Release
+        id: release
         uses: whopio/turbo-module@v$$VERSION
         with: 
           action: release
@@ -58,4 +59,4 @@ jobs:
         with: 
           action: sync
           token: ${{ github.token }}
-          published: ${{ steps.check.outputs.can-publish }}
+          published: ${{ steps.release.outputs.published }}
