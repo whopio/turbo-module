@@ -71,3 +71,24 @@ jobs:
         run: pnpm install
       - name: Build packages
         run: pnpm turbo build
+
+  test:
+    name: Test repository
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.13.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - name: Install all packages
+        run: pnpm install
+      - name: Build packages
+        run: pnpm turbo test
+
