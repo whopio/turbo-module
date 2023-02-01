@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsup",
-    "release": "turbo-module publish",
+    "release": "node ../turbo-module/dist/index.js publish",
     "dev": "pnpm run build --watch"
   },
   "bin": {
