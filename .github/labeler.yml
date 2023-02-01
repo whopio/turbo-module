@@ -2,6 +2,11 @@
   - any:
     - packages/turbo-module/**/*
 
+'area: action':
+  - any:
+    - packages/action/**/*
+    - packages/util/**/*
+
 'area: infra':
   - any:
     - ./.github/**/*
