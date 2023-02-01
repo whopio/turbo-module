@@ -8,7 +8,6 @@
     "turbo-module": "dist/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsup ./src/index.ts --format cjs",
     "release": "node dist/index.js publish",
     "dev": "pnpm run build --watch"
