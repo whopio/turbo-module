@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
@@ -7,8 +8,7 @@
       "inputs": ["src/**"]
     },
     "release": {
-      "dependsOn": ["build"],
-      "outputs": ["dist/**"]
+      "dependsOn": ["build"]
     },
     "lint": {
       "outputs": []
@@ -16,6 +16,5 @@
     "dev": {
       "cache": false
     }
-  },
-  "globalDependencies": ["$VERSION", "$GITHUB_TOKEN", "$INITIAL_COMMIT"]
+  }
 }
