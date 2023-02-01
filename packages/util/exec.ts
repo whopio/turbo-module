@@ -19,6 +19,7 @@ export function command(
 ) {
   return async (result: { stdout: string; stderr: string }[]) => {
     const command = await getCommand(strings, vars, result);
+
     const cleaned = command
       .split("\n")
       .map((part) => part.trim())
