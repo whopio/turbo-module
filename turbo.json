@@ -20,5 +20,6 @@
     "dev": {
       "cache": false
     }
-  }
+  },
+  "globalDependencies": ["$VERSION", "$GITHUB_TOKEN", "$INITIAL_COMMIT"]
 }
