@@ -143,9 +143,7 @@ var main = function() {
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    published = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("published", {
-                        required: true
-                    }) === "true";
+                    published = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("published") === "true";
                     if (!published) return [
                         3,
                         2
