@@ -1,6 +1,6 @@
 import { octo, repo, owner } from "../context";
 
-const getLatestRelease = async (includePrerelease: boolean = true) => {
+const getLatestRelease = async (includePrerelease = true) => {
   if (includePrerelease) {
     const {
       data: [release],
@@ -17,6 +17,7 @@ const getLatestRelease = async (includePrerelease: boolean = true) => {
         owner,
       });
       return release;
+      // eslint-disable-next-line no-empty
     } catch {}
   }
 };

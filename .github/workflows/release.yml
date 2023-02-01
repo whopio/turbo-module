@@ -19,22 +19,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Check package.json for version increase
+        id: check
+        uses: ./
+        with: 
+          action: check
+          token: ${{ github.token }}
       - uses: pnpm/action-setup@v2
         with:
           version: 7.13.6
+        if: steps.check.outputs.can-publish == 'true'
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
           cache: pnpm
+        if: steps.check.outputs.can-publish == 'true'
       - name: Install all packages
         run: pnpm i
+        if: steps.check.outputs.can-publish == 'true'
       - name: Build
         run: pnpm turbo build
-      - name: Check package.json for version increase
-        id: check
-        run: node packages/turbo-module/dist/index.js npm can-publish
+        if: steps.check.outputs.can-publish == 'true'
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
         if: steps.check.outputs.can-publish == 'true'
         env:
@@ -43,18 +50,15 @@ jobs:
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'
       - name: Github Release
-        run: node packages/turbo-module/dist/index.js github release
+        uses: ./
+        with: 
+          action: release
+          token: ${{ github.token }}
+          version: ${{ steps.check.outputs.version }}
         if: steps.check.outputs.can-publish == 'true'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.check.outputs.version }}
-      - name: Create auto-release PR
-        run: node packages/turbo-module/dist/index.js github release-pull create
-        if: steps.check.outputs.can-publish == 'true'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: Update auto-release PR
-        run: node packages/turbo-module/dist/index.js github release-pull sync
-        if: steps.check.outputs.can-publish == 'false'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Sync auto-release PRs
+        uses: ./
+        with: 
+          action: sync
+          token: ${{ github.token }}
+          published: ${{ steps.check.outputs.can-publish }}

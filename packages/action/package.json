@@ -1,0 +1,32 @@
+{
+  "name": "action",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "pack:swc": "swc ./src/**/*.ts ./src/*.ts -d dist",
+    "pack:ncc": "ncc -m -o . build dist/index.js --license licenses.txt",
+    "pack": "pnpm run pack:swc && pnpm run pack:ncc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.1.60",
+    "@swc/core": "^1.3.32",
+    "@types/minimatch": "^5.1.2",
+    "@types/node": "^18.11.17",
+    "@types/semver": "^7.3.13",
+    "@vercel/ncc": "^0.36.1",
+    "tsconfig": "workspace:^0.0.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "@local/util": "workspace:^1.0.0",
+    "minimatch": "^5.1.2",
+    "semver": "^7.3.8"
+  }
+}

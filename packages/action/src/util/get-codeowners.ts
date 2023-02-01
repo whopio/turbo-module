@@ -1,12 +1,13 @@
 import { match } from "minimatch";
-import { readFile } from "../../util/fse";
+import getFile from "./get-file";
 
-const reacCodeOwnersFile = async () => {
-  return await readFile(".github/CODEOWNERS", { encoding: "utf-8" });
+const readCodeOwnersFile = async () => {
+  const { content } = await getFile(".github/CODEOWNERS");
+  return Buffer.from(content, "base64").toString();
 };
 
 const getCodeOwners = async (file: string) => {
-  const lines = (await reacCodeOwnersFile()).split("\n").map((line) =>
+  const lines = (await readCodeOwnersFile()).split("\n").map((line) =>
     line
       .split(" ")
       .map((part) => part.trim())
