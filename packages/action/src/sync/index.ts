@@ -1,7 +1,7 @@
 import { getInput } from "@actions/core";
 
 const main = async () => {
-  const published = getInput("published", { required: true }) === "true";
+  const published = getInput("published") === "true";
   if (published) {
     const { default: create } = await import("../release-pull/create");
     create();
