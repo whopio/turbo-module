@@ -1,4 +1,4 @@
-import { exec as _exec } from "child_process";
+import { exec as _exec, ExecOptions } from "child_process";
 import { promisify } from "util";
 
 const exec = promisify(_exec);
@@ -124,3 +124,26 @@ export const bash = async (
   }
   return results;
 };
+
+bash.options =
+  (options: ExecOptions) =>
+  async (
+    strings: TemplateStringsArray,
+    ...vars: BashVars[]
+  ): Promise<
+    (
+      | {
+          stdout: string;
+          stderr: string;
+        }
+      | undefined
+    )[]
+  > => {
+    const lines = generator(consume(strings, ...vars));
+    const results: Array<{ stdout: string; stderr: string }> = [];
+    for (const { strings, vars } of lines) {
+      const command = await getCommand(strings, vars, results);
+      if (command !== "") results.push(await exec(command, options));
+    }
+    return results;
+  };

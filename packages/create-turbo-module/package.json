@@ -1,0 +1,37 @@
+{
+  "name": "create-turbo-module",
+  "version": "0.0.1-canary.4",
+  "private": false,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup",
+    "release": "turbo-module publish",
+    "dev": "pnpm run build --watch"
+  },
+  "bin": {
+    "create-turbo-module": "dist/index.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@local/util": "workspace:^1.0.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.11.17",
+    "@whop-sdk/turbo-module": "workspace:^0.0.0",
+    "tsconfig": "workspace:^0.0.0",
+    "tsup": "^6.5.0"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "fs-extra": "^11.1.0",
+    "inquirer": "^9.1.4",
+    "ora": "^6.1.2"
+  },
+  "files": [
+    "dist",
+    "template"
+  ]
+}
