@@ -105,6 +105,17 @@ const bash = async (strings, ...vars) => {
     }
     return results;
 };
+bash.options =
+    (options) => async (strings, ...vars) => {
+        const lines = generator(consume(strings, ...vars));
+        const results = [];
+        for (const { strings, vars } of lines) {
+            const command = await getCommand(strings, vars, results);
+            if (command !== "")
+                results.push(await exec(command, options));
+        }
+        return results;
+    };
 
 // EXTERNAL MODULE: ../util/is-canary.ts
 var is_canary = __webpack_require__(2206);
