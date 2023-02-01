@@ -6,9 +6,14 @@ runs:
   main: 'packages/action/index.js'
 inputs:
   action:
-    description: "The action to perform ('release', 'sync', 'check', 'update')"
+    description: "The action to perform ('check', 'release', 'sync', 'update')"
     required: true
   token:
     description: "Github access token, 'update' requires access to the .gihub folder"
     required: true
-
+  initial-commit:
+    description: "Initial commit SHA to track for releases"
+  published:
+    description: "Indicates if the same workflow published a new release to npm, required for 'sync' action"
+  version:
+    description: "The current verison of the package. Required for 'release'"

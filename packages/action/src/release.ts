@@ -1,11 +1,10 @@
+import { getInput } from "@actions/core";
 import isCanary from "@local/util/is-canary";
 import { commit_hash, octo, owner, repo } from "./context";
 import getReleaseMessage from "./util/get-message";
 import releaseExists from "./util/release-exists";
 
-const version = process.env.VERSION;
-
-if (!version) throw new Error(`process.env.VERSION must be set`);
+const version = getInput("version", { required: true });
 
 const release = async () => {
   if (await releaseExists(version)) {

@@ -14,6 +14,8 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ dist_release)
 });
 
+// EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
+var core = __webpack_require__(8041);
 // EXTERNAL MODULE: ../util/is-canary.ts
 var is_canary = __webpack_require__(2206);
 // EXTERNAL MODULE: ./dist/context.js
@@ -320,8 +322,10 @@ var release_generator = undefined && undefined.__generator || function(thisArg, 
 
 
 
-var version = process.env.VERSION;
-if (!version) throw new Error("process.env.VERSION must be set");
+
+var version = (0,core.getInput)("version", {
+    required: true
+});
 var release = function() {
     var _ref = release_asyncToGenerator(function() {
         var prerelease, message, _ref, release;

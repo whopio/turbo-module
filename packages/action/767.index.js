@@ -1,3 +1,4 @@
+"use strict";
 exports.id = 767;
 exports.ids = [767];
 exports.modules = {
@@ -5,15 +6,16 @@ exports.modules = {
 /***/ 7501:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "NR": () => (/* binding */ octo),
 /* harmony export */   "O9": () => (/* binding */ repo),
+/* harmony export */   "PX": () => (/* binding */ target_issue),
+/* harmony export */   "RL": () => (/* binding */ target_comment),
 /* harmony export */   "cR": () => (/* binding */ owner),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
-/* unused harmony exports target_issue, target_comment, target_pull */
+/* unused harmony export target_pull */
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8041);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
@@ -34,7 +36,6 @@ var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("in
 /***/ 767:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -1382,25 +1383,14 @@ var getReleaseMessage = function() {
 /***/ 1514:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _util_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1781);
-/* harmony import */ var _util_constants__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_util_constants__WEBPACK_IMPORTED_MODULE_0__);
-
+var GITHUB_ACTION_USERNAME = "gituhb-actions[bot]";
 var isActionUser = function(user) {
-    return (user === null || user === void 0 ? void 0 : user.login) === _util_constants__WEBPACK_IMPORTED_MODULE_0__.GITHUB_ACTION_USERNAME;
+    return (user === null || user === void 0 ? void 0 : user.login) === GITHUB_ACTION_USERNAME;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isActionUser);
-
-
-/***/ }),
-
-/***/ 1781:
-/***/ ((module) => {
-
-module.exports = eval("require")("../../util/constants");
 
 
 /***/ })

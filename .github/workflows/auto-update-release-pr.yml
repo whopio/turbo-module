@@ -13,10 +13,6 @@ concurrency:
   group: update-relase-pr-${{ github.event.issue.number }}
   cancel-in-progress: false
 
-env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: whop
-
 jobs:
   update-relase-pr:
     name: Change the version of the release based on comments
@@ -24,20 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7.13.6
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          check-latest: true
-          cache: pnpm
-      - name: Install all packages
-        run: pnpm i
-      - name: Build
-        run: pnpm turbo build
-      - name: Run update release type action
-        run: node packages/turbo-module/dist/index.js github release-pull type
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Update package.json version number
+        uses: ./
+        with: 
+          action: update
+          token: ${{ github.token }}
