@@ -1,0 +1,14 @@
+name: 'turbo-module action'
+description: 'release and mange public npm packages'
+author: 'whop team'
+runs:
+  using: 'node16'
+  main: 'packages/action/index.js'
+inputs:
+  action:
+    description: "The action to perform ('release', 'sync', 'check', 'update')"
+    required: true
+  token:
+    description: "Github access token, 'update' requires access to the .gihub folder"
+    required: true
+
