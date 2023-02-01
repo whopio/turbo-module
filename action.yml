@@ -3,7 +3,7 @@ description: 'release and mange public npm packages'
 author: 'whop team'
 runs:
   using: 'node16'
-  main: 'packages/action/index.js'
+  main: 'packages/action/out/index.js'
 inputs:
   action:
     description: "The action to perform ('check', 'release', 'sync', 'update')"
