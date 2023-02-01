@@ -3,7 +3,6 @@
   "version": "0.0.1-canary.5",
   "private": true,
   "workspaces": [
-    "apps/*",
     "packages/*"
   ],
   "scripts": {
