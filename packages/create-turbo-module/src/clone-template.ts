@@ -25,7 +25,7 @@ const cloneTemplate = async (
         }, content);
         const updatedPath = Object.keys(replace).reduce((acc, key) => {
           return acc.replaceAll(key, replace[key]);
-        }, join(path, fileOrFolder));
+        }, join(path, fileOrFolder.replace(/\.template$/, "")));
         await fse.outputFile(join(out, updatedPath), updatedContent);
       }
     })
