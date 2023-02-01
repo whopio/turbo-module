@@ -1,5 +1,5 @@
 export type ImportedHandler = () => Promise<{
-  default: () => any;
+  default: () => unknown;
 }>;
 
 export type CliLayout = {
