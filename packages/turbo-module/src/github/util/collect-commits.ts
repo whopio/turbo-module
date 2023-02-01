@@ -34,6 +34,7 @@ const collectCommits = async (head: string, base: string) => {
       if (commit.author?.login) {
         if (isActionUser(commit.author) && message.startsWith("release "))
           continue;
+        if (message.startsWith("(turbo-module): ")) continue;
         stats.authors.add(commit.author.login);
       }
       const { data: pr } = await octo.rest.pulls.get({
