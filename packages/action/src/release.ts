@@ -1,4 +1,4 @@
-import { getInput } from "@actions/core";
+import { getInput, setOutput } from "@actions/core";
 import isCanary from "@local/util/is-canary";
 import { commit_hash, octo, owner, repo } from "./context";
 import getReleaseMessage from "./util/get-message";
@@ -9,6 +9,7 @@ const version = getInput("version", { required: true });
 const release = async () => {
   if (await releaseExists(version)) {
     console.log(`${version} has already been released`);
+    setOutput("published", false);
     return;
   }
   const prerelease = isCanary(version);
@@ -22,6 +23,7 @@ const release = async () => {
     target_commitish: commit_hash,
     prerelease,
   });
+  setOutput("published", true);
   console.log(release.html_url);
 };
 
