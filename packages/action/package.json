@@ -1,7 +1,7 @@
 {
   "name": "action",
   "version": "1.0.0",
-  "description": "",
+  "description": "Multi purpose Github action to assist with publishing multiple npm packages from the same repository.",
   "private": true,
   "main": "index.js",
   "scripts": {
