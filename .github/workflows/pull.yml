@@ -1,0 +1,81 @@
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+
+name: Lint
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: whop
+
+concurrency:
+  group: pr-action-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    name: Install node modules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.13.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - name: Install all packages
+        run: pnpm i
+      - name: Cache install
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-${{ github.sha }}-install
+          path: /**/node_modules
+  
+  lint:
+    name: Lint repository
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Restore install
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-${{ github.sha }}-install
+          path: /**/node_modules
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - name: Run eslint
+        run: npx eslint ./
+
+  build:
+    name: Build packages
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.13.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - name: Restore install
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-${{ github.sha }}-install
+          path: /**/node_modules
+      - name: Build packages
+        run: pnpm turbo build
