@@ -1,0 +1,8 @@
+'area: core':
+  - any:
+    - packages/turbo-module/**/*
+
+'area: infra':
+  - any:
+    - ./.github/**/*
+    - ./turbo.json

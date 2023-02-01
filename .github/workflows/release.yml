@@ -1,0 +1,56 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Build, test, release
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: whop
+
+jobs:
+  release:
+    name: Publish to npm and release on github
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.13.6
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          check-latest: true
+          cache: pnpm
+      - name: Install all packages
+        run: pnpm i
+      - name: Build
+        run: pnpm turbo build
+      - name: Check package.json for version increase
+        id: check
+        run: node packages/turbo-module/dist/index.js npm can-publish
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        if: steps.check.outputs.can-publish == 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run turbo release flow
+        run: pnpm turbo release ${{ steps.check.outputs.filter }}
+        if: steps.check.outputs.can-publish == 'true'
+      - name: Github Release
+        run: node packages/turbo-module/dist/index.js github release
+        if: steps.check.outputs.can-publish == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.check.outputs.version }}
+      - name: Create auto-release PR
+        run: node packages/turbo-module/dist/index.js github release-pull create
+        if: steps.check.outputs.can-publish == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Update auto-release PR
+        run: node packages/turbo-module/dist/index.js github release-pull sync
+        if: steps.check.outputs.can-publish == 'false'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
