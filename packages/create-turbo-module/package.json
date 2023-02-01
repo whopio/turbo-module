@@ -2,7 +2,7 @@
   "name": "create-turbo-module",
   "version": "0.0.0",
   "private": false,
-  "description": "",
+  "description": "CLI util to quickly initialize a turbo-module repository.",
   "main": "index.js",
   "scripts": {
     "build": "tsup",

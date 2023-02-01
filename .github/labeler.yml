@@ -1,24 +1,15 @@
 'area: core':
-  - any:
-    - packages/turbo-module/**/*
-    - packages/turbo-module/*
+- packages/turbo-module/**/*
 
 'area: util':
-  - any:
-    - packages/util/**/*
-    - packages/util/*
+- packages/util/**/*
 
 'area: action':
-  - any:
-    - packages/action/**/*
-    - packages/action/*
+- packages/action/**/*
 
 'area: create-turbo-module':
-  - any:
-    - packages/create-turbo-module/**/*
-    - packages/create-turbo-module/*
+- packages/create-turbo-module/**/*
 
 'area: infra':
-  - any:
-    - ./.github/**/*
-    - ./turbo.json
+- ./.github/**/*
+- ./turbo.json
