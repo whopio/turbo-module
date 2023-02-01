@@ -16,7 +16,7 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
     const log = (...args: unknown[]) => {
       console.log(`${packageJson.name}:`, ...args);
     };
-    if (packageJson.private) {
+    if (packageJson.private !== false) {
       log("Skipping private package");
       return;
     }
