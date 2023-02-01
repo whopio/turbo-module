@@ -339,6 +339,7 @@ var release = function() {
                 case 1:
                     if (_state.sent()) {
                         console.log("".concat(version, " has already been released"));
+                        (0,core.setOutput)("published", false);
                         return [
                             2
                         ];
@@ -364,6 +365,7 @@ var release = function() {
                     ];
                 case 3:
                     _ref = _state.sent(), release = _ref.data;
+                    (0,core.setOutput)("published", true);
                     console.log(release.html_url);
                     return [
                         2
