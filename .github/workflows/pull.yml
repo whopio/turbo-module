@@ -4,7 +4,7 @@ on:
       - synchronize
       - opened
 
-name: Lint
+name: PR
 
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
       - name: Install all packages
         run: pnpm install
       - name: Run eslint
-        run: pnpx eslint ./
+        run: pnpx eslint ./ --max-warnings 0
 
   build:
     name: Build packages

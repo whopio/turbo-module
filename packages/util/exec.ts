@@ -19,7 +19,6 @@ export function command(
 ) {
   return async (result: { stdout: string; stderr: string }[]) => {
     const command = await getCommand(strings, vars, result);
-
     const cleaned = command
       .split("\n")
       .map((part) => part.trim())
@@ -95,7 +94,6 @@ const getCommand = async (
   results: ResultType
 ) => {
   const parts: string[] = [strings.shift()!];
-
   for (const idx in strings) {
     const variable = vars[idx];
     parts.push(
