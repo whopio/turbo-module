@@ -24,7 +24,6 @@ export function command(
       .map((part) => part.trim())
       .filter(Boolean)
       .join(" ");
-    console.log(cleaned);
     return cleaned;
   };
 }
@@ -95,7 +94,7 @@ const getCommand = async (
   results: ResultType
 ) => {
   const first = strings.shift();
-  if (!first) return "";
+  if (first === undefined) return "";
   const parts: string[] = [first];
   for (const idx in strings) {
     const variable = vars[idx];
@@ -123,7 +122,10 @@ export const bash = async (
   const results: Array<{ stdout: string; stderr: string }> = [];
   for (const { strings, vars } of lines) {
     const command = await getCommand(strings, vars, results);
-    if (command !== "") results.push(await exec(command));
+    if (command !== "") {
+      console.info(command);
+      results.push(await exec(command));
+    }
   }
   return results;
 };
@@ -146,7 +148,10 @@ bash.options =
     const results: Array<{ stdout: string; stderr: string }> = [];
     for (const { strings, vars } of lines) {
       const command = await getCommand(strings, vars, results);
-      if (command !== "") results.push(await exec(command, options));
+      if (command !== "") {
+        console.info(command);
+        results.push(await exec(command, options));
+      }
     }
     return results;
   };
