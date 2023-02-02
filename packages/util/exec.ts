@@ -24,6 +24,7 @@ export function command(
       .map((part) => part.trim())
       .filter(Boolean)
       .join(" ");
+    console.log(cleaned);
     return cleaned;
   };
 }
