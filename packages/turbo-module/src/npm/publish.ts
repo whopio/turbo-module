@@ -23,7 +23,7 @@ const publish = async () => {
   }
   await outputJson("package.json", packageJson, { spaces: 2 });
   console.log(`${packageJson.name}@${nextVersion}: publishing`);
-  const [output] = await bash`
+  await bash`
     ${command`
       pnpm publish
         --access public
@@ -31,11 +31,7 @@ const publish = async () => {
         ${isCanary(nextVersion) ? "--tag canary" : ""}
     `}
   `;
-  if (output) {
-    if (output.stderr) console.error(output.stderr);
-    if (output.stdout) console.log(output.stdout);
-  }
-  console.log(`${packageJson.name}@${nextVersion}: released`);
+  console.log(`${packageJson.name}@${nextVersion}: published`);
 };
 
 export default publish;
