@@ -202,7 +202,6 @@ function command(param) {
                         cleaned = command.split("\n").map(function(part) {
                             return part.trim();
                         }).filter(Boolean).join(" ");
-                        console.log(cleaned);
                         return [
                             2,
                             cleaned
@@ -295,7 +294,7 @@ var getCommand = function() {
             switch(_state.label){
                 case 0:
                     first = strings.shift();
-                    if (!first) return [
+                    if (first === undefined) return [
                         2,
                         ""
                     ];
@@ -399,6 +398,7 @@ var bash = function() {
                         3,
                         5
                     ];
+                    console.info(command);
                     _ = results.push;
                     return [
                         4,
@@ -495,6 +495,7 @@ bash.options = function(options) {
                             3,
                             5
                         ];
+                        console.info(command);
                         _ = results.push;
                         return [
                             4,
