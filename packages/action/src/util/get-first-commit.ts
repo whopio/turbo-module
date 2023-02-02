@@ -1,4 +1,4 @@
-import getHistory from "./get-history";
+import getHistory from './get-history';
 
 const getFirstCommit = async () => {
   const {
@@ -7,7 +7,7 @@ const getFirstCommit = async () => {
     nodes,
   } = await getHistory();
   if (totalCount > 1) {
-    const [hash] = endCursor.split(" ");
+    const [hash] = endCursor.split(' ');
     const {
       nodes: [commit],
     } = await getHistory(`${hash} ${totalCount - 2}`);

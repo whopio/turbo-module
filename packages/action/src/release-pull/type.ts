@@ -1,8 +1,8 @@
-import { inc } from "semver";
-import { octo, owner, repo, target_comment, target_issue } from "../context";
-import getCodeOwners from "../util/get-codeowners";
+import { inc } from 'semver';
+import { octo, owner, repo, target_comment, target_issue } from '../context';
+import getCodeOwners from '../util/get-codeowners';
 
-const types = ["patch", "minor", "major"] as const;
+const types = ['patch', 'minor', 'major'] as const;
 
 type ReleaseTypes = (typeof types)[number];
 
@@ -10,20 +10,20 @@ const getPackageJson = async (ref?: string) => {
   const { data: content } = await octo.rest.repos.getContent({
     repo,
     owner,
-    path: "package.json",
+    path: 'package.json',
     ref,
   });
-  if ("content" in content) {
+  if ('content' in content) {
     return {
       content: JSON.parse(
-        Buffer.from(content.content, "base64").toString()
+        Buffer.from(content.content, 'base64').toString(),
       ) as {
         version: string;
       },
       sha: content.sha,
     };
   }
-  throw new Error("Could not load main package.json");
+  throw new Error('Could not load main package.json');
 };
 
 const performUpdate = async (type: ReleaseTypes) => {
@@ -45,16 +45,16 @@ const performUpdate = async (type: ReleaseTypes) => {
     pull_number: target_issue.number,
   }); */
   const releaseTypeLabel = labels.find(({ name }) =>
-    name.startsWith("releases: ")
+    name.startsWith('releases: '),
   );
-  const current_type = releaseTypeLabel?.name.replace("releases: ", "");
-  if (current_type === "canary" || type === current_type) return;
-  const { content: mainPackageJson } = await getPackageJson("main");
+  const current_type = releaseTypeLabel?.name.replace('releases: ', '');
+  if (current_type === 'canary' || type === current_type) return;
+  const { content: mainPackageJson } = await getPackageJson('main');
   const { content: currentPackageJson, sha: packageSha } = await getPackageJson(
-    branch
+    branch,
   );
-  const currentVersion = mainPackageJson.version.startsWith("0.0.0")
-    ? "0.0.0"
+  const currentVersion = mainPackageJson.version.startsWith('0.0.0')
+    ? '0.0.0'
     : mainPackageJson.version;
   const newVersion = inc(currentVersion, type);
   if (!newVersion)
@@ -66,11 +66,11 @@ const performUpdate = async (type: ReleaseTypes) => {
     await octo.rest.repos.createOrUpdateFileContents({
       repo,
       owner,
-      path: "package.json",
+      path: 'package.json',
       message: `release ${type} ${newVersion}`,
       content: Buffer.from(
-        JSON.stringify(currentPackageJson, null, 2) + "\n"
-      ).toString("base64"),
+        JSON.stringify(currentPackageJson, null, 2) + '\n',
+      ).toString('base64'),
       sha: packageSha,
       branch,
     });
@@ -91,7 +91,7 @@ const performUpdate = async (type: ReleaseTypes) => {
         owner,
         issue_number: target_issue.number,
         name: releaseTypeLabel.name,
-      })
+      }),
     );
   await Promise.all(promises);
 };
@@ -107,7 +107,7 @@ const runAction = async () => {
     comment_id: target_comment.id,
   });
   if (comment.body && types.includes(comment.body.slice(1) as ReleaseTypes)) {
-    const packageCodeOwners = await getCodeOwners("/package.json");
+    const packageCodeOwners = await getCodeOwners('/package.json');
     const type = comment.body.slice(1) as ReleaseTypes;
     for (const packageCodeOwner of packageCodeOwners) {
       if (teamOwnershipRegex.test(packageCodeOwner) && comment.user) {
@@ -122,7 +122,7 @@ const runAction = async () => {
             org,
             username: comment.user.login,
           });
-          if (state !== "active") continue;
+          if (state !== 'active') continue;
         } catch {
           continue;
         }

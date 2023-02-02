@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { cli } from "./util/cli";
+import { cli } from './util/cli';
 
 cli({
-  publish: () => import("./npm/publish"),
+  publish: () => import('./npm/publish'),
 })();
 
 export {};

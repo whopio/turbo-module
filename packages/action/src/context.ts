@@ -1,8 +1,8 @@
-import { getInput } from "@actions/core";
-import { context, getOctokit } from "@actions/github";
-import type { GitHub } from "@actions/github/lib/utils";
+import { getInput } from '@actions/core';
+import { context, getOctokit } from '@actions/github';
+import type { GitHub } from '@actions/github/lib/utils';
 
-const GITHUB_TOKEN = getInput("token", { required: true });
+const GITHUB_TOKEN = getInput('token', { required: true });
 
 export const octo: InstanceType<typeof GitHub> = getOctokit(GITHUB_TOKEN);
 export const {
@@ -15,4 +15,4 @@ export const {
   },
 } = context;
 
-export const initial_commit: string | undefined = getInput("initial-commit");
+export const initial_commit: string | undefined = getInput('initial-commit');
