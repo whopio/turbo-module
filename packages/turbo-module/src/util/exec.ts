@@ -24,7 +24,6 @@ export function command(
       .map((part) => part.trim())
       .filter(Boolean)
       .join(" ");
-    console.log(cleaned);
     return cleaned;
   };
 }
@@ -119,10 +118,12 @@ export const bash = async (
     | undefined
   )[]
 > => {
+  console.log(strings, vars);
   const lines = generator(consume(strings, ...vars));
   const results: Array<{ stdout: string; stderr: string }> = [];
   for (const { strings, vars } of lines) {
     const command = await getCommand(strings, vars, results);
+    console.info(command);
     if (command !== "") results.push(await exec(command));
   }
   return results;
