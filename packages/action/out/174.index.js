@@ -1067,7 +1067,7 @@ var pull_labels = [
 ];
 var createPull = function() {
     var _ref = _asyncToGenerator(function(prerelease) {
-        var title, releaseLabel, _ref, content, packageJson, newVersion, _ref1, _ref_data, sha, shortSha, branch, message, _ref2, pull;
+        var title, releaseLabel, _ref, content, packageJson, newVersion, _ref1, _ref_data, sha, shortSha, branch, message, _ref2, pull, err, e;
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -1148,6 +1148,21 @@ var createPull = function() {
                     ];
                 case 6:
                     _ref2 = _state.sent(), pull = _ref2.data;
+                    err = 0;
+                    _state.label = 7;
+                case 7:
+                    if (!(err < 5)) return [
+                        3,
+                        13
+                    ];
+                    _state.label = 8;
+                case 8:
+                    _state.trys.push([
+                        8,
+                        10,
+                        ,
+                        12
+                    ]);
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.issues.addLabels */ .NR.rest.issues.addLabels({
@@ -1159,12 +1174,35 @@ var createPull = function() {
                             ])
                         })
                     ];
-                case 7:
+                case 9:
                     _state.sent();
                     return [
                         2,
                         pull
                     ];
+                case 10:
+                    e = _state.sent();
+                    console.error(e);
+                    err++;
+                    return [
+                        4,
+                        new Promise(function(resolve) {
+                            return setTimeout(resolve, 300);
+                        })
+                    ];
+                case 11:
+                    _state.sent();
+                    return [
+                        3,
+                        12
+                    ];
+                case 12:
+                    return [
+                        3,
+                        7
+                    ];
+                case 13:
+                    throw new Error("Could not add labels to PR");
             }
         });
     });

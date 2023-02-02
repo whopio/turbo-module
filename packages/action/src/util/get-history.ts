@@ -1,13 +1,13 @@
-import { octo, owner, repo } from "../context";
+import { octo, owner, repo } from '../context';
 
 const gql = ([...strings]: TemplateStringsArray, ...vars: unknown[]) => {
-  if (!strings.length) return "";
+  if (!strings.length) return '';
   const parts = [strings.shift()];
   for (const idx in strings) {
     parts.push(`${vars[idx]}`);
     parts.push(strings[idx]);
   }
-  return parts.join("");
+  return parts.join('');
 };
 
 const query = gql`
@@ -43,7 +43,7 @@ const getHistory = async (cursor: string | null = null) => {
     owner,
     repo,
     cursor,
-    branch: "main",
+    branch: 'main',
   });
   return history as {
     nodes: {

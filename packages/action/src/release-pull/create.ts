@@ -1,9 +1,9 @@
-import inc from "semver/functions/inc";
-import { octo, owner, repo } from "../context";
-import getReleaseMessage from "../util/get-message";
-import isActionUser from "../util/is-action-user";
-import { Pull } from "../util/types";
-import { canaryReleaseTitle, fullReleaseTitle } from "./shared";
+import inc from 'semver/functions/inc';
+import { octo, owner, repo } from '../context';
+import getReleaseMessage from '../util/get-message';
+import isActionUser from '../util/is-action-user';
+import { Pull } from '../util/types';
+import { canaryReleaseTitle, fullReleaseTitle } from './shared';
 
 const runAction = async () => {
   const stale: Pull[] = [];
@@ -13,11 +13,11 @@ const runAction = async () => {
     {
       repo,
       owner,
-      state: "open",
-      sort: "created",
-      direction: "desc",
+      state: 'open',
+      sort: 'created',
+      direction: 'desc',
       per_page: 100,
-    }
+    },
   ))
     for (const pull of pulls) {
       if (isActionUser(pull.user)) {
@@ -32,14 +32,14 @@ const runAction = async () => {
         repo,
         owner,
         pull_number: stalePull.number,
-        state: "closed",
+        state: 'closed',
       });
       await octo.rest.git.deleteRef({
         repo,
         owner,
-        ref: "heads/" + stalePull.head.ref,
+        ref: 'heads/' + stalePull.head.ref,
       });
-    })
+    }),
   );
 
   const [canaryPull, fullPull] = await Promise.all([
@@ -50,11 +50,11 @@ const runAction = async () => {
   await Promise.all([
     Promise.all(
       staleCanary.map((pull) =>
-        addCommentToClosed(pull.number, canaryPull.number)
-      )
+        addCommentToClosed(pull.number, canaryPull.number),
+      ),
     ),
     Promise.all(
-      stale.map((pull) => addCommentToClosed(pull.number, fullPull.number))
+      stale.map((pull) => addCommentToClosed(pull.number, fullPull.number)),
     ),
   ]);
 };
@@ -68,30 +68,30 @@ const addCommentToClosed = async (number: number, replacement: number) => {
   });
 };
 
-const pull_labels = ["auto-release-pr", "keep up-to-date"];
+const pull_labels = ['auto-release-pr', 'keep up-to-date'];
 
 export const createPull = async (prerelease: boolean) => {
   const title = prerelease ? canaryReleaseTitle : fullReleaseTitle;
-  const releaseLabel = prerelease ? "releases: canary" : "releases: patch";
+  const releaseLabel = prerelease ? 'releases: canary' : 'releases: patch';
   const { data: content } = await octo.rest.repos.getContent({
     repo,
     owner,
-    path: "package.json",
+    path: 'package.json',
   });
-  if (!("content" in content))
-    throw new Error("Could not get package.json contents");
+  if (!('content' in content))
+    throw new Error('Could not get package.json contents');
   const packageJson = JSON.parse(
-    Buffer.from(content.content, "base64").toString()
+    Buffer.from(content.content, 'base64').toString(),
   ) as { version?: string };
   let newVersion: string | null;
-  if (!packageJson.version || packageJson.version.startsWith("0.0.0")) {
-    newVersion = prerelease ? "0.0.1-canary.0" : "0.0.1";
+  if (!packageJson.version || packageJson.version.startsWith('0.0.0')) {
+    newVersion = prerelease ? '0.0.1-canary.0' : '0.0.1';
   } else {
     newVersion = prerelease
-      ? inc(packageJson.version, "prerelease", "canary")
-      : inc(packageJson.version, "patch");
+      ? inc(packageJson.version, 'prerelease', 'canary')
+      : inc(packageJson.version, 'patch');
   }
-  if (!newVersion) throw new Error("Could not increase version");
+  if (!newVersion) throw new Error('Could not increase version');
   packageJson.version = newVersion;
   const {
     data: {
@@ -115,10 +115,10 @@ export const createPull = async (prerelease: boolean) => {
   await octo.rest.repos.createOrUpdateFileContents({
     repo,
     owner,
-    path: "package.json",
+    path: 'package.json',
     message: `release patch ${packageJson.version}`,
-    content: Buffer.from(JSON.stringify(packageJson, null, 2) + "\n").toString(
-      "base64"
+    content: Buffer.from(JSON.stringify(packageJson, null, 2) + '\n').toString(
+      'base64',
     ),
     sha: content.sha,
     branch,
@@ -130,15 +130,25 @@ export const createPull = async (prerelease: boolean) => {
     title,
     body: message,
     head: branch,
-    base: "main",
+    base: 'main',
   });
-  await octo.rest.issues.addLabels({
-    repo,
-    owner,
-    issue_number: pull.number,
-    labels: [...pull_labels, releaseLabel],
-  });
-  return pull;
+  let err = 0;
+  while (err < 5) {
+    try {
+      await octo.rest.issues.addLabels({
+        repo,
+        owner,
+        issue_number: pull.number,
+        labels: [...pull_labels, releaseLabel],
+      });
+      return pull;
+    } catch (e) {
+      console.error(e);
+      err++;
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    }
+  }
+  throw new Error('Could not add labels to PR');
 };
 
 export default runAction;
