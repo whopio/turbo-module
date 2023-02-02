@@ -1,9 +1,9 @@
 "use strict";
-exports.id = 967;
-exports.ids = [967];
+exports.id = 405;
+exports.ids = [405];
 exports.modules = {
 
-/***/ 3967:
+/***/ 7405:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -16,8 +16,10 @@ __webpack_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
 var core = __webpack_require__(8041);
-// EXTERNAL MODULE: ./dist/util/is-canary.js
-var is_canary = __webpack_require__(9911);
+;// CONCATENATED MODULE: ../util/is-canary.ts
+const isCanary = (test) => /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
+/* harmony default export */ const is_canary = (isCanary);
+
 // EXTERNAL MODULE: ./dist/context.js
 var context = __webpack_require__(7501);
 // EXTERNAL MODULE: ./dist/util/get-message.js + 4 modules
@@ -344,7 +346,7 @@ var release = function() {
                             2
                         ];
                     }
-                    prerelease = (0,is_canary/* default */.Z)(version);
+                    prerelease = is_canary(version);
                     return [
                         4,
                         (0,get_message/* default */.Z)(prerelease)
@@ -378,20 +380,6 @@ var release = function() {
     };
 }();
 /* harmony default export */ const dist_release = (release);
-
-
-/***/ }),
-
-/***/ 9911:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-var isCanary = function(test) {
-    return /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isCanary);
 
 
 /***/ })

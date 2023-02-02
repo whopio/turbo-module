@@ -1,5 +1,5 @@
-import { bash, command } from "@local/util/exec";
-import isCanary from "@local/util/is-canary";
+import { bash, command } from "../util/exec";
+import isCanary from "../util/is-canary";
 import { outputJson, readJson } from "../util/fse";
 
 /**

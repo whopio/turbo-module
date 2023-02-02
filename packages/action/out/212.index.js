@@ -1,9 +1,9 @@
 "use strict";
-exports.id = 290;
-exports.ids = [290];
+exports.id = 212;
+exports.ids = [212];
 exports.modules = {
 
-/***/ 7290:
+/***/ 7212:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -20,114 +20,7 @@ var core = __webpack_require__(8041);
 var external_child_process_ = __webpack_require__(2081);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __webpack_require__(3837);
-;// CONCATENATED MODULE: ../util/exec.ts
-
-
-const exec = (0,external_util_.promisify)(external_child_process_.exec);
-function command([...strings], ...vars) {
-    return async (result) => {
-        const command = await getCommand(strings, vars, result);
-        const cleaned = command
-            .split("\n")
-            .map((part) => part.trim())
-            .filter(Boolean)
-            .join(" ");
-        console.log(cleaned);
-        return cleaned;
-    };
-}
-function consume([...strings], ...vars) {
-    const combined = strings.map((string, idx) => {
-        return {
-            string,
-            var: vars[idx],
-        };
-    });
-    let current = combined.shift();
-    const getNext = () => {
-        const result = {
-            strings: [],
-            vars: [],
-        };
-        while (combined.length || current) {
-            if (!current)
-                break;
-            const split = current.string.split("\n");
-            if (split.length === 1) {
-                result.strings.push(split[0]);
-                result.vars.push(current.var);
-                current = combined.shift();
-            }
-            else {
-                result.strings.push(split[0]);
-                current.string = split.slice(1).join("\n");
-                break;
-            }
-        }
-        if (result.strings.length) {
-            result.strings[0] = result.strings[0].trimStart();
-            result.strings[result.strings.length - 1] =
-                result.strings[result.strings.length - 1].trimEnd();
-            result.vars = result.vars.slice(0, result.strings.length - 1);
-        }
-        if (!result.strings.length ||
-            (result.strings[0] === "" && !result.vars.length)) {
-            if (current)
-                return getNext();
-            return;
-        }
-        return result;
-    };
-    return getNext;
-}
-function* generator(getNext) {
-    let current = getNext();
-    while (current) {
-        yield current;
-        current = getNext();
-    }
-}
-const getCommand = async (strings, vars, results) => {
-    const first = strings.shift();
-    if (!first)
-        return "";
-    const parts = [first];
-    for (const idx in strings) {
-        const variable = vars[idx];
-        parts.push(`${typeof variable === "function" ? await variable(results) : variable}`);
-        parts.push(strings[idx]);
-    }
-    return parts.join("");
-};
-const bash = async (strings, ...vars) => {
-    const lines = generator(consume(strings, ...vars));
-    const results = [];
-    for (const { strings, vars } of lines) {
-        const command = await getCommand(strings, vars, results);
-        if (command !== "")
-            results.push(await exec(command));
-    }
-    return results;
-};
-bash.options =
-    (options) => async (strings, ...vars) => {
-        const lines = generator(consume(strings, ...vars));
-        const results = [];
-        for (const { strings, vars } of lines) {
-            const command = await getCommand(strings, vars, results);
-            if (command !== "")
-                results.push(await exec(command, options));
-        }
-        return results;
-    };
-
-// EXTERNAL MODULE: ../util/is-canary.ts
-var is_canary = __webpack_require__(2206);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.3.8/node_modules/semver/index.js
-var semver = __webpack_require__(913);
-// EXTERNAL MODULE: ./dist/util/get-file.js
-var get_file = __webpack_require__(2703);
-;// CONCATENATED MODULE: ./dist/check/index.js
+;// CONCATENATED MODULE: ./dist/util/exec.js
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
@@ -171,6 +64,543 @@ function _asyncToGenerator(fn) {
 function _iterableToArray(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
+function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _toArray(arr) {
+    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+}
+function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+var __generator = undefined && undefined.__generator || function(thisArg, body) {
+    var f, y, t, g, _ = {
+        label: 0,
+        sent: function() {
+            if (t[0] & 1) throw t[1];
+            return t[1];
+        },
+        trys: [],
+        ops: []
+    };
+    return(g = {
+        next: verb(0),
+        "throw": verb(1),
+        "return": verb(2)
+    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+        return this;
+    }), g);
+    function verb(n) {
+        return function(v) {
+            return step([
+                n,
+                v
+            ]);
+        };
+    }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while(_)try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [
+                op[0] & 2,
+                t.value
+            ];
+            switch(op[0]){
+                case 0:
+                case 1:
+                    t = op;
+                    break;
+                case 4:
+                    _.label++;
+                    return {
+                        value: op[1],
+                        done: false
+                    };
+                case 5:
+                    _.label++;
+                    y = op[1];
+                    op = [
+                        0
+                    ];
+                    continue;
+                case 7:
+                    op = _.ops.pop();
+                    _.trys.pop();
+                    continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+                        _ = 0;
+                        continue;
+                    }
+                    if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+                        _.label = op[1];
+                        break;
+                    }
+                    if (op[0] === 6 && _.label < t[1]) {
+                        _.label = t[1];
+                        t = op;
+                        break;
+                    }
+                    if (t && _.label < t[2]) {
+                        _.label = t[2];
+                        _.ops.push(op);
+                        break;
+                    }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop();
+                    continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) {
+            op = [
+                6,
+                e
+            ];
+            y = 0;
+        } finally{
+            f = t = 0;
+        }
+        if (op[0] & 5) throw op[1];
+        return {
+            value: op[0] ? op[1] : void 0,
+            done: true
+        };
+    }
+};
+
+
+var exec = (0,external_util_.promisify)(external_child_process_.exec);
+function command(param) {
+    var _param = _toArray(param), strings = _param.slice(0);
+    for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+        vars[_key - 1] = arguments[_key];
+    }
+    return function() {
+        var _ref = _asyncToGenerator(function(result) {
+            var command, cleaned;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            getCommand(strings, vars, result)
+                        ];
+                    case 1:
+                        command = _state.sent();
+                        cleaned = command.split("\n").map(function(part) {
+                            return part.trim();
+                        }).filter(Boolean).join(" ");
+                        console.log(cleaned);
+                        return [
+                            2,
+                            cleaned
+                        ];
+                }
+            });
+        });
+        return function(result) {
+            return _ref.apply(this, arguments);
+        };
+    }();
+}
+function consume(param) {
+    var _param = _toArray(param), strings = _param.slice(0);
+    for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+        vars[_key - 1] = arguments[_key];
+    }
+    var combined = strings.map(function(string, idx) {
+        return {
+            string: string,
+            var: vars[idx]
+        };
+    });
+    var current = combined.shift();
+    var getNext = function() {
+        var result = {
+            strings: [],
+            vars: []
+        };
+        while(combined.length || current){
+            if (!current) break;
+            var split = current.string.split("\n");
+            if (split.length === 1) {
+                result.strings.push(split[0]);
+                result.vars.push(current.var);
+                current = combined.shift();
+            } else {
+                result.strings.push(split[0]);
+                current.string = split.slice(1).join("\n");
+                break;
+            }
+        }
+        if (result.strings.length) {
+            result.strings[0] = result.strings[0].trimStart();
+            result.strings[result.strings.length - 1] = result.strings[result.strings.length - 1].trimEnd();
+            result.vars = result.vars.slice(0, result.strings.length - 1);
+        }
+        if (!result.strings.length || result.strings[0] === "" && !result.vars.length) {
+            if (current) return getNext();
+            return;
+        }
+        return result;
+    };
+    return getNext;
+}
+function generator(getNext) {
+    var current;
+    return __generator(this, function(_state) {
+        switch(_state.label){
+            case 0:
+                current = getNext();
+                _state.label = 1;
+            case 1:
+                if (!current) return [
+                    3,
+                    3
+                ];
+                return [
+                    4,
+                    current
+                ];
+            case 2:
+                _state.sent();
+                current = getNext();
+                return [
+                    3,
+                    1
+                ];
+            case 3:
+                return [
+                    2
+                ];
+        }
+    });
+}
+var getCommand = function() {
+    var _ref = _asyncToGenerator(function(strings, vars, results) {
+        var first, parts, _tmp, _tmp1, _i, idx, variable, _, _1, _2, _tmp2;
+        return __generator(this, function(_state) {
+            switch(_state.label){
+                case 0:
+                    first = strings.shift();
+                    if (!first) return [
+                        2,
+                        ""
+                    ];
+                    parts = [
+                        first
+                    ];
+                    _tmp = [];
+                    for(_tmp1 in strings)_tmp.push(_tmp1);
+                    _i = 0;
+                    _state.label = 1;
+                case 1:
+                    if (!(_i < _tmp.length)) return [
+                        3,
+                        6
+                    ];
+                    idx = _tmp[_i];
+                    variable = vars[idx];
+                    _ = parts.push;
+                    _2 = (_1 = "").concat;
+                    if (!(typeof variable === "function")) return [
+                        3,
+                        3
+                    ];
+                    return [
+                        4,
+                        variable(results)
+                    ];
+                case 2:
+                    _tmp2 = _state.sent();
+                    return [
+                        3,
+                        4
+                    ];
+                case 3:
+                    _tmp2 = variable;
+                    _state.label = 4;
+                case 4:
+                    _.apply(parts, [
+                        _2.apply(_1, [
+                            _tmp2
+                        ])
+                    ]);
+                    parts.push(strings[idx]);
+                    _state.label = 5;
+                case 5:
+                    _i++;
+                    return [
+                        3,
+                        1
+                    ];
+                case 6:
+                    return [
+                        2,
+                        parts.join("")
+                    ];
+            }
+        });
+    });
+    return function getCommand(strings, vars, results) {
+        return _ref.apply(this, arguments);
+    };
+}();
+var bash = function() {
+    var _ref = _asyncToGenerator(function(strings) {
+        var _len, vars, _key, lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
+        var _arguments = arguments;
+        return __generator(this, function(_state) {
+            switch(_state.label){
+                case 0:
+                    for(_len = _arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+                        vars[_key - 1] = _arguments[_key];
+                    }
+                    lines = generator(consume.apply(void 0, [
+                        strings
+                    ].concat(_toConsumableArray(vars))));
+                    results = [];
+                    _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                    _state.label = 1;
+                case 1:
+                    _state.trys.push([
+                        1,
+                        7,
+                        8,
+                        9
+                    ]);
+                    _iterator = lines[Symbol.iterator]();
+                    _state.label = 2;
+                case 2:
+                    if (!!(_iteratorNormalCompletion = (_step = _iterator.next()).done)) return [
+                        3,
+                        6
+                    ];
+                    _step_value = _step.value, _$strings = _step_value.strings, vars1 = _step_value.vars;
+                    return [
+                        4,
+                        getCommand(_$strings, vars1, results)
+                    ];
+                case 3:
+                    command = _state.sent();
+                    if (!(command !== "")) return [
+                        3,
+                        5
+                    ];
+                    _ = results.push;
+                    return [
+                        4,
+                        exec(command)
+                    ];
+                case 4:
+                    _.apply(results, [
+                        _state.sent()
+                    ]);
+                    _state.label = 5;
+                case 5:
+                    _iteratorNormalCompletion = true;
+                    return [
+                        3,
+                        2
+                    ];
+                case 6:
+                    return [
+                        3,
+                        9
+                    ];
+                case 7:
+                    err = _state.sent();
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                    return [
+                        3,
+                        9
+                    ];
+                case 8:
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return != null) {
+                            _iterator.return();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                    return [
+                        7
+                    ];
+                case 9:
+                    return [
+                        2,
+                        results
+                    ];
+            }
+        });
+    });
+    return function bash(strings) {
+        return _ref.apply(this, arguments);
+    };
+}();
+bash.options = function(options) {
+    return function() {
+        var _ref = _asyncToGenerator(function(strings) {
+            var _len, vars, _key, lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
+            var _arguments = arguments;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        for(_len = _arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+                            vars[_key - 1] = _arguments[_key];
+                        }
+                        lines = generator(consume.apply(void 0, [
+                            strings
+                        ].concat(_toConsumableArray(vars))));
+                        results = [];
+                        _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                        _state.label = 1;
+                    case 1:
+                        _state.trys.push([
+                            1,
+                            7,
+                            8,
+                            9
+                        ]);
+                        _iterator = lines[Symbol.iterator]();
+                        _state.label = 2;
+                    case 2:
+                        if (!!(_iteratorNormalCompletion = (_step = _iterator.next()).done)) return [
+                            3,
+                            6
+                        ];
+                        _step_value = _step.value, _$strings = _step_value.strings, vars1 = _step_value.vars;
+                        return [
+                            4,
+                            getCommand(_$strings, vars1, results)
+                        ];
+                    case 3:
+                        command = _state.sent();
+                        if (!(command !== "")) return [
+                            3,
+                            5
+                        ];
+                        _ = results.push;
+                        return [
+                            4,
+                            exec(command, options)
+                        ];
+                    case 4:
+                        _.apply(results, [
+                            _state.sent()
+                        ]);
+                        _state.label = 5;
+                    case 5:
+                        _iteratorNormalCompletion = true;
+                        return [
+                            3,
+                            2
+                        ];
+                    case 6:
+                        return [
+                            3,
+                            9
+                        ];
+                    case 7:
+                        err = _state.sent();
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                        return [
+                            3,
+                            9
+                        ];
+                    case 8:
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator.return != null) {
+                                _iterator.return();
+                            }
+                        } finally{
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
+                        return [
+                            7
+                        ];
+                    case 9:
+                        return [
+                            2,
+                            results
+                        ];
+                }
+            });
+        });
+        return function(strings) {
+            return _ref.apply(this, arguments);
+        };
+    }();
+};
+
+// EXTERNAL MODULE: ./dist/util/is-canary.js
+var is_canary = __webpack_require__(9911);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.3.8/node_modules/semver/index.js
+var semver = __webpack_require__(913);
+// EXTERNAL MODULE: ./dist/util/get-file.js
+var get_file = __webpack_require__(2703);
+;// CONCATENATED MODULE: ./dist/check/index.js
+function check_arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+function check_arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+}
+function check_arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return check_arrayLikeToArray(arr);
+}
+function check_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+    try {
+        var info = gen[key](arg);
+        var value = info.value;
+    } catch (error) {
+        reject(error);
+        return;
+    }
+    if (info.done) {
+        resolve(value);
+    } else {
+        Promise.resolve(value).then(_next, _throw);
+    }
+}
+function check_asyncToGenerator(fn) {
+    return function() {
+        var self = this, args = arguments;
+        return new Promise(function(resolve, reject) {
+            var gen = fn.apply(self, args);
+            function _next(value) {
+                check_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+            }
+            function _throw(err) {
+                check_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+            }
+            _next(undefined);
+        });
+    };
+}
+function check_iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
 function _iterableToArrayLimit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
@@ -195,14 +625,14 @@ function _iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function _nonIterableRest() {
+function check_nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _nonIterableSpread() {
+function check_nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+    return check_arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || check_unsupportedIterableToArray(arr, i) || check_nonIterableRest();
 }
 function _taggedTemplateLiteral(strings, raw) {
     if (!raw) {
@@ -214,18 +644,18 @@ function _taggedTemplateLiteral(strings, raw) {
         }
     }));
 }
-function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+function check_toConsumableArray(arr) {
+    return check_arrayWithoutHoles(arr) || check_iterableToArray(arr) || check_unsupportedIterableToArray(arr) || check_nonIterableSpread();
 }
-function _unsupportedIterableToArray(o, minLen) {
+function check_unsupportedIterableToArray(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return check_arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return check_arrayLikeToArray(o, minLen);
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
+var check_generator = undefined && undefined.__generator || function(thisArg, body) {
     var f, y, t, g, _ = {
         label: 0,
         sent: function() {
@@ -348,9 +778,9 @@ function _templateObject1() {
 
 var versionParserRegexp = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d)?)/;
 var checkPackage = function() {
-    var _ref = _asyncToGenerator(function(pkg, rootVersion) {
+    var _ref = check_asyncToGenerator(function(pkg, rootVersion) {
         var _ref, packageJson, log, _ref1, res, _ref2, currentVersion, _e, e;
-        return __generator(this, function(_state) {
+        return check_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     _state.trys.push([
@@ -372,7 +802,7 @@ var checkPackage = function() {
                         var _console;
                         (_console = console).log.apply(_console, [
                             "".concat(packageJson.name, ":")
-                        ].concat(_toConsumableArray(args)));
+                        ].concat(check_toConsumableArray(args)));
                     };
                     if (packageJson.private !== false) {
                         log("Skipping private package");
@@ -442,9 +872,9 @@ var checkPackage = function() {
     };
 }();
 var checkPackages = function() {
-    var _ref = _asyncToGenerator(function(rootVersion) {
+    var _ref = check_asyncToGenerator(function(rootVersion) {
         var folders;
-        return __generator(this, function(_state) {
+        return check_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -460,9 +890,9 @@ var checkPackages = function() {
                     return [
                         4,
                         Promise.all(folders.map(function() {
-                            var _ref = _asyncToGenerator(function(param) {
+                            var _ref = check_asyncToGenerator(function(param) {
                                 var path;
-                                return __generator(this, function(_state) {
+                                return check_generator(this, function(_state) {
                                     path = param.path;
                                     return [
                                         2,
@@ -494,9 +924,9 @@ var checkPackages = function() {
  * It sets the results as github actions output as this script is
  * inteded to be ran as part of a workflow
  */ var canPublish = function() {
-    var _ref = _asyncToGenerator(function() {
+    var _ref = check_asyncToGenerator(function() {
         var _ref, version, publishable;
-        return __generator(this, function(_state) {
+        return check_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -809,13 +1239,15 @@ var getJsonFile = function() {
 
 /***/ }),
 
-/***/ 2206:
+/***/ 9911:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const isCanary = (test) => /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
+var isCanary = function(test) {
+    return /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isCanary);
 
 

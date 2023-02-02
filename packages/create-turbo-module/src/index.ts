@@ -4,7 +4,7 @@
  * @credit https://github.com/vercel/turbo/blob/main/packages/create-turbo/src/index.ts
  */
 
-import { bash } from "@local/util/exec";
+import { bash } from "./exec";
 import chalk from "chalk";
 import fse from "fs-extra";
 import { createPromptModule } from "inquirer";

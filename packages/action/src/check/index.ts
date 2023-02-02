@@ -1,6 +1,6 @@
 import { setOutput } from "@actions/core";
-import { bash, command } from "@local/util/exec";
-import isCanary from "@local/util/is-canary";
+import { bash, command } from "../util/exec";
+import isCanary from "../util/is-canary";
 import { gt } from "semver";
 import { getFolder, getJsonFile, JSONFile } from "../util/get-file";
 

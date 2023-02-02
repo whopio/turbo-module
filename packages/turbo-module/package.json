@@ -19,7 +19,6 @@
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {
-    "@local/util": "workspace:^1.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.17",
     "@types/semver": "^7.3.13",
