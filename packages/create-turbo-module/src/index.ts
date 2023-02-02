@@ -86,6 +86,7 @@ const main = async () => {
   await bash.options({ cwd: projectDir })`
     pnpm i
     git init
+    git checkout -b main
     git add -A
     git commit -m "initial commit from create-turbo-module"
   `;
