@@ -1,12 +1,12 @@
-import fse from "fs-extra";
-import { join } from "path";
-import { __dirname } from "./dirname";
+import fse from 'fs-extra';
+import { join } from 'path';
+import { __dirname } from './dirname';
 
 const cloneTemplate = async (
   out: string,
   replace: Record<string, string>,
-  base = join(__dirname, "../template"),
-  path = "/"
+  base = join(__dirname, '../template'),
+  path = '/',
 ) => {
   const currentPath = join(base, path);
   const filesAndFolders = await fse.readdir(currentPath);
@@ -18,17 +18,17 @@ const cloneTemplate = async (
         await cloneTemplate(out, replace, base, join(path, fileOrFolder));
       } else if (stats.isFile()) {
         const content = await fse.readFile(fileOrFolderPath, {
-          encoding: "utf8",
+          encoding: 'utf8',
         });
         const updatedContent = Object.keys(replace).reduce((acc, key) => {
           return acc.replaceAll(key, replace[key]);
         }, content);
         const updatedPath = Object.keys(replace).reduce((acc, key) => {
           return acc.replaceAll(key, replace[key]);
-        }, join(path, fileOrFolder.replace(/\.template$/, "")));
+        }, join(path, fileOrFolder.replace(/\.template$/, '')));
         await fse.outputFile(join(out, updatedPath), updatedContent);
       }
-    })
+    }),
   );
 };
 

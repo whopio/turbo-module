@@ -1,4 +1,4 @@
-import { octo, owner, repo } from "../context";
+import { octo, owner, repo } from '../context';
 
 const releaseExists = async (tag: string) => {
   try {

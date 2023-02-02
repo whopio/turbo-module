@@ -1,5 +1,5 @@
-import { exec as _exec, ExecOptions } from "child_process";
-import { promisify } from "util";
+import { exec as _exec, ExecOptions } from 'child_process';
+import { promisify } from 'util';
 
 const exec = promisify(_exec);
 
@@ -20,10 +20,10 @@ export function command(
   return async (result: { stdout: string; stderr: string }[]) => {
     const command = await getCommand(strings, vars, result);
     const cleaned = command
-      .split("\n")
+      .split('\n')
       .map((part) => part.trim())
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
     return cleaned;
   };
 }
@@ -51,14 +51,14 @@ function consume([...strings]: TemplateStringsArray, ...vars: BashVars[]) {
     };
     while (combined.length || current) {
       if (!current) break;
-      const split = current.string.split("\n");
+      const split = current.string.split('\n');
       if (split.length === 1) {
         result.strings.push(split[0]);
         result.vars.push(current.var);
         current = combined.shift();
       } else {
         result.strings.push(split[0]);
-        current.string = split.slice(1).join("\n");
+        current.string = split.slice(1).join('\n');
         break;
       }
     }
@@ -70,7 +70,7 @@ function consume([...strings]: TemplateStringsArray, ...vars: BashVars[]) {
     }
     if (
       !result.strings.length ||
-      (result.strings[0] === "" && !result.vars.length)
+      (result.strings[0] === '' && !result.vars.length)
     ) {
       if (current) return getNext();
       return;
@@ -91,19 +91,19 @@ function* generator<T>(getNext: () => T | undefined) {
 const getCommand = async (
   strings: string[],
   vars: BashVars[],
-  results: ResultType
+  results: ResultType,
 ) => {
   const first = strings.shift();
-  if (first === undefined) return "";
+  if (first === undefined) return '';
   const parts: string[] = [first];
   for (const idx in strings) {
     const variable = vars[idx];
     parts.push(
-      `${typeof variable === "function" ? await variable(results) : variable}`
+      `${typeof variable === 'function' ? await variable(results) : variable}`,
     );
     parts.push(strings[idx]);
   }
-  return parts.join("");
+  return parts.join('');
 };
 
 export const bash = async (
@@ -122,7 +122,7 @@ export const bash = async (
   const results: Array<{ stdout: string; stderr: string }> = [];
   for (const { strings, vars } of lines) {
     const command = await getCommand(strings, vars, results);
-    if (command !== "") {
+    if (command !== '') {
       results.push(await exec(command));
     }
   }
@@ -147,7 +147,7 @@ bash.options =
     const results: Array<{ stdout: string; stderr: string }> = [];
     for (const { strings, vars } of lines) {
       const command = await getCommand(strings, vars, results);
-      if (command !== "") {
+      if (command !== '') {
         results.push(await exec(command, options));
       }
     }

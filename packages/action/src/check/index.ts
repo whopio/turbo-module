@@ -1,8 +1,8 @@
-import { setOutput } from "@actions/core";
-import { bash, command } from "../util/exec";
-import isCanary from "../util/is-canary";
-import { gt } from "semver";
-import { getFolder, getJsonFile, JSONFile } from "../util/get-file";
+import { setOutput } from '@actions/core';
+import { bash, command } from '../util/exec';
+import isCanary from '../util/is-canary';
+import { gt } from 'semver';
+import { getFolder, getJsonFile, JSONFile } from '../util/get-file';
 
 const versionParserRegexp =
   /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d)?)/;
@@ -17,21 +17,21 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
       console.log(`${packageJson.name}:`, ...args);
     };
     if (packageJson.private !== false) {
-      log("Skipping private package");
+      log('Skipping private package');
       return;
     }
     try {
       const [res] = await bash`
         ${command`
           npm view 
-            ${packageJson.name}@${isCanary(rootVersion) ? "canary" : "latest"}
+            ${packageJson.name}@${isCanary(rootVersion) ? 'canary' : 'latest'}
         `}
       `;
-      if (!res) throw new Error("Únexpected error");
+      if (!res) throw new Error('Únexpected error');
       const [, , currentVersion] =
         versionParserRegexp.exec(res.stdout.trim()) || [];
       if (!currentVersion)
-        throw new Error("Could not parse version from npm view response");
+        throw new Error('Could not parse version from npm view response');
       if (gt(rootVersion, currentVersion)) {
         log(`Version ${rootVersion} can be published.`);
         return packageJson.name;
@@ -48,13 +48,13 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
 };
 
 const checkPackages = async (rootVersion: string) => {
-  const folders = await getFolder("packages");
-  console.log("checking " + folders.map(({ path }) => path).join());
+  const folders = await getFolder('packages');
+  console.log('checking ' + folders.map(({ path }) => path).join());
   return (
     await Promise.all(
       folders.map(async ({ path }) =>
-        checkPackage(`${path}/package.json`, rootVersion)
-      )
+        checkPackage(`${path}/package.json`, rootVersion),
+      ),
     )
   ).filter(Boolean) as string[];
 };
@@ -69,18 +69,18 @@ const checkPackages = async (rootVersion: string) => {
 const canPublish = async () => {
   const {
     content: { version },
-  } = await getJsonFile<{ version: string }>("package.json");
-  console.log("version:", version, "is canary:", isCanary(version));
+  } = await getJsonFile<{ version: string }>('package.json');
+  console.log('version:', version, 'is canary:', isCanary(version));
   // any version starting with 0.0.0 is considered a initial dev
   // version and will not be published
-  if (version.startsWith("0.0.0")) {
-    setOutput("can-publish", false);
-    setOutput("version", version);
+  if (version.startsWith('0.0.0')) {
+    setOutput('can-publish', false);
+    setOutput('version', version);
   } else {
     const publishable = await checkPackages(version);
-    setOutput("can-publish", Boolean(publishable.length));
-    setOutput("filter", publishable.map((pkg) => `--filter=${pkg}`).join(" "));
-    setOutput("version", version);
+    setOutput('can-publish', Boolean(publishable.length));
+    setOutput('filter', publishable.map((pkg) => `--filter=${pkg}`).join(' '));
+    setOutput('version', version);
   }
 };
 

@@ -12,12 +12,12 @@ export const cli = (layout: CliLayout) => {
     let current = layout;
     for (const arg of args) {
       const next = current[arg];
-      if (typeof next === "function") {
+      if (typeof next === 'function') {
         const { default: handler } = await next();
         return handler();
       } else if (next) {
         current = next;
-      } else throw new Error("Unknown command");
+      } else throw new Error('Unknown command');
     }
   };
 };

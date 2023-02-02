@@ -1,4 +1,4 @@
-import { octo, repo, owner } from "../context";
+import { octo, repo, owner } from '../context';
 
 const getLatestRelease = async (includePrerelease = true) => {
   if (includePrerelease) {
