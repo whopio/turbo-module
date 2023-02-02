@@ -1,5 +1,5 @@
 import { getInput, setOutput } from "@actions/core";
-import isCanary from "@local/util/is-canary";
+import isCanary from "./util/is-canary";
 import { commit_hash, octo, owner, repo } from "./context";
 import getReleaseMessage from "./util/get-message";
 import releaseExists from "./util/release-exists";
