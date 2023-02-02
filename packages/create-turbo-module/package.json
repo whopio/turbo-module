@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@local/util": "workspace:^1.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.17",

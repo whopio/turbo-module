@@ -1,9 +1,6 @@
 'area: core':
 - packages/turbo-module/**/*
 
-'area: util':
-- packages/util/**/*
-
 'area: action':
 - packages/action/**/*
 
