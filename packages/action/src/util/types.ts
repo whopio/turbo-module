@@ -1,4 +1,4 @@
-import { type octo } from "../context";
+import { type octo } from '../context';
 
 export type ReleasePulls = Record<
   string,
@@ -14,9 +14,9 @@ export type ReleaseStats = {
 };
 
 export type Commits = Awaited<
-  ReturnType<typeof octo["rest"]["repos"]["compareCommits"]>
->["data"]["commits"];
+  ReturnType<(typeof octo)['rest']['repos']['compareCommits']>
+>['data']['commits'];
 
 export type Pull = Awaited<
-  ReturnType<typeof octo["rest"]["pulls"]["list"]>
->["data"][number];
+  ReturnType<(typeof octo)['rest']['pulls']['list']>
+>['data'][number];

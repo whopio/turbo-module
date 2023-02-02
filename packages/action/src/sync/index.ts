@@ -1,12 +1,12 @@
-import { getInput } from "@actions/core";
+import { getInput } from '@actions/core';
 
 const main = async () => {
-  const published = getInput("published") === "true";
+  const published = getInput('published') === 'true';
   if (published) {
-    const { default: create } = await import("../release-pull/create");
+    const { default: create } = await import('../release-pull/create');
     create();
   } else {
-    const { default: sync } = await import("../release-pull/sync");
+    const { default: sync } = await import('../release-pull/sync');
     sync();
   }
 };

@@ -1,11 +1,11 @@
-import { commit_hash, initial_commit } from "../context";
-import collectCommits from "./collect-commits";
-import getFirstCommit from "./get-first-commit";
-import getLatestRelease from "./get-latest-release";
-import { ReleaseStats } from "./types";
+import { commit_hash, initial_commit } from '../context';
+import collectCommits from './collect-commits';
+import getFirstCommit from './get-first-commit';
+import getLatestRelease from './get-latest-release';
+import { ReleaseStats } from './types';
 
 const capitalise = (str: string) =>
-  `${str.at(0)?.toUpperCase() || ""}${str.slice(1)}`;
+  `${str.at(0)?.toUpperCase() || ''}${str.slice(1)}`;
 
 export const makeGithubReleaseMessage = (stats: ReleaseStats) =>
   `
@@ -14,14 +14,14 @@ ${Object.entries(stats.pulls)
     ([key, pulls]) => `
 ### ${capitalise(key)} Changes
 
-${pulls.map(({ title }) => `- ${title}`).join("\n")}
-`
+${pulls.map(({ title }) => `- ${title}`).join('\n')}
+`,
   )
-  .join("")}
+  .join('')}
 ### Credits
 ${Array.from(stats.authors)
   .map((author) => `@${author}`)
-  .join(", ")}
+  .join(', ')}
 `.trim();
 
 const getReleaseMessage = async (prerelease: boolean) => {

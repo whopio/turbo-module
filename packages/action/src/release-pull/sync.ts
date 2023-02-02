@@ -1,9 +1,9 @@
-import isActionUser from "../util/is-action-user";
-import { octo, owner, repo } from "../context";
-import getReleaseMessage from "../util/get-message";
-import { Pull } from "../util/types";
-import { canaryReleaseTitle, fullReleaseTitle } from "./shared";
-import { createPull } from "./create";
+import isActionUser from '../util/is-action-user';
+import { octo, owner, repo } from '../context';
+import getReleaseMessage from '../util/get-message';
+import { Pull } from '../util/types';
+import { canaryReleaseTitle, fullReleaseTitle } from './shared';
+import { createPull } from './create';
 
 const syncPull = async (pull: Pull, prerelease: boolean) => {
   console.log(`syncing pull #${pull.number}, is prerelease: ${prerelease}`);
@@ -26,11 +26,11 @@ const runAction = async () => {
     {
       repo,
       owner,
-      state: "open",
-      sort: "created",
-      direction: "desc",
+      state: 'open',
+      sort: 'created',
+      direction: 'desc',
       per_page: 100,
-    }
+    },
   )) {
     for (const pull of pulls) {
       if (isActionUser(pull.user)) {
