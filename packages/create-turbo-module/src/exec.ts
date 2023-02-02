@@ -123,7 +123,6 @@ export const bash = async (
   for (const { strings, vars } of lines) {
     const command = await getCommand(strings, vars, results);
     if (command !== "") {
-      console.info(command);
       results.push(await exec(command));
     }
   }
@@ -149,7 +148,6 @@ bash.options =
     for (const { strings, vars } of lines) {
       const command = await getCommand(strings, vars, results);
       if (command !== "") {
-        console.info(command);
         results.push(await exec(command, options));
       }
     }
