@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: whopio/unimported-action@v0.0.1-canary.0
+      - uses: whopio/unimported-action@v0.0.1
         with:
           token: ${{ github.token }}
           projects: "packages/action,packages/create-turbo-module,packages/turbo-module"
