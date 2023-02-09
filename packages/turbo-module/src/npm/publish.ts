@@ -2,6 +2,25 @@ import { bash, command } from '../util/exec';
 import isCanary from '../util/is-canary';
 import { outputJson, readJson } from '../util/fse';
 
+const versionParserRegexp =
+  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d)?)/;
+
+const checkLatestVersionForCanary = async (packageName: string) => {
+  try {
+    const [out] = await bash`
+      pnpm view ${packageName}@latest
+    `;
+    if (!out) throw new Error('Unable to get npm view output');
+    const [, , currentVersion] =
+      versionParserRegexp.exec(out.stdout.trim()) || [];
+    if (!currentVersion)
+      throw new Error('Could not parse version from npm view response');
+    return isCanary(currentVersion);
+  } catch {
+    return false;
+  }
+};
+
 /**
  * this script will get the root package.json to determine what
  * version should be publsied. It then opens the cwd packlage.json
@@ -13,7 +32,9 @@ import { outputJson, readJson } from '../util/fse';
 const publish = async () => {
   const rootPackageJson = await readJson('../../package.json');
   const nextVersion = rootPackageJson.version;
+  const canary = isCanary(nextVersion);
   const packageJson = await readJson('package.json');
+  const latest = !canary || checkLatestVersionForCanary(packageJson.name);
   packageJson.version = nextVersion;
   if (packageJson.dependencies) {
     Object.entries(packageJson.dependencies).forEach(([dep, version]) => {
@@ -28,7 +49,8 @@ const publish = async () => {
       pnpm publish
         --access public
         --no-git-checks
-        ${isCanary(nextVersion) ? '--tag canary' : ''}
+        ${canary ? '--tag canary' : ''}
+        ${(await latest) ? '--tag latest' : ''}
     `}
   `;
   console.log(`${packageJson.name}@${nextVersion}: published`);
