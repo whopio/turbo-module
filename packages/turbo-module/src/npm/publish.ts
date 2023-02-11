@@ -50,8 +50,14 @@ const publish = async () => {
         --access public
         --no-git-checks
         ${canary ? '--tag canary' : ''}
-        ${(await latest) ? '--tag latest' : ''}
     `}
+    ${
+      canary && (await latest)
+        ? `
+      pnpm dist-tag add ${packageJson.name}@${nextVersion} latest
+    `
+        : ''
+    }
   `;
   console.log(`${packageJson.name}@${nextVersion}: published`);
 };
