@@ -832,13 +832,13 @@ var checkPackage = function() {
                     _ref2 = _slicedToArray(versionParserRegexp.exec(res.stdout.trim()) || [], 3), currentVersion = _ref2[2];
                     if (!currentVersion) throw new Error("Could not parse version from npm view response");
                     if ((0,semver.gt)(rootVersion, currentVersion)) {
-                        log("Version ".concat(rootVersion, " can be published."));
+                        log("Version ".concat(rootVersion, " can be published. Current version is ").concat(currentVersion));
                         return [
                             2,
                             packageJson.name
                         ];
                     } else {
-                        log("Already up to date.");
+                        log("Version (".concat(currentVersion, ") already up to date."));
                     }
                     return [
                         3,
