@@ -33,10 +33,12 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
       if (!currentVersion)
         throw new Error('Could not parse version from npm view response');
       if (gt(rootVersion, currentVersion)) {
-        log(`Version ${rootVersion} can be published.`);
+        log(
+          `Version ${rootVersion} can be published. Current version is ${currentVersion}`,
+        );
         return packageJson.name;
       } else {
-        log(`Already up to date.`);
+        log(`Version (${currentVersion}) already up to date.`);
       }
     } catch (_e) {
       log(`Not found in registry.`);
