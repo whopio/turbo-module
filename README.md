@@ -4,7 +4,9 @@ Action and CLI to help managing public repositories that publish one or more npm
 
 ## getting started
 
-(pnpm is required, so install pnpm if not available yet)
+The easiest way to create a new turbo-module is to use [`create-turbo-module`](https://github.com/whopio/turbo-module/tree/main/packages/create-turbo-module):
+
+NOTE: pnpm is required, so install pnpm if not available yet
 
 ```bash
 pnpm create turbo-module
@@ -13,6 +15,16 @@ pnpm create turbo-module
 Follow the instructions given by the CLI.
 
 After a successful install the github repo needs to be configured. Follow the steps outlined in the README of your newly set-up turbo-module
+
+## features
+
+- publish multiple npm packages from the same repository
+- release new versions by accepting automatically created PRs
+  - after every release there are 2 PRs created, one for a full release and one of a canary release
+  - the full release PR can be configured by commenting `/major`, `/minor` or `/patch`
+- automatic GitHub release with every npm release
+- [`unimported-action`](https://github.com/whopio/unimported-action) installed by default
+- repository linting with PR hints
 
 ## action `whopio/turbo-module`:
 
