@@ -777,7 +777,7 @@ function _templateObject1() {
 
 
 
-var versionParserRegexp = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d)?)/;
+var versionParserRegexp = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d+)?)/;
 var checkPackage = function() {
     var _ref = check_asyncToGenerator(function(pkg, rootVersion) {
         var _ref, packageJson, log, _ref1, res, _ref2, currentVersion, _e, e;

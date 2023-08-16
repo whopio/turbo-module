@@ -5,7 +5,7 @@ import { gt } from 'semver';
 import { getFolder, getJsonFile, JSONFile } from '../util/get-file';
 
 const versionParserRegexp =
-  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d)?)/;
+  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d+)?)/;
 
 const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
   try {
