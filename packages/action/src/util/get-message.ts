@@ -7,6 +7,9 @@ import { ReleaseStats } from './types';
 const capitalise = (str: string) =>
   `${str.at(0)?.toUpperCase() || ''}${str.slice(1)}`;
 
+// GitHub enforces a max length of 65536 characters for a pull request body
+const maxLength = 65536;
+
 export const makeGithubReleaseMessage = (stats: ReleaseStats) =>
   `
 ${Object.entries(stats.pulls)
@@ -22,7 +25,9 @@ ${pulls.map(({ title }) => `- ${title}`).join('\n')}
 ${Array.from(stats.authors)
   .map((author) => `@${author}`)
   .join(', ')}
-`.trim();
+`
+    .trim()
+    .slice(0, maxLength);
 
 const getReleaseMessage = async (prerelease: boolean) => {
   const latestRelease = await getLatestRelease(prerelease);
