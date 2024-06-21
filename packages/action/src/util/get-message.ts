@@ -28,7 +28,7 @@ ${Array.from(stats.authors)
   .join(', ')}
 `.trim();
 
-  if (message.length >= maxLength) {
+  if (message.length >= maxLength - lengthBuffer) {
     return `${message.slice(
       0,
       maxLength - lengthBuffer,
