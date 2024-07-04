@@ -23,8 +23,8 @@ jobs:
       - uses: whopio/unimported-action@v0.0.1
         with:
           token: ${{ github.token }}
-          projects: "packages/action,packages/create-turbo-module,packages/turbo-module"
-  
+          projects: 'packages/action,packages/create-turbo-module,packages/turbo-module'
+
   install:
     name: Install node modules
     runs-on: ubuntu-latest
@@ -41,14 +41,14 @@ jobs:
           cache: pnpm
       - name: Install all packages
         run: pnpm install
-  
+
   lint:
     name: Lint repository
     needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
           version: 8.15.5
       - name: Setup node
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
           version: 8.15.5
       - name: Setup node
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
           version: 8.15.5
       - name: Setup node
@@ -101,4 +101,3 @@ jobs:
         run: pnpm install
       - name: Build packages
         run: pnpm turbo test
-
