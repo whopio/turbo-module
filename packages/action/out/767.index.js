@@ -1318,8 +1318,11 @@ var capitalise = function(str) {
     var _str_at;
     return "".concat(((_str_at = str.at(0)) === null || _str_at === void 0 ? void 0 : _str_at.toUpperCase()) || "").concat(str.slice(1));
 };
+// GitHub enforces a max length of 65536 characters for a pull request body
+var maxLength = 65536;
+var lengthBuffer = 1000;
 var makeGithubReleaseMessage = function(stats) {
-    return "\n".concat(Object.entries(stats.pulls).map(function(param) {
+    var message = "\n".concat(Object.entries(stats.pulls).map(function(param) {
         var _param = get_message_slicedToArray(param, 2), key = _param[0], pulls = _param[1];
         return "\n### ".concat(capitalise(key), " Changes\n\n").concat(pulls.map(function(param) {
             var title = param.title;
@@ -1328,6 +1331,10 @@ var makeGithubReleaseMessage = function(stats) {
     }).join(""), "\n### Credits\n").concat(Array.from(stats.authors).map(function(author) {
         return "@".concat(author);
     }).join(", "), "\n").trim();
+    if (message.length >= maxLength - lengthBuffer) {
+        return "".concat(message.slice(0, maxLength - lengthBuffer), "...\nThis message has been truncated to avoid exceeding the GitHub API's body limit.");
+    }
+    return message;
 };
 var getReleaseMessage = function() {
     var _ref = get_message_asyncToGenerator(function(prerelease) {
