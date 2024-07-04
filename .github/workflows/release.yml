@@ -13,6 +13,9 @@ concurrency:
   group: "release"
   cancel-in-progress: false
 
+permissions:
+  pull-requests: write
+
 jobs:
   release:
     name: Publish to npm and release on github
