@@ -15,22 +15,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unimported:
-    name: Check unimported
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: whopio/unimported-action@v0.0.1
-        with:
-          token: ${{ github.token }}
-          projects: 'packages/action,packages/create-turbo-module,packages/turbo-module'
-
   install:
     name: Install node modules
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
           version: 8.15.5
       - name: Setup node
