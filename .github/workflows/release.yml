@@ -13,6 +13,9 @@ concurrency:
   group: "release"
   cancel-in-progress: false
 
+permissions:
+  pull-requests: write
+
 jobs:
   release:
     name: Publish to npm and release on github
@@ -25,9 +28,7 @@ jobs:
         with: 
           action: check
           token: ${{ github.token }}
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8.15.5
+      - uses: pnpm/action-setup@v4
         if: steps.check.outputs.can-publish == 'true'
       - name: Setup node
         uses: actions/setup-node@v3

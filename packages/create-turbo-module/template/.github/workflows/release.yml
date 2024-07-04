@@ -6,7 +6,7 @@ on:
 name: Build, test, release
 
 concurrency:
-  group: "release"
+  group: 'release'
   cancel-in-progress: false
 
 jobs:
@@ -20,12 +20,12 @@ jobs:
       - name: Check package.json for version increase
         id: check
         uses: whopio/turbo-module@v$$VERSION
-        with: 
+        with:
           action: check
           token: ${{ github.token }}
       - uses: actions/checkout@v3
         if: steps.check.outputs.can-publish == 'true'
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         with:
           version: 7.13.6
         if: steps.check.outputs.can-publish == 'true'
@@ -49,14 +49,14 @@ jobs:
       - name: Github Release
         id: release
         uses: whopio/turbo-module@v$$VERSION
-        with: 
+        with:
           action: release
           token: ${{ github.token }}
           version: ${{ steps.check.outputs.version }}
         if: steps.check.outputs.can-publish == 'true'
       - name: Sync auto-release PRs
         uses: whopio/turbo-module@v$$VERSION
-        with: 
+        with:
           action: sync
           token: ${{ github.token }}
           published: ${{ steps.release.outputs.published }}
