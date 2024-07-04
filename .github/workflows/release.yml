@@ -26,8 +26,6 @@ jobs:
           action: check
           token: ${{ github.token }}
       - uses: pnpm/action-setup@v4
-        with:
-          version: 8.15.5
         if: steps.check.outputs.can-publish == 'true'
       - name: Setup node
         uses: actions/setup-node@v3
