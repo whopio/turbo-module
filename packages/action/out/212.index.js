@@ -14,23 +14,23 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ check)
 });
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
-var core = __webpack_require__(8041);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.11.1/node_modules/@actions/core/lib/core.js
+var core = __webpack_require__(1416);
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __webpack_require__(2081);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __webpack_require__(3837);
 ;// CONCATENATED MODULE: ./dist/util/exec.js
-function _arrayLikeToArray(arr, len) {
+function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function _arrayWithHoles(arr) {
+function _array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
-function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+function _array_without_holes(arr) {
+    if (Array.isArray(arr)) return _array_like_to_array(arr);
 }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -46,7 +46,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -61,31 +61,31 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-function _iterableToArray(iter) {
+function _iterable_to_array(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-function _nonIterableRest() {
+function _non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _nonIterableSpread() {
+function _non_iterable_spread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+function _to_array(arr) {
+    return _array_with_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_rest();
 }
-function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+function _to_consumable_array(arr) {
+    return _array_without_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_spread();
 }
-function _unsupportedIterableToArray(o, minLen) {
+function _unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return _array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -93,14 +93,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -111,7 +115,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -178,19 +182,19 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
+}
 
 
 var exec = (0,external_util_.promisify)(external_child_process_.exec);
 function command(param) {
-    var _param = _toArray(param), strings = _param.slice(0);
+    var _param = _to_array(param), strings = _param.slice(0);
     for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
         vars[_key - 1] = arguments[_key];
     }
-    return function() {
-        var _ref = _asyncToGenerator(function(result) {
+    return function(result) {
+        return _async_to_generator(function() {
             var command, cleaned;
-            return __generator(this, function(_state) {
+            return _ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
@@ -199,23 +203,20 @@ function command(param) {
                         ];
                     case 1:
                         command = _state.sent();
-                        cleaned = command.split("\n").map(function(part) {
+                        cleaned = command.split('\n').map(function(part) {
                             return part.trim();
-                        }).filter(Boolean).join(" ");
+                        }).filter(Boolean).join(' ');
                         return [
                             2,
                             cleaned
                         ];
                 }
             });
-        });
-        return function(result) {
-            return _ref.apply(this, arguments);
-        };
-    }();
+        })();
+    };
 }
 function consume(param) {
-    var _param = _toArray(param), strings = _param.slice(0);
+    var _param = _to_array(param), strings = _param.slice(0);
     for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
         vars[_key - 1] = arguments[_key];
     }
@@ -233,14 +234,14 @@ function consume(param) {
         };
         while(combined.length || current){
             if (!current) break;
-            var split = current.string.split("\n");
+            var split = current.string.split('\n');
             if (split.length === 1) {
                 result.strings.push(split[0]);
                 result.vars.push(current.var);
                 current = combined.shift();
             } else {
                 result.strings.push(split[0]);
-                current.string = split.slice(1).join("\n");
+                current.string = split.slice(1).join('\n');
                 break;
             }
         }
@@ -249,7 +250,7 @@ function consume(param) {
             result.strings[result.strings.length - 1] = result.strings[result.strings.length - 1].trimEnd();
             result.vars = result.vars.slice(0, result.strings.length - 1);
         }
-        if (!result.strings.length || result.strings[0] === "" && !result.vars.length) {
+        if (!result.strings.length || result.strings[0] === '' && !result.vars.length) {
             if (current) return getNext();
             return;
         }
@@ -259,7 +260,7 @@ function consume(param) {
 }
 function generator(getNext) {
     var current;
-    return __generator(this, function(_state) {
+    return _ts_generator(this, function(_state) {
         switch(_state.label){
             case 0:
                 current = getNext();
@@ -287,34 +288,40 @@ function generator(getNext) {
         }
     });
 }
-var getCommand = function() {
-    var _ref = _asyncToGenerator(function(strings, vars, results) {
-        var first, parts, _tmp, _tmp1, _i, idx, variable, _, _1, _2, _tmp2;
-        return __generator(this, function(_state) {
+var getCommand = function(strings, vars, results) {
+    return _async_to_generator(function() {
+        var first, parts, _tmp, _tmp1, _tmp2, _i, idx, variable, _, _1, _2, _tmp3;
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     first = strings.shift();
                     if (first === undefined) return [
                         2,
-                        ""
+                        ''
                     ];
                     parts = [
                         first
                     ];
-                    _tmp = [];
-                    for(_tmp1 in strings)_tmp.push(_tmp1);
+                    _tmp = strings;
+                    _tmp1 = [];
+                    for(_tmp2 in _tmp)_tmp1.push(_tmp2);
                     _i = 0;
                     _state.label = 1;
                 case 1:
-                    if (!(_i < _tmp.length)) return [
+                    if (!(_i < _tmp1.length)) return [
                         3,
                         6
                     ];
-                    idx = _tmp[_i];
+                    _tmp2 = _tmp1[_i];
+                    if (!(_tmp2 in _tmp)) return [
+                        3,
+                        5
+                    ];
+                    idx = _tmp2;
                     variable = vars[idx];
                     _ = parts.push;
                     _2 = (_1 = "").concat;
-                    if (!(typeof variable === "function")) return [
+                    if (!(typeof variable === 'function')) return [
                         3,
                         3
                     ];
@@ -323,18 +330,18 @@ var getCommand = function() {
                         variable(results)
                     ];
                 case 2:
-                    _tmp2 = _state.sent();
+                    _tmp3 = _state.sent();
                     return [
                         3,
                         4
                     ];
                 case 3:
-                    _tmp2 = variable;
+                    _tmp3 = variable;
                     _state.label = 4;
                 case 4:
                     _.apply(parts, [
                         _2.apply(_1, [
-                            _tmp2
+                            _tmp3
                         ])
                     ]);
                     parts.push(strings[idx]);
@@ -348,28 +355,24 @@ var getCommand = function() {
                 case 6:
                     return [
                         2,
-                        parts.join("")
+                        parts.join('')
                     ];
             }
         });
-    });
-    return function getCommand(strings, vars, results) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var bash = function() {
-    var _ref = _asyncToGenerator(function(strings) {
-        var _len, vars, _key, lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
-        var _arguments = arguments;
-        return __generator(this, function(_state) {
+    })();
+};
+var bash = function(strings) {
+    for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+        vars[_key - 1] = arguments[_key];
+    }
+    return _async_to_generator(function() {
+        var lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    for(_len = _arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
-                        vars[_key - 1] = _arguments[_key];
-                    }
                     lines = generator(consume.apply(void 0, [
                         strings
-                    ].concat(_toConsumableArray(vars))));
+                    ].concat(_to_consumable_array(vars))));
                     results = [];
                     _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
                     _state.label = 1;
@@ -394,7 +397,7 @@ var bash = function() {
                     ];
                 case 3:
                     command = _state.sent();
-                    if (!(command !== "")) return [
+                    if (!(command !== '')) return [
                         3,
                         5
                     ];
@@ -448,25 +451,21 @@ var bash = function() {
                     ];
             }
         });
-    });
-    return function bash(strings) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 bash.options = function(options) {
-    return function() {
-        var _ref = _asyncToGenerator(function(strings) {
-            var _len, vars, _key, lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
-            var _arguments = arguments;
-            return __generator(this, function(_state) {
+    return function(strings) {
+        for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+            vars[_key - 1] = arguments[_key];
+        }
+        return _async_to_generator(function() {
+            var lines, results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, _$strings, vars1, command, _, err;
+            return _ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
-                        for(_len = _arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
-                            vars[_key - 1] = _arguments[_key];
-                        }
                         lines = generator(consume.apply(void 0, [
                             strings
-                        ].concat(_toConsumableArray(vars))));
+                        ].concat(_to_consumable_array(vars))));
                         results = [];
                         _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
                         _state.label = 1;
@@ -491,7 +490,7 @@ bash.options = function(options) {
                         ];
                     case 3:
                         command = _state.sent();
-                        if (!(command !== "")) return [
+                        if (!(command !== '')) return [
                             3,
                             5
                         ];
@@ -545,30 +544,27 @@ bash.options = function(options) {
                         ];
                 }
             });
-        });
-        return function(strings) {
-            return _ref.apply(this, arguments);
-        };
-    }();
+        })();
+    };
 };
 
 // EXTERNAL MODULE: ./dist/util/is-canary.js
 var is_canary = __webpack_require__(9911);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.3.8/node_modules/semver/index.js
-var semver = __webpack_require__(913);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.7.3/node_modules/semver/index.js
+var semver = __webpack_require__(4122);
 // EXTERNAL MODULE: ./dist/util/get-file.js
 var get_file = __webpack_require__(2703);
 ;// CONCATENATED MODULE: ./dist/check/index.js
-function check_arrayLikeToArray(arr, len) {
+function check_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function check_arrayWithHoles(arr) {
+function check_array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
-function check_arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return check_arrayLikeToArray(arr);
+function check_array_without_holes(arr) {
+    if (Array.isArray(arr)) return check_array_like_to_array(arr);
 }
 function check_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -584,7 +580,7 @@ function check_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg)
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function check_asyncToGenerator(fn) {
+function check_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -599,10 +595,10 @@ function check_asyncToGenerator(fn) {
         });
     };
 }
-function check_iterableToArray(iter) {
+function check_iterable_to_array(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-function _iterableToArrayLimit(arr, i) {
+function _iterable_to_array_limit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -626,16 +622,16 @@ function _iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function check_nonIterableRest() {
+function check_non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function check_nonIterableSpread() {
+function check_non_iterable_spread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _slicedToArray(arr, i) {
-    return check_arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || check_unsupportedIterableToArray(arr, i) || check_nonIterableRest();
+function _sliced_to_array(arr, i) {
+    return check_array_with_holes(arr) || _iterable_to_array_limit(arr, i) || check_unsupported_iterable_to_array(arr, i) || check_non_iterable_rest();
 }
-function _taggedTemplateLiteral(strings, raw) {
+function _tagged_template_literal(strings, raw) {
     if (!raw) {
         raw = strings.slice(0);
     }
@@ -645,19 +641,19 @@ function _taggedTemplateLiteral(strings, raw) {
         }
     }));
 }
-function check_toConsumableArray(arr) {
-    return check_arrayWithoutHoles(arr) || check_iterableToArray(arr) || check_unsupportedIterableToArray(arr) || check_nonIterableSpread();
+function check_to_consumable_array(arr) {
+    return check_array_without_holes(arr) || check_iterable_to_array(arr) || check_unsupported_iterable_to_array(arr) || check_non_iterable_spread();
 }
-function check_unsupportedIterableToArray(o, minLen) {
+function check_unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return check_arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return check_array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return check_arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return check_array_like_to_array(o, minLen);
 }
-var check_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function check_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -665,14 +661,18 @@ var check_generator = undefined && undefined.__generator || function(thisArg, bo
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -683,7 +683,7 @@ var check_generator = undefined && undefined.__generator || function(thisArg, bo
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -750,9 +750,9 @@ var check_generator = undefined && undefined.__generator || function(thisArg, bo
             done: true
         };
     }
-};
+}
 function _templateObject() {
-    var data = _taggedTemplateLiteral([
+    var data = _tagged_template_literal([
         "\n          npm view \n            ",
         "@",
         "\n        "
@@ -763,11 +763,11 @@ function _templateObject() {
     return data;
 }
 function _templateObject1() {
-    var data = _taggedTemplateLiteral([
+    var data = _tagged_template_literal([
         "\n        ",
         "\n      "
     ]);
-    _templateObject1 = function _templateObject1() {
+    _templateObject1 = function _templateObject() {
         return data;
     };
     return data;
@@ -778,10 +778,10 @@ function _templateObject1() {
 
 
 var versionParserRegexp = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d+)?)/;
-var checkPackage = function() {
-    var _ref = check_asyncToGenerator(function(pkg, rootVersion) {
-        var _ref, packageJson, log, _ref1, res, _ref2, currentVersion, _e, e;
-        return check_generator(this, function(_state) {
+var checkPackage = function(pkg, rootVersion) {
+    return check_async_to_generator(function() {
+        var _ref, packageJson, log, _ref1, res, _ref2, currentVersion, _e, unused;
+        return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     _state.trys.push([
@@ -803,10 +803,10 @@ var checkPackage = function() {
                         var _console;
                         (_console = console).log.apply(_console, [
                             "".concat(packageJson.name, ":")
-                        ].concat(check_toConsumableArray(args)));
+                        ].concat(check_to_consumable_array(args)));
                     };
                     if (packageJson.private !== false) {
-                        log("Skipping private package");
+                        log('Skipping private package');
                         return [
                             2
                         ];
@@ -821,16 +821,16 @@ var checkPackage = function() {
                     ]);
                     return [
                         4,
-                        bash(_templateObject1(), command(_templateObject(), packageJson.name, (0,is_canary/* default */.Z)(rootVersion) ? "canary" : "latest"))
+                        bash(_templateObject1(), command(_templateObject(), packageJson.name, (0,is_canary/* default */.Z)(rootVersion) ? 'canary' : 'latest'))
                     ];
                 case 3:
-                    _ref1 = _slicedToArray.apply(void 0, [
+                    _ref1 = _sliced_to_array.apply(void 0, [
                         _state.sent(),
                         1
                     ]), res = _ref1[0];
-                    if (!res) throw new Error("\xdanexpected error");
-                    _ref2 = _slicedToArray(versionParserRegexp.exec(res.stdout.trim()) || [], 3), currentVersion = _ref2[2];
-                    if (!currentVersion) throw new Error("Could not parse version from npm view response");
+                    if (!res) throw new Error('Únexpected error');
+                    _ref2 = _sliced_to_array(versionParserRegexp.exec(res.stdout.trim()) || [], 3), currentVersion = _ref2[2];
+                    if (!currentVersion) throw new Error('Could not parse version from npm view response');
                     if ((0,semver.gt)(rootVersion, currentVersion)) {
                         log("Version ".concat(rootVersion, " can be published. Current version is ").concat(currentVersion));
                         return [
@@ -857,7 +857,7 @@ var checkPackage = function() {
                         7
                     ];
                 case 6:
-                    e = _state.sent();
+                    unused = _state.sent();
                     return [
                         2
                     ];
@@ -867,44 +867,37 @@ var checkPackage = function() {
                     ];
             }
         });
-    });
-    return function checkPackage(pkg, rootVersion) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var checkPackages = function() {
-    var _ref = check_asyncToGenerator(function(rootVersion) {
+    })();
+};
+var checkPackages = function(rootVersion) {
+    return check_async_to_generator(function() {
         var folders;
-        return check_generator(this, function(_state) {
+        return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        (0,get_file/* getFolder */.zZ)("packages")
+                        (0,get_file/* getFolder */.zZ)('packages')
                     ];
                 case 1:
                     folders = _state.sent();
-                    console.log("checking " + folders.map(function(param) {
+                    console.log('checking ' + folders.map(function(param) {
                         var path = param.path;
                         return path;
                     }).join());
                     return [
                         4,
-                        Promise.all(folders.map(function() {
-                            var _ref = check_asyncToGenerator(function(param) {
-                                var path;
-                                return check_generator(this, function(_state) {
-                                    path = param.path;
+                        Promise.all(folders.map(function(param) {
+                            var path = param.path;
+                            return check_async_to_generator(function() {
+                                return check_ts_generator(this, function(_state) {
                                     return [
                                         2,
                                         checkPackage("".concat(path, "/package.json"), rootVersion)
                                     ];
                                 });
-                            });
-                            return function(_) {
-                                return _ref.apply(this, arguments);
-                            };
-                        }()))
+                            })();
+                        }))
                     ];
                 case 2:
                     return [
@@ -913,11 +906,8 @@ var checkPackages = function() {
                     ];
             }
         });
-    });
-    return function checkPackages(rootVersion) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /**
  * this script checks the version of the root package.json against
  * the latest or latest canary version of the modules and then
@@ -925,24 +915,24 @@ var checkPackages = function() {
  * It sets the results as github actions output as this script is
  * inteded to be ran as part of a workflow
  */ var canPublish = function() {
-    var _ref = check_asyncToGenerator(function() {
+    return check_async_to_generator(function() {
         var _ref, version, publishable;
-        return check_generator(this, function(_state) {
+        return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        (0,get_file/* getJsonFile */.n0)("package.json")
+                        (0,get_file/* getJsonFile */.n0)('package.json')
                     ];
                 case 1:
                     _ref = _state.sent(), version = _ref.content.version;
-                    console.log("version:", version, "is canary:", (0,is_canary/* default */.Z)(version));
-                    if (!version.startsWith("0.0.0")) return [
+                    console.log('version:', version, 'is canary:', (0,is_canary/* default */.Z)(version));
+                    if (!version.startsWith('0.0.0')) return [
                         3,
                         2
                     ];
-                    (0,core.setOutput)("can-publish", false);
-                    (0,core.setOutput)("version", version);
+                    (0,core.setOutput)('can-publish', false);
+                    (0,core.setOutput)('version', version);
                     return [
                         3,
                         4
@@ -954,11 +944,11 @@ var checkPackages = function() {
                     ];
                 case 3:
                     publishable = _state.sent();
-                    (0,core.setOutput)("can-publish", Boolean(publishable.length));
-                    (0,core.setOutput)("filter", publishable.map(function(pkg) {
+                    (0,core.setOutput)('can-publish', Boolean(publishable.length));
+                    (0,core.setOutput)('filter', publishable.map(function(pkg) {
                         return "--filter=".concat(pkg);
-                    }).join(" "));
-                    (0,core.setOutput)("version", version);
+                    }).join(' '));
+                    (0,core.setOutput)('version', version);
                     _state.label = 4;
                 case 4:
                     return [
@@ -966,11 +956,8 @@ var checkPackages = function() {
                     ];
             }
         });
-    });
-    return function canPublish() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const check = (canPublish);
 
 
@@ -989,19 +976,19 @@ var checkPackages = function() {
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
 /* unused harmony export target_pull */
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8041);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("token", {
+var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('token', {
     required: true
 });
 var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TOKEN);
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
-var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("initial-commit");
+var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
 
 
 /***/ }),
@@ -1029,7 +1016,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -1051,8 +1038,8 @@ function _instanceof(left, right) {
         return left instanceof right;
     }
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -1060,14 +1047,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -1078,7 +1069,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -1145,12 +1136,12 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
+}
 
-var getFile = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+var getFile = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -1164,24 +1155,21 @@ var getFile = function() {
                     ];
                 case 1:
                     _ref = _state.sent(), content = _ref.data;
-                    if ("content" in content) {
+                    if ('content' in content) {
                         return [
                             2,
                             content
                         ];
                     }
-                    throw new Error("Could not load content as file");
+                    throw new Error('Could not load content as file');
             }
         });
-    });
-    return function getFile(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var getFolder = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+    })();
+};
+var getFolder = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -1201,18 +1189,15 @@ var getFolder = function() {
                             content
                         ];
                     }
-                    throw new Error("Could not load content as folder");
+                    throw new Error('Could not load content as folder');
             }
         });
-    });
-    return function getFolder(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var getJsonFile = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+    })();
+};
+var getJsonFile = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content, sha;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -1224,17 +1209,14 @@ var getJsonFile = function() {
                     return [
                         2,
                         {
-                            content: JSON.parse(Buffer.from(content, "base64").toString()),
+                            content: JSON.parse(Buffer.from(content, 'base64').toString()),
                             sha: sha
                         }
                     ];
             }
         });
-    });
-    return function getJsonFile(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getFile);
 
 
