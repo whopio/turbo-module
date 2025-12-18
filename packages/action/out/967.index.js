@@ -14,8 +14,8 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ dist_release)
 });
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
-var core = __webpack_require__(8041);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/@actions+core@1.11.1/node_modules/@actions/core/lib/core.js
+var core = __webpack_require__(1416);
 // EXTERNAL MODULE: ./dist/util/is-canary.js
 var is_canary = __webpack_require__(9911);
 // EXTERNAL MODULE: ./dist/context.js
@@ -37,7 +37,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -52,8 +52,8 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -61,14 +61,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -79,7 +83,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -146,12 +150,12 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
+}
 
-var releaseExists = function() {
-    var _ref = _asyncToGenerator(function(tag) {
-        var e;
-        return __generator(this, function(_state) {
+var releaseExists = function(tag) {
+    return _async_to_generator(function() {
+        var unused;
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     _state.trys.push([
@@ -175,7 +179,7 @@ var releaseExists = function() {
                         true
                     ];
                 case 2:
-                    e = _state.sent();
+                    unused = _state.sent();
                     return [
                         2,
                         false
@@ -186,11 +190,8 @@ var releaseExists = function() {
                     ];
             }
         });
-    });
-    return function releaseExists(tag) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const release_exists = (releaseExists);
 
 ;// CONCATENATED MODULE: ./dist/release.js
@@ -208,7 +209,7 @@ function release_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, ar
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function release_asyncToGenerator(fn) {
+function release_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -223,8 +224,8 @@ function release_asyncToGenerator(fn) {
         });
     };
 }
-var release_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function release_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -232,14 +233,18 @@ var release_generator = undefined && undefined.__generator || function(thisArg, 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -250,7 +255,7 @@ var release_generator = undefined && undefined.__generator || function(thisArg, 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -317,19 +322,19 @@ var release_generator = undefined && undefined.__generator || function(thisArg, 
             done: true
         };
     }
-};
+}
 
 
 
 
 
-var version = (0,core.getInput)("version", {
+var version = (0,core.getInput)('version', {
     required: true
 });
 var release = function() {
-    var _ref = release_asyncToGenerator(function() {
+    return release_async_to_generator(function() {
         var prerelease, message, _ref, release;
-        return release_generator(this, function(_state) {
+        return release_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -339,7 +344,7 @@ var release = function() {
                 case 1:
                     if (_state.sent()) {
                         console.log("".concat(version, " has already been released"));
-                        (0,core.setOutput)("published", false);
+                        (0,core.setOutput)('published', false);
                         return [
                             2
                         ];
@@ -356,8 +361,8 @@ var release = function() {
                         context/* octo.rest.repos.createRelease */.NR.rest.repos.createRelease({
                             repo: context/* repo */.O9,
                             owner: context/* owner */.cR,
-                            tag_name: "v" + version,
-                            name: "v" + version,
+                            tag_name: 'v' + version,
+                            name: 'v' + version,
                             body: message,
                             target_commitish: context/* commit_hash */.hl,
                             prerelease: prerelease
@@ -365,18 +370,15 @@ var release = function() {
                     ];
                 case 3:
                     _ref = _state.sent(), release = _ref.data;
-                    (0,core.setOutput)("published", true);
+                    (0,core.setOutput)('published', true);
                     console.log(release.html_url);
                     return [
                         2
                     ];
             }
         });
-    });
-    return function release() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const dist_release = (release);
 
 

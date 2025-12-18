@@ -16,19 +16,19 @@ exports.modules = {
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
 /* unused harmony export target_pull */
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8041);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("token", {
+var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('token', {
     required: true
 });
 var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TOKEN);
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
-var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("initial-commit");
+var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
 
 
 /***/ }),
@@ -44,21 +44,21 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ type)
 });
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.3.8/node_modules/semver/index.js
-var semver = __webpack_require__(913);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/semver@7.7.3/node_modules/semver/index.js
+var semver = __webpack_require__(4122);
 // EXTERNAL MODULE: ./dist/context.js
 var context = __webpack_require__(7501);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/minimatch@5.1.2/node_modules/minimatch/minimatch.js
-var minimatch = __webpack_require__(4822);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/minimatch@5.1.6/node_modules/minimatch/minimatch.js
+var minimatch = __webpack_require__(3849);
 // EXTERNAL MODULE: ./dist/util/get-file.js
 var get_file = __webpack_require__(2703);
 ;// CONCATENATED MODULE: ./dist/util/get-codeowners.js
-function _arrayLikeToArray(arr, len) {
+function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function _arrayWithHoles(arr) {
+function _array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -75,7 +75,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -90,25 +90,25 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-function _iterableToArray(iter) {
+function _iterable_to_array(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-function _nonIterableRest() {
+function _non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+function _to_array(arr) {
+    return _array_with_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_rest();
 }
-function _unsupportedIterableToArray(o, minLen) {
+function _unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return _array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -116,14 +116,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -134,7 +138,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -201,36 +205,33 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
+}
 
 
 var readCodeOwnersFile = function() {
-    var _ref = _asyncToGenerator(function() {
+    return _async_to_generator(function() {
         var content;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        (0,get_file/* default */.ZP)(".github/CODEOWNERS")
+                        (0,get_file/* default */.ZP)('.github/CODEOWNERS')
                     ];
                 case 1:
                     content = _state.sent().content;
                     return [
                         2,
-                        Buffer.from(content, "base64").toString()
+                        Buffer.from(content, 'base64').toString()
                     ];
             }
         });
-    });
-    return function readCodeOwnersFile() {
-        return _ref.apply(this, arguments);
-    };
-}();
-var getCodeOwners = function() {
-    var _ref = _asyncToGenerator(function(file) {
+    })();
+};
+var getCodeOwners = function(file) {
+    return _async_to_generator(function() {
         var lines, owners, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step_value, pattern, codeowners;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -238,8 +239,8 @@ var getCodeOwners = function() {
                         readCodeOwnersFile()
                     ];
                 case 1:
-                    lines = _state.sent().split("\n").map(function(line) {
-                        return line.split(" ").map(function(part) {
+                    lines = _state.sent().split('\n').map(function(line) {
+                        return line.split(' ').map(function(part) {
                             return part.trim();
                         }).filter(Boolean);
                     });
@@ -247,9 +248,9 @@ var getCodeOwners = function() {
                     _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
                     try {
                         for(_iterator = lines[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
-                            _step_value = _toArray(_step.value), pattern = _step_value[0], codeowners = _step_value.slice(1);
+                            _step_value = _to_array(_step.value), pattern = _step_value[0], codeowners = _step_value.slice(1);
                             if (!pattern) continue;
-                            if (pattern === "*") owners = codeowners;
+                            if (pattern === '*') owners = codeowners;
                             else if ((0,minimatch.match)([
                                 file
                             ], pattern).length) owners = codeowners;
@@ -274,20 +275,17 @@ var getCodeOwners = function() {
                     ];
             }
         });
-    });
-    return function getCodeOwners(file) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const get_codeowners = (getCodeOwners);
 
 ;// CONCATENATED MODULE: ./dist/release-pull/type.js
-function type_arrayLikeToArray(arr, len) {
+function type_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function type_arrayWithHoles(arr) {
+function type_array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function type_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -304,7 +302,7 @@ function type_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) 
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function type_asyncToGenerator(fn) {
+function type_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -319,7 +317,7 @@ function type_asyncToGenerator(fn) {
         });
     };
 }
-function _iterableToArrayLimit(arr, i) {
+function _iterable_to_array_limit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -343,22 +341,22 @@ function _iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function type_nonIterableRest() {
+function type_non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _slicedToArray(arr, i) {
-    return type_arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || type_unsupportedIterableToArray(arr, i) || type_nonIterableRest();
+function _sliced_to_array(arr, i) {
+    return type_array_with_holes(arr) || _iterable_to_array_limit(arr, i) || type_unsupported_iterable_to_array(arr, i) || type_non_iterable_rest();
 }
-function type_unsupportedIterableToArray(o, minLen) {
+function type_unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return type_arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return type_array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return type_arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return type_array_like_to_array(o, minLen);
 }
-var type_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function type_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -366,14 +364,18 @@ var type_generator = undefined && undefined.__generator || function(thisArg, bod
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -384,7 +386,7 @@ var type_generator = undefined && undefined.__generator || function(thisArg, bod
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -451,19 +453,19 @@ var type_generator = undefined && undefined.__generator || function(thisArg, bod
             done: true
         };
     }
-};
+}
 
 
 
 var types = [
-    "patch",
-    "minor",
-    "major"
+    'patch',
+    'minor',
+    'major'
 ];
-var getPackageJson = function() {
-    var _ref = type_asyncToGenerator(function(ref) {
+var getPackageJson = function(ref) {
+    return type_async_to_generator(function() {
         var _ref, content;
-        return type_generator(this, function(_state) {
+        return type_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -471,33 +473,30 @@ var getPackageJson = function() {
                         context/* octo.rest.repos.getContent */.NR.rest.repos.getContent({
                             repo: context/* repo */.O9,
                             owner: context/* owner */.cR,
-                            path: "package.json",
+                            path: 'package.json',
                             ref: ref
                         })
                     ];
                 case 1:
                     _ref = _state.sent(), content = _ref.data;
-                    if ("content" in content) {
+                    if ('content' in content) {
                         return [
                             2,
                             {
-                                content: JSON.parse(Buffer.from(content.content, "base64").toString()),
+                                content: JSON.parse(Buffer.from(content.content, 'base64').toString()),
                                 sha: content.sha
                             }
                         ];
                     }
-                    throw new Error("Could not load main package.json");
+                    throw new Error('Could not load main package.json');
             }
         });
-    });
-    return function getPackageJson(ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var performUpdate = function() {
-    var _ref = type_asyncToGenerator(function(type) {
+    })();
+};
+var performUpdate = function(type) {
+    return type_async_to_generator(function() {
         var _ref, _ref_data, labels, _ref_data_head, branch, releaseTypeLabel, current_type, _ref1, mainPackageJson, _ref2, currentPackageJson, packageSha, currentVersion, newVersion, promises;
-        return type_generator(this, function(_state) {
+        return type_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     if (!context/* target_issue */.PX) throw new Error('Expected Action to run on "issue_comment"');
@@ -511,17 +510,21 @@ var performUpdate = function() {
                     ];
                 case 1:
                     _ref = _state.sent(), _ref_data = _ref.data, labels = _ref_data.labels, _ref_data_head = _ref_data.head, branch = _ref_data_head.ref;
-                    releaseTypeLabel = labels.find(function(param) {
+                    /*  await octo.rest.pulls.updateBranch({
+    repo,
+    owner,
+    pull_number: target_issue.number,
+  }); */ releaseTypeLabel = labels.find(function(param) {
                         var name = param.name;
-                        return name.startsWith("releases: ");
+                        return name.startsWith('releases: ');
                     });
-                    current_type = releaseTypeLabel === null || releaseTypeLabel === void 0 ? void 0 : releaseTypeLabel.name.replace("releases: ", "");
-                    if (current_type === "canary" || type === current_type) return [
+                    current_type = releaseTypeLabel === null || releaseTypeLabel === void 0 ? void 0 : releaseTypeLabel.name.replace('releases: ', '');
+                    if (current_type === 'canary' || type === current_type) return [
                         2
                     ];
                     return [
                         4,
-                        getPackageJson("main")
+                        getPackageJson('main')
                     ];
                 case 2:
                     _ref1 = _state.sent(), mainPackageJson = _ref1.content;
@@ -531,7 +534,7 @@ var performUpdate = function() {
                     ];
                 case 3:
                     _ref2 = _state.sent(), currentPackageJson = _ref2.content, packageSha = _ref2.sha;
-                    currentVersion = mainPackageJson.version.startsWith("0.0.0") ? "0.0.0" : mainPackageJson.version;
+                    currentVersion = mainPackageJson.version.startsWith('0.0.0') ? '0.0.0' : mainPackageJson.version;
                     newVersion = (0,semver.inc)(currentVersion, type);
                     if (!newVersion) throw new Error("Could not increase ".concat(type, " for ").concat(currentVersion));
                     if (!(currentPackageJson.version !== newVersion)) return [
@@ -544,9 +547,9 @@ var performUpdate = function() {
                         context/* octo.rest.repos.createOrUpdateFileContents */.NR.rest.repos.createOrUpdateFileContents({
                             repo: context/* repo */.O9,
                             owner: context/* owner */.cR,
-                            path: "package.json",
+                            path: 'package.json',
                             message: "release ".concat(type, " ").concat(newVersion),
-                            content: Buffer.from(JSON.stringify(currentPackageJson, null, 2) + "\n").toString("base64"),
+                            content: Buffer.from(JSON.stringify(currentPackageJson, null, 2) + '\n').toString('base64'),
                             sha: packageSha,
                             branch: branch
                         })
@@ -582,16 +585,13 @@ var performUpdate = function() {
                     ];
             }
         });
-    });
-    return function performUpdate(type) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 var teamOwnershipRegex = /^@(.*)\/(.*)$/;
 var runAction = function() {
-    var _ref = type_asyncToGenerator(function() {
-        var _ref, comment, packageCodeOwners, type, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, packageCodeOwner, _comment_user, _ref1, org, team_slug, _ref2, state, e, err;
-        return type_generator(this, function(_state) {
+    return type_async_to_generator(function() {
+        var _ref, comment, packageCodeOwners, type, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, packageCodeOwner, _comment_user, _ref1, org, team_slug, _ref2, state, unused, err;
+        return type_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     if (!context/* target_comment */.RL) throw new Error('Expected Action to run on "issue_comment"');
@@ -611,7 +611,7 @@ var runAction = function() {
                     ];
                     return [
                         4,
-                        get_codeowners("/package.json")
+                        get_codeowners('/package.json')
                     ];
                 case 2:
                     packageCodeOwners = _state.sent();
@@ -637,7 +637,7 @@ var runAction = function() {
                         3,
                         10
                     ];
-                    _ref1 = _slicedToArray(teamOwnershipRegex.exec(packageCodeOwner) || [], 3), org = _ref1[1], team_slug = _ref1[2];
+                    _ref1 = _sliced_to_array(teamOwnershipRegex.exec(packageCodeOwner) || [], 3), org = _ref1[1], team_slug = _ref1[2];
                     if (!org || !team_slug) return [
                         3,
                         12
@@ -660,7 +660,7 @@ var runAction = function() {
                     ];
                 case 6:
                     _ref2 = _state.sent(), state = _ref2.data.state;
-                    if (state !== "active") return [
+                    if (state !== 'active') return [
                         3,
                         12
                     ];
@@ -669,7 +669,7 @@ var runAction = function() {
                         8
                     ];
                 case 7:
-                    e = _state.sent();
+                    unused = _state.sent();
                     return [
                         3,
                         12
@@ -736,11 +736,8 @@ var runAction = function() {
                     ];
             }
         });
-    });
-    return function runAction() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const type = (runAction);
 
 
@@ -769,7 +766,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -791,8 +788,8 @@ function _instanceof(left, right) {
         return left instanceof right;
     }
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -800,14 +797,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -818,7 +819,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -885,12 +886,12 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
+}
 
-var getFile = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+var getFile = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -904,24 +905,21 @@ var getFile = function() {
                     ];
                 case 1:
                     _ref = _state.sent(), content = _ref.data;
-                    if ("content" in content) {
+                    if ('content' in content) {
                         return [
                             2,
                             content
                         ];
                     }
-                    throw new Error("Could not load content as file");
+                    throw new Error('Could not load content as file');
             }
         });
-    });
-    return function getFile(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var getFolder = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+    })();
+};
+var getFolder = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -941,18 +939,15 @@ var getFolder = function() {
                             content
                         ];
                     }
-                    throw new Error("Could not load content as folder");
+                    throw new Error('Could not load content as folder');
             }
         });
-    });
-    return function getFolder(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var getJsonFile = function() {
-    var _ref = _asyncToGenerator(function(path, ref) {
+    })();
+};
+var getJsonFile = function(path, ref) {
+    return _async_to_generator(function() {
         var _ref, content, sha;
-        return __generator(this, function(_state) {
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -964,17 +959,14 @@ var getJsonFile = function() {
                     return [
                         2,
                         {
-                            content: JSON.parse(Buffer.from(content, "base64").toString()),
+                            content: JSON.parse(Buffer.from(content, 'base64').toString()),
                             sha: sha
                         }
                     ];
             }
         });
-    });
-    return function getJsonFile(path, ref) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getFile);
 
 
