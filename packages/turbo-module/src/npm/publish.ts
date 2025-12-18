@@ -2,30 +2,6 @@ import { bash, command } from '../util/exec';
 import isCanary from '../util/is-canary';
 import { outputJson, readJson } from '../util/fse';
 
-/**
- * npm Trusted Publishing (OIDC) is implemented by the npm CLI. When running in
- * GitHub Actions with `permissions: id-token: write`, npm can mint short-lived
- * credentials and optionally generate provenance.
- */
-const shouldUseProvenance = () => {
-  // Avoid relying on Node global typings (`process`) in case this project is
-  // typechecked without `@types/node` wired up in the current environment.
-  const env: Record<string, string | undefined> =
-    ((globalThis as unknown as { process?: { env?: Record<string, string> } })
-      .process?.env as Record<string, string | undefined>) ?? {};
-
-  // Explicit opt-in via config (works for both npm + pnpm env conventions)
-  if (env.NPM_CONFIG_PROVENANCE === 'true') return true;
-  if (env.npm_config_provenance === 'true') return true;
-
-  // Auto-enable in GitHub Actions when OIDC env vars are present
-  return (
-    env.GITHUB_ACTIONS === 'true' &&
-    !!env.ACTIONS_ID_TOKEN_REQUEST_URL &&
-    !!env.ACTIONS_ID_TOKEN_REQUEST_TOKEN
-  );
-};
-
 const checkLatestVersionForCanary = async (packageName: string) => {
   try {
     // `npm view <pkg> version` prints just the version string.
@@ -55,7 +31,6 @@ const publish = async () => {
   const packageJson = await readJson('package.json');
   const latest =
     !canary || (await checkLatestVersionForCanary(packageJson.name));
-  const provenance = shouldUseProvenance();
   packageJson.version = nextVersion;
   if (packageJson.dependencies) {
     Object.entries(packageJson.dependencies).forEach(([dep, version]) => {
@@ -69,7 +44,6 @@ const publish = async () => {
     ${command`
       npm publish
         --access public
-        --provenance
         ${canary ? '--tag canary' : ''}
     `}
     ${
