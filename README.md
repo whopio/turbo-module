@@ -71,7 +71,7 @@ Multi-purpose action - different sub-actions can be invoked via the `action` inp
 - Inputs:
   - token: github access token
 
-## npm package `@whop-sdk/turbo-module`:
+## npm package `@whop/turbo-module`:
 
 ### `turbo-module publish`:
 
