@@ -16,11 +16,12 @@ const shouldUseProvenance = (env: Record<string, string | undefined>) => {
   if (env.NPM_CONFIG_PROVENANCE === 'true') return true;
   if (env.npm_config_provenance === 'true') return true;
 
-  // Auto-enable in GitHub Actions when OIDC env vars are present
+  // Auto-enable in GitHub Actions; prefer OIDC presence, but fall back to on
+  // when running in Actions to surface clearer errors instead of ENEEDAUTH.
+  if (env.GITHUB_ACTIONS === 'true') return true;
+
   return (
-    env.GITHUB_ACTIONS === 'true' &&
-    !!env.ACTIONS_ID_TOKEN_REQUEST_URL &&
-    !!env.ACTIONS_ID_TOKEN_REQUEST_TOKEN
+    !!env.ACTIONS_ID_TOKEN_REQUEST_URL && !!env.ACTIONS_ID_TOKEN_REQUEST_TOKEN
   );
 };
 
@@ -68,6 +69,7 @@ const publish = async () => {
           hasIdTokenToken: Boolean(env.ACTIONS_ID_TOKEN_REQUEST_TOKEN),
           npmConfigProvenance:
             env.NPM_CONFIG_PROVENANCE ?? env.npm_config_provenance,
+          nodeAuthToken: env.NODE_AUTH_TOKEN ? 'present' : 'missing',
         },
       },
       null,

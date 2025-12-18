@@ -72,9 +72,12 @@ jobs:
 
       - name: Run turbo release flow
         env:
+          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
+          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
           NPM_CONFIG_ALWAYS_AUTH: 'false'
+          NODE_AUTH_TOKEN: ''
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'
 
