@@ -1,6 +1,6 @@
 {
   "name": "@whop-sdk/turbo-module-monorepo",
-  "version": "0.0.8-canary.1",
+  "version": "0.1.0-canary.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -17,8 +17,8 @@
     "turbo": "latest"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {},
-  "packageManager": "pnpm@8.15.8"
+  "packageManager": "pnpm@10.23.0"
 }

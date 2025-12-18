@@ -16,11 +16,13 @@ concurrency:
 permissions:
   pull-requests: write
   contents: write
+  id-token: write
 
 jobs:
   release:
     name: Publish to npm and release on github
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - name: Check package.json for version increase
@@ -34,9 +36,13 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
           check-latest: true
           cache: pnpm
+          registry-url: https://registry.npmjs.org
+        if: steps.check.outputs.can-publish == 'true'
+      - name: Upgrade npm (required for Trusted Publishing / provenance)
+        run: npm i -g npm@^11.5.1
         if: steps.check.outputs.can-publish == 'true'
       - name: Install all packages
         run: pnpm i
@@ -44,10 +50,6 @@ jobs:
       - name: Build
         run: pnpm turbo build
         if: steps.check.outputs.can-publish == 'true'
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-        if: steps.check.outputs.can-publish == 'true'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run turbo release flow
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'

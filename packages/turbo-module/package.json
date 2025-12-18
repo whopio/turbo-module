@@ -1,5 +1,5 @@
 {
-  "name": "@whop-sdk/turbo-module",
+  "name": "@whop/turbo-module",
   "version": "0.0.0",
   "description": "CLI util to publish node modules in a monorepo environment.",
   "private": false,
