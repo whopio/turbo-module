@@ -2,6 +2,28 @@ import { bash, command } from '../util/exec';
 import isCanary from '../util/is-canary';
 import { outputJson, readJson } from '../util/fse';
 
+const getEnv = (): Record<string, string | undefined> =>
+  ((globalThis as unknown as { process?: { env?: Record<string, string> } })
+    .process?.env as Record<string, string | undefined>) ?? {};
+
+/**
+ * npm Trusted Publishing (OIDC) is implemented by the npm CLI. When running in
+ * GitHub Actions with `permissions: id-token: write`, npm can mint short-lived
+ * credentials and optionally generate provenance.
+ */
+const shouldUseProvenance = (env: Record<string, string | undefined>) => {
+  // Explicit opt-in via config (works for both npm + pnpm env conventions)
+  if (env.NPM_CONFIG_PROVENANCE === 'true') return true;
+  if (env.npm_config_provenance === 'true') return true;
+
+  // Auto-enable in GitHub Actions when OIDC env vars are present
+  return (
+    env.GITHUB_ACTIONS === 'true' &&
+    !!env.ACTIONS_ID_TOKEN_REQUEST_URL &&
+    !!env.ACTIONS_ID_TOKEN_REQUEST_TOKEN
+  );
+};
+
 const checkLatestVersionForCanary = async (packageName: string) => {
   try {
     // `npm view <pkg> version` prints just the version string.
@@ -25,12 +47,33 @@ const checkLatestVersionForCanary = async (packageName: string) => {
  * and running `npm publish`
  */
 const publish = async () => {
+  const env = getEnv();
   const rootPackageJson = await readJson('../../package.json');
   const nextVersion = rootPackageJson.version;
   const canary = isCanary(nextVersion);
   const packageJson = await readJson('package.json');
   const latest =
     !canary || (await checkLatestVersionForCanary(packageJson.name));
+  const provenance = shouldUseProvenance(env);
+  console.log(
+    '[publish debug]',
+    JSON.stringify(
+      {
+        canary,
+        latest,
+        provenance,
+        env: {
+          githubActions: env.GITHUB_ACTIONS === 'true',
+          hasIdTokenUrl: Boolean(env.ACTIONS_ID_TOKEN_REQUEST_URL),
+          hasIdTokenToken: Boolean(env.ACTIONS_ID_TOKEN_REQUEST_TOKEN),
+          npmConfigProvenance:
+            env.NPM_CONFIG_PROVENANCE ?? env.npm_config_provenance,
+        },
+      },
+      null,
+      2,
+    ),
+  );
   packageJson.version = nextVersion;
   if (packageJson.dependencies) {
     Object.entries(packageJson.dependencies).forEach(([dep, version]) => {
@@ -40,11 +83,15 @@ const publish = async () => {
   }
   await outputJson('package.json', packageJson, { spaces: 2 });
   console.log(`${packageJson.name}@${nextVersion}: publishing`);
+  const publishArgs = [
+    '--access public',
+    provenance ? '--provenance' : '',
+    canary ? '--tag canary' : '',
+  ].filter(Boolean);
   await bash`
     ${command`
       npm publish
-        --access public
-        ${canary ? '--tag canary' : ''}
+        ${publishArgs.join('\n        ')}
     `}
     ${
       canary && latest
