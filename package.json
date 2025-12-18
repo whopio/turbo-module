@@ -1,5 +1,5 @@
 {
-  "name": "@whop-sdk/turbo-module-monorepo",
+  "name": "@whop/turbo-module-monorepo",
   "version": "0.1.0-canary.0",
   "private": true,
   "workspaces": [

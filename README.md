@@ -1,4 +1,4 @@
-# @whop-sdk/turbo-module
+# @whop/turbo-module
 
 Action and CLI to help managing public repositories that publish one or more npm packages
 
@@ -71,7 +71,7 @@ Multi-purpose action - different sub-actions can be invoked via the `action` inp
 - Inputs:
   - token: github access token
 
-## npm package `@whop-sdk/turbo-module`:
+## npm package `@whop/turbo-module`:
 
 ### `turbo-module publish`:
 
