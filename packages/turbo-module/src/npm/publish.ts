@@ -56,6 +56,7 @@ const publish = async () => {
   const latest =
     !canary || (await checkLatestVersionForCanary(packageJson.name));
   const provenance = shouldUseProvenance(env);
+  const shouldTagLatest = canary && latest && !provenance;
   console.log(
     '[publish debug]',
     JSON.stringify(
@@ -63,6 +64,7 @@ const publish = async () => {
         canary,
         latest,
         provenance,
+        shouldTagLatest,
         env: {
           githubActions: env.GITHUB_ACTIONS === 'true',
           hasIdTokenUrl: Boolean(env.ACTIONS_ID_TOKEN_REQUEST_URL),
@@ -96,7 +98,7 @@ const publish = async () => {
         ${publishArgs.join('\n        ')}
     `}
     ${
-      canary && latest
+      shouldTagLatest
         ? `
       npm dist-tag add ${packageJson.name}@${nextVersion} latest
     `
