@@ -45,8 +45,21 @@ jobs:
           registry-url: https://registry.npmjs.org
         if: steps.check.outputs.can-publish == 'true'
 
+      - name: Debug OIDC env presence (no secrets)
+        run: |
+          echo "GITHUB_ACTIONS=$GITHUB_ACTIONS"
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $([ -n "$ACTIONS_ID_TOKEN_REQUEST_URL" ] && echo present || echo missing)"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $([ -n "$ACTIONS_ID_TOKEN_REQUEST_TOKEN" ] && echo present || echo missing)"
+        if: steps.check.outputs.can-publish == 'true'
+
       - name: Update npm for OIDC trusted publishing
         run: npm install -g npm@latest
+        if: steps.check.outputs.can-publish == 'true'
+
+      - name: Clear npm auth to force OIDC
+        run: |
+          npm config delete //registry.npmjs.org/:_authToken || true
+          npm config delete @whop:registry || true
         if: steps.check.outputs.can-publish == 'true'
 
       - name: Install dependencies
@@ -58,6 +71,10 @@ jobs:
         if: steps.check.outputs.can-publish == 'true'
 
       - name: Run turbo release flow
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org
+          NPM_CONFIG_ALWAYS_AUTH: 'false'
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'
 
