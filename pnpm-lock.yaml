@@ -85,7 +85,7 @@ importers:
       '@types/node':
         specifier: ^18.11.17
         version: 18.19.130
-      '@whop-sdk/turbo-module':
+      '@whop/turbo-module':
         specifier: workspace:^0.0.0
         version: link:../turbo-module
       tsconfig:

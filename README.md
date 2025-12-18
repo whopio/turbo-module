@@ -1,4 +1,4 @@
-# @whop-sdk/turbo-module
+# @whop/turbo-module
 
 Action and CLI to help managing public repositories that publish one or more npm packages
 
