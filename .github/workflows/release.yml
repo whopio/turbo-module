@@ -76,10 +76,11 @@ jobs:
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org
           NPM_CONFIG_ALWAYS_AUTH: 'false'
           TURBO_FORCE: 'true'
+          TURBO_ENVIRONMENT_VARIABLES: ACTIONS_ID_TOKEN_REQUEST_URL,ACTIONS_ID_TOKEN_REQUEST_TOKEN,NPM_CONFIG_PROVENANCE,NPM_CONFIG_REGISTRY,NPM_CONFIG_ALWAYS_AUTH
           NODE_AUTH_TOKEN: ''
           ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
           ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
-        run: pnpm turbo release ${{ steps.check.outputs.filter }}
+        run: pnpm turbo release ${{ steps.check.outputs.filter }} --env-mode=loose
         if: steps.check.outputs.can-publish == 'true'
 
       - name: Github Release
