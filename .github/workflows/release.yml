@@ -10,7 +10,7 @@ env:
   TURBO_TEAM: whop
 
 concurrency:
-  group: "release"
+  group: 'release'
   cancel-in-progress: false
 
 permissions:
@@ -28,42 +28,51 @@ jobs:
       - name: Check package.json for version increase
         id: check
         uses: ./
-        with: 
+        with:
           action: check
           token: ${{ github.token }}
-      - uses: pnpm/action-setup@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         if: steps.check.outputs.can-publish == 'true'
+
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           check-latest: true
           cache: pnpm
           registry-url: https://registry.npmjs.org
         if: steps.check.outputs.can-publish == 'true'
-      - name: Upgrade npm (required for Trusted Publishing / provenance)
-        run: npm i -g npm@^11.5.1
+
+      - name: Update npm for OIDC trusted publishing
+        run: npm install -g npm@latest
         if: steps.check.outputs.can-publish == 'true'
-      - name: Install all packages
+
+      - name: Install dependencies
         run: pnpm i
         if: steps.check.outputs.can-publish == 'true'
+
       - name: Build
         run: pnpm turbo build
         if: steps.check.outputs.can-publish == 'true'
+
       - name: Run turbo release flow
         run: pnpm turbo release ${{ steps.check.outputs.filter }}
         if: steps.check.outputs.can-publish == 'true'
+
       - name: Github Release
         id: release
         uses: ./
-        with: 
+        with:
           action: release
           token: ${{ github.token }}
           version: ${{ steps.check.outputs.version }}
         if: steps.check.outputs.can-publish == 'true'
+
       - name: Sync auto-release PRs
         uses: ./
-        with: 
+        with:
           action: sync
           token: ${{ github.token }}
           published: ${{ steps.release.outputs.published }}

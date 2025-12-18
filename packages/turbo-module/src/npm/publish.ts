@@ -32,7 +32,8 @@ const checkLatestVersionForCanary = async (packageName: string) => {
     const [out] = await bash`npm view ${packageName}@latest version`;
     if (!out) throw new Error('Unable to get npm view output');
     const currentVersion = out.stdout.trim();
-    if (!currentVersion) throw new Error('Could not parse version from npm view');
+    if (!currentVersion)
+      throw new Error('Could not parse version from npm view');
     return isCanary(currentVersion.trim());
   } catch {
     return false;
@@ -65,10 +66,9 @@ const publish = async () => {
   console.log(`${packageJson.name}@${nextVersion}: publishing`);
   await bash`
     ${command`
-      npm publish
+      pnpm publish
         --access public
         --no-git-checks
-        ${provenance ? '--provenance' : ''}
         ${canary ? '--tag canary' : ''}
     `}
     ${
