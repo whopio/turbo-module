@@ -16,19 +16,19 @@ exports.modules = {
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
 /* unused harmony export target_pull */
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8041);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("token", {
+var GITHUB_TOKEN = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('token', {
     required: true
 });
 var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TOKEN);
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
-var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("initial-commit");
+var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
 
 
 /***/ }),
@@ -49,7 +49,7 @@ var context = __webpack_require__(7501);
 // EXTERNAL MODULE: ./dist/util/is-action-user.js
 var is_action_user = __webpack_require__(1514);
 ;// CONCATENATED MODULE: ./dist/util/collect-commits.js
-function _asyncIterator(iterable) {
+function _async_iterator(iterable) {
     var method, async, sync, retry = 2;
     for("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;){
         if (async && null != (method = iterable[async])) return method.call(iterable);
@@ -69,7 +69,7 @@ function AsyncFromSyncIterator(s) {
             };
         });
     }
-    return(AsyncFromSyncIterator = function(s) {
+    return AsyncFromSyncIterator = function(s) {
         this.s = s, this.n = s.next;
     }, AsyncFromSyncIterator.prototype = {
         s: null,
@@ -88,7 +88,7 @@ function AsyncFromSyncIterator(s) {
             var thr = this.s.return;
             return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments));
         }
-    }, new AsyncFromSyncIterator(s));
+    }, new AsyncFromSyncIterator(s);
 }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -104,7 +104,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function _asyncToGenerator(fn) {
+function _async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -119,8 +119,8 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-var __generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function _ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -128,14 +128,18 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -146,7 +150,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -213,21 +217,7 @@ var __generator = undefined && undefined.__generator || function(thisArg, body) 
             done: true
         };
     }
-};
-var __values = undefined && undefined.__values || function(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function() {
-            if (o && i >= o.length) o = void 0;
-            return {
-                value: o && o[i++],
-                done: !o
-            };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
+}
 
 
 var addPull = function(pulls, type, number, title) {
@@ -237,10 +227,10 @@ var addPull = function(pulls, type, number, title) {
         title: title
     });
 };
-var collectCommits = function() {
-    var _ref = _asyncToGenerator(function(head, base) {
-        var stats, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _loop, _iterator1, _step1, err, err1;
-        return __generator(this, function(_state) {
+var collectCommits = function(head, base) {
+    return _async_to_generator(function() {
+        var stats, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, err, err1;
+        return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     stats = {
@@ -256,7 +246,7 @@ var collectCommits = function() {
                         14,
                         19
                     ]);
-                    _iterator = _asyncIterator(context/* octo.paginate.iterator */.NR.paginate.iterator(context/* octo.rest.repos.compareCommits */.NR.rest.repos.compareCommits, {
+                    _iterator = _async_iterator(context/* octo.paginate.iterator */.NR.paginate.iterator(context/* octo.rest.repos.compareCommits */.NR.rest.repos.compareCommits, {
                         owner: context/* owner */.cR,
                         repo: context/* repo */.O9,
                         base: base,
@@ -285,75 +275,6 @@ var collectCommits = function() {
                         10,
                         11
                     ]);
-                    _loop = function() {
-                        var commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, area;
-                        return __generator(this, function(_state) {
-                            switch(_state.label){
-                                case 0:
-                                    commit = _step1.value;
-                                    message = commit.commit.message.split("\n")[0];
-                                    PR = (_exec = /\(#(\d+)\)$/.exec(message)) === null || _exec === void 0 ? void 0 : _exec[1];
-                                    if (!PR) return [
-                                        2,
-                                        "continue"
-                                    ];
-                                    pull_number = parseInt(PR);
-                                    if ((_commit_author = commit.author) === null || _commit_author === void 0 ? void 0 : _commit_author.login) {
-                                        if ((0,is_action_user/* default */.Z)(commit.author) && message.startsWith("release ")) return [
-                                            2,
-                                            "continue"
-                                        ];
-                                        if (message.startsWith("(turbo-module): ")) return [
-                                            2,
-                                            "continue"
-                                        ];
-                                        stats.authors.add(commit.author.login);
-                                    }
-                                    return [
-                                        4,
-                                        context/* octo.rest.pulls.get */.NR.rest.pulls.get({
-                                            repo: context/* repo */.O9,
-                                            owner: context/* owner */.cR,
-                                            pull_number: pull_number
-                                        })
-                                    ];
-                                case 1:
-                                    _ref = _state.sent(), pr = _ref.data;
-                                    areas = pr.labels.filter(function(param) {
-                                        var name = param.name;
-                                        return /^area: /.test(name);
-                                    }).map(function(param) {
-                                        var name = param.name;
-                                        return name.replace(/^area: /, "");
-                                    });
-                                    _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
-                                    if (!areas.length) {
-                                        addPull(stats.pulls, "general", pull_number, message);
-                                    } else try {
-                                        for(_iterator = areas[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
-                                            area = _step.value;
-                                            addPull(stats.pulls, area, pull_number, message);
-                                        }
-                                    } catch (err) {
-                                        _didIteratorError = true;
-                                        _iteratorError = err;
-                                    } finally{
-                                        try {
-                                            if (!_iteratorNormalCompletion && _iterator.return != null) {
-                                                _iterator.return();
-                                            }
-                                        } finally{
-                                            if (_didIteratorError) {
-                                                throw _iteratorError;
-                                            }
-                                        }
-                                    }
-                                    return [
-                                        2
-                                    ];
-                            }
-                        });
-                    };
                     _iterator1 = commits[Symbol.iterator]();
                     _state.label = 5;
                 case 5:
@@ -361,12 +282,64 @@ var collectCommits = function() {
                         3,
                         8
                     ];
+                    commit = _step1.value;
+                    message = commit.commit.message.split('\n')[0];
+                    PR = (_exec = /\(#(\d+)\)$/.exec(message)) === null || _exec === void 0 ? void 0 : _exec[1];
+                    if (!PR) return [
+                        3,
+                        7
+                    ];
+                    pull_number = parseInt(PR);
+                    if ((_commit_author = commit.author) === null || _commit_author === void 0 ? void 0 : _commit_author.login) {
+                        if ((0,is_action_user/* default */.Z)(commit.author) && message.startsWith('release ')) return [
+                            3,
+                            7
+                        ];
+                        if (message.startsWith('(turbo-module): ')) return [
+                            3,
+                            7
+                        ];
+                        stats.authors.add(commit.author.login);
+                    }
                     return [
-                        5,
-                        __values(_loop())
+                        4,
+                        context/* octo.rest.pulls.get */.NR.rest.pulls.get({
+                            repo: context/* repo */.O9,
+                            owner: context/* owner */.cR,
+                            pull_number: pull_number
+                        })
                     ];
                 case 6:
-                    _state.sent();
+                    _ref = _state.sent(), pr = _ref.data;
+                    areas = pr.labels.filter(function(param) {
+                        var name = param.name;
+                        return /^area: /.test(name);
+                    }).map(function(param) {
+                        var name = param.name;
+                        return name.replace(/^area: /, '');
+                    });
+                    _iteratorNormalCompletion1 = true, _didIteratorError2 = false, _iteratorError2 = undefined;
+                    if (!areas.length) {
+                        addPull(stats.pulls, 'general', pull_number, message);
+                    } else try {
+                        for(_iterator2 = areas[Symbol.iterator](); !(_iteratorNormalCompletion1 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion1 = true){
+                            area = _step2.value;
+                            addPull(stats.pulls, area, pull_number, message);
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally{
+                        try {
+                            if (!_iteratorNormalCompletion1 && _iterator2.return != null) {
+                                _iterator2.return();
+                            }
+                        } finally{
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
                     _state.label = 7;
                 case 7:
                     _iteratorNormalCompletion = true;
@@ -460,20 +433,17 @@ var collectCommits = function() {
                     ];
             }
         });
-    });
-    return function collectCommits(head, base) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const collect_commits = (collectCommits);
 
 ;// CONCATENATED MODULE: ./dist/util/get-history.js
-function _arrayLikeToArray(arr, len) {
+function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function _arrayWithHoles(arr) {
+function _array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function get_history_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -490,7 +460,7 @@ function get_history_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function get_history_asyncToGenerator(fn) {
+function get_history_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -505,13 +475,13 @@ function get_history_asyncToGenerator(fn) {
         });
     };
 }
-function _iterableToArray(iter) {
+function _iterable_to_array(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-function _nonIterableRest() {
+function _non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _taggedTemplateLiteral(strings, raw) {
+function _tagged_template_literal(strings, raw) {
     if (!raw) {
         raw = strings.slice(0);
     }
@@ -521,19 +491,19 @@ function _taggedTemplateLiteral(strings, raw) {
         }
     }));
 }
-function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+function _to_array(arr) {
+    return _array_with_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_rest();
 }
-function _unsupportedIterableToArray(o, minLen) {
+function _unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return _array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
 }
-var get_history_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function get_history_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -541,14 +511,18 @@ var get_history_generator = undefined && undefined.__generator || function(thisA
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -559,7 +533,7 @@ var get_history_generator = undefined && undefined.__generator || function(thisA
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -626,9 +600,9 @@ var get_history_generator = undefined && undefined.__generator || function(thisA
             done: true
         };
     }
-};
+}
 function _templateObject() {
-    var data = _taggedTemplateLiteral([
+    var data = _tagged_template_literal([
         "\n  query ($repo: String!, $owner: String!, $branch: String!, $cursor: String) {\n    repository(name: $repo, owner: $owner) {\n      ref(qualifiedName: $branch) {\n        target {\n          ... on Commit {\n            history(first: 1, after: $cursor) {\n              nodes {\n                oid\n              }\n              totalCount\n              pageInfo {\n                endCursor\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"
     ]);
     _templateObject = function _templateObject() {
@@ -638,11 +612,11 @@ function _templateObject() {
 }
 
 var gql = function(param) {
-    var _param = _toArray(param), strings = _param.slice(0);
+    var _param = _to_array(param), strings = _param.slice(0);
     for(var _len = arguments.length, vars = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
         vars[_key - 1] = arguments[_key];
     }
-    if (!strings.length) return "";
+    if (!strings.length) return '';
     var parts = [
         strings.shift()
     ];
@@ -650,24 +624,23 @@ var gql = function(param) {
         parts.push("".concat(vars[idx]));
         parts.push(strings[idx]);
     }
-    return parts.join("");
+    return parts.join('');
 };
 var query = gql(_templateObject());
 var getHistory = function() {
-    var _ref = get_history_asyncToGenerator(function() {
-        var cursor, _ref, _ref_repository, _ref_repository_ref, history;
-        var _arguments = arguments;
-        return get_history_generator(this, function(_state) {
+    var cursor = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
+    return get_history_async_to_generator(function() {
+        var _ref, _ref_repository, _ref_repository_ref, history;
+        return get_history_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    cursor = _arguments.length > 0 && _arguments[0] !== void 0 ? _arguments[0] : null;
                     return [
                         4,
                         context/* octo.graphql */.NR.graphql(query, {
                             owner: context/* owner */.cR,
                             repo: context/* repo */.O9,
                             cursor: cursor,
-                            branch: "main"
+                            branch: 'main'
                         })
                     ];
                 case 1:
@@ -678,20 +651,17 @@ var getHistory = function() {
                     ];
             }
         });
-    });
-    return function getHistory() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const get_history = (getHistory);
 
 ;// CONCATENATED MODULE: ./dist/util/get-first-commit.js
-function get_first_commit_arrayLikeToArray(arr, len) {
+function get_first_commit_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function get_first_commit_arrayWithHoles(arr) {
+function get_first_commit_array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function get_first_commit_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -708,7 +678,7 @@ function get_first_commit_asyncGeneratorStep(gen, resolve, reject, _next, _throw
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function get_first_commit_asyncToGenerator(fn) {
+function get_first_commit_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -723,7 +693,7 @@ function get_first_commit_asyncToGenerator(fn) {
         });
     };
 }
-function _iterableToArrayLimit(arr, i) {
+function _iterable_to_array_limit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -747,22 +717,22 @@ function _iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function get_first_commit_nonIterableRest() {
+function get_first_commit_non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _slicedToArray(arr, i) {
-    return get_first_commit_arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || get_first_commit_unsupportedIterableToArray(arr, i) || get_first_commit_nonIterableRest();
+function _sliced_to_array(arr, i) {
+    return get_first_commit_array_with_holes(arr) || _iterable_to_array_limit(arr, i) || get_first_commit_unsupported_iterable_to_array(arr, i) || get_first_commit_non_iterable_rest();
 }
-function get_first_commit_unsupportedIterableToArray(o, minLen) {
+function get_first_commit_unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return get_first_commit_arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return get_first_commit_array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_first_commit_arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_first_commit_array_like_to_array(o, minLen);
 }
-var get_first_commit_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function get_first_commit_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -770,14 +740,18 @@ var get_first_commit_generator = undefined && undefined.__generator || function(
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -788,7 +762,7 @@ var get_first_commit_generator = undefined && undefined.__generator || function(
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -855,12 +829,12 @@ var get_first_commit_generator = undefined && undefined.__generator || function(
             done: true
         };
     }
-};
+}
 
 var getFirstCommit = function() {
-    var _ref = get_first_commit_asyncToGenerator(function() {
+    return get_first_commit_async_to_generator(function() {
         var _ref, totalCount, endCursor, nodes, _endCursor_split, hash, _ref1, _ref_nodes, commit;
-        return get_first_commit_generator(this, function(_state) {
+        return get_first_commit_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -873,13 +847,13 @@ var getFirstCommit = function() {
                         3,
                         3
                     ];
-                    _endCursor_split = _slicedToArray(endCursor.split(" "), 1), hash = _endCursor_split[0];
+                    _endCursor_split = _sliced_to_array(endCursor.split(' '), 1), hash = _endCursor_split[0];
                     return [
                         4,
                         get_history("".concat(hash, " ").concat(totalCount - 2))
                     ];
                 case 2:
-                    _ref1 = _state.sent(), _ref_nodes = _slicedToArray(_ref1.nodes, 1), commit = _ref_nodes[0];
+                    _ref1 = _state.sent(), _ref_nodes = _sliced_to_array(_ref1.nodes, 1), commit = _ref_nodes[0];
                     return [
                         2,
                         commit
@@ -895,20 +869,17 @@ var getFirstCommit = function() {
                     ];
             }
         });
-    });
-    return function getFirstCommit() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const get_first_commit = (getFirstCommit);
 
 ;// CONCATENATED MODULE: ./dist/util/get-latest-release.js
-function get_latest_release_arrayLikeToArray(arr, len) {
+function get_latest_release_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function get_latest_release_arrayWithHoles(arr) {
+function get_latest_release_array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function get_latest_release_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -925,7 +896,7 @@ function get_latest_release_asyncGeneratorStep(gen, resolve, reject, _next, _thr
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function get_latest_release_asyncToGenerator(fn) {
+function get_latest_release_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -940,7 +911,7 @@ function get_latest_release_asyncToGenerator(fn) {
         });
     };
 }
-function get_latest_release_iterableToArrayLimit(arr, i) {
+function get_latest_release_iterable_to_array_limit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -964,22 +935,22 @@ function get_latest_release_iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function get_latest_release_nonIterableRest() {
+function get_latest_release_non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function get_latest_release_slicedToArray(arr, i) {
-    return get_latest_release_arrayWithHoles(arr) || get_latest_release_iterableToArrayLimit(arr, i) || get_latest_release_unsupportedIterableToArray(arr, i) || get_latest_release_nonIterableRest();
+function get_latest_release_sliced_to_array(arr, i) {
+    return get_latest_release_array_with_holes(arr) || get_latest_release_iterable_to_array_limit(arr, i) || get_latest_release_unsupported_iterable_to_array(arr, i) || get_latest_release_non_iterable_rest();
 }
-function get_latest_release_unsupportedIterableToArray(o, minLen) {
+function get_latest_release_unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return get_latest_release_arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return get_latest_release_array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_latest_release_arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_latest_release_array_like_to_array(o, minLen);
 }
-var get_latest_release_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function get_latest_release_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -987,14 +958,18 @@ var get_latest_release_generator = undefined && undefined.__generator || functio
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -1005,7 +980,7 @@ var get_latest_release_generator = undefined && undefined.__generator || functio
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -1072,16 +1047,15 @@ var get_latest_release_generator = undefined && undefined.__generator || functio
             done: true
         };
     }
-};
+}
 
 var getLatestRelease = function() {
-    var _ref = get_latest_release_asyncToGenerator(function() {
-        var includePrerelease, _ref, _ref_data, release, _ref1, release1, e;
-        var _arguments = arguments;
-        return get_latest_release_generator(this, function(_state) {
+    var includePrerelease = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : true;
+    return get_latest_release_async_to_generator(function() {
+        var _ref, _ref_data, release, _ref1, release1, unused;
+        return get_latest_release_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    includePrerelease = _arguments.length > 0 && _arguments[0] !== void 0 ? _arguments[0] : true;
                     if (!includePrerelease) return [
                         3,
                         2
@@ -1095,7 +1069,7 @@ var getLatestRelease = function() {
                         })
                     ];
                 case 1:
-                    _ref = _state.sent(), _ref_data = get_latest_release_slicedToArray(_ref.data, 1), release = _ref_data[0];
+                    _ref = _state.sent(), _ref_data = get_latest_release_sliced_to_array(_ref.data, 1), release = _ref_data[0];
                     return [
                         2,
                         release
@@ -1121,7 +1095,7 @@ var getLatestRelease = function() {
                         release1
                     ];
                 case 4:
-                    e = _state.sent();
+                    unused = _state.sent();
                     return [
                         3,
                         5
@@ -1132,20 +1106,17 @@ var getLatestRelease = function() {
                     ];
             }
         });
-    });
-    return function getLatestRelease() {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const get_latest_release = (getLatestRelease);
 
 ;// CONCATENATED MODULE: ./dist/util/get-message.js
-function get_message_arrayLikeToArray(arr, len) {
+function get_message_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
-function get_message_arrayWithHoles(arr) {
+function get_message_array_with_holes(arr) {
     if (Array.isArray(arr)) return arr;
 }
 function get_message_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -1162,7 +1133,7 @@ function get_message_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key
         Promise.resolve(value).then(_next, _throw);
     }
 }
-function get_message_asyncToGenerator(fn) {
+function get_message_async_to_generator(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -1177,7 +1148,7 @@ function get_message_asyncToGenerator(fn) {
         });
     };
 }
-function get_message_iterableToArrayLimit(arr, i) {
+function get_message_iterable_to_array_limit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -1201,22 +1172,22 @@ function get_message_iterableToArrayLimit(arr, i) {
     }
     return _arr;
 }
-function get_message_nonIterableRest() {
+function get_message_non_iterable_rest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function get_message_slicedToArray(arr, i) {
-    return get_message_arrayWithHoles(arr) || get_message_iterableToArrayLimit(arr, i) || get_message_unsupportedIterableToArray(arr, i) || get_message_nonIterableRest();
+function get_message_sliced_to_array(arr, i) {
+    return get_message_array_with_holes(arr) || get_message_iterable_to_array_limit(arr, i) || get_message_unsupported_iterable_to_array(arr, i) || get_message_non_iterable_rest();
 }
-function get_message_unsupportedIterableToArray(o, minLen) {
+function get_message_unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return get_message_arrayLikeToArray(o, minLen);
+    if (typeof o === "string") return get_message_array_like_to_array(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_message_arrayLikeToArray(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return get_message_array_like_to_array(o, minLen);
 }
-var get_message_generator = undefined && undefined.__generator || function(thisArg, body) {
-    var f, y, t, g, _ = {
+function get_message_ts_generator(thisArg, body) {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -1224,14 +1195,18 @@ var get_message_generator = undefined && undefined.__generator || function(thisA
         },
         trys: [],
         ops: []
-    };
-    return(g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
-        return this;
-    }), g);
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype), d = Object.defineProperty;
+    return d(g, "next", {
+        value: verb(0)
+    }), d(g, "throw", {
+        value: verb(1)
+    }), d(g, "return", {
+        value: verb(2)
+    }), typeof Symbol === "function" && d(g, Symbol.iterator, {
+        value: function() {
+            return this;
+        }
+    }), g;
     function verb(n) {
         return function(v) {
             return step([
@@ -1242,7 +1217,7 @@ var get_message_generator = undefined && undefined.__generator || function(thisA
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -1309,37 +1284,37 @@ var get_message_generator = undefined && undefined.__generator || function(thisA
             done: true
         };
     }
-};
+}
 
 
 
 
 var capitalise = function(str) {
     var _str_at;
-    return "".concat(((_str_at = str.at(0)) === null || _str_at === void 0 ? void 0 : _str_at.toUpperCase()) || "").concat(str.slice(1));
+    return "".concat(((_str_at = str.at(0)) === null || _str_at === void 0 ? void 0 : _str_at.toUpperCase()) || '').concat(str.slice(1));
 };
 // GitHub enforces a max length of 65536 characters for a pull request body
 var maxLength = 65536;
 var lengthBuffer = 1000;
 var makeGithubReleaseMessage = function(stats) {
     var message = "\n".concat(Object.entries(stats.pulls).map(function(param) {
-        var _param = get_message_slicedToArray(param, 2), key = _param[0], pulls = _param[1];
+        var _param = get_message_sliced_to_array(param, 2), key = _param[0], pulls = _param[1];
         return "\n### ".concat(capitalise(key), " Changes\n\n").concat(pulls.map(function(param) {
             var title = param.title;
             return "- ".concat(title);
-        }).join("\n"), "\n");
-    }).join(""), "\n### Credits\n").concat(Array.from(stats.authors).map(function(author) {
+        }).join('\n'), "\n");
+    }).join(''), "\n### Credits\n").concat(Array.from(stats.authors).map(function(author) {
         return "@".concat(author);
-    }).join(", "), "\n").trim();
+    }).join(', '), "\n").trim();
     if (message.length >= maxLength - lengthBuffer) {
         return "".concat(message.slice(0, maxLength - lengthBuffer), "...\nThis message has been truncated to avoid exceeding the GitHub API's body limit.");
     }
     return message;
 };
-var getReleaseMessage = function() {
-    var _ref = get_message_asyncToGenerator(function(prerelease) {
+var getReleaseMessage = function(prerelease) {
+    return get_message_async_to_generator(function() {
         var latestRelease, compareCommit, _tmp, stats;
-        return get_message_generator(this, function(_state) {
+        return get_message_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -1377,11 +1352,8 @@ var getReleaseMessage = function() {
                     ];
             }
         });
-    });
-    return function getReleaseMessage(prerelease) {
-        return _ref.apply(this, arguments);
-    };
-}();
+    })();
+};
 /* harmony default export */ const get_message = (getReleaseMessage);
 
 
@@ -1393,7 +1365,7 @@ var getReleaseMessage = function() {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var GITHUB_ACTION_USERNAME = "github-actions[bot]";
+var GITHUB_ACTION_USERNAME = 'github-actions[bot]';
 var isActionUser = function(user) {
     return (user === null || user === void 0 ? void 0 : user.login) === GITHUB_ACTION_USERNAME;
 };
