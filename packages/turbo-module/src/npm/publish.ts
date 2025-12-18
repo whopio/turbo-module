@@ -69,7 +69,7 @@ const publish = async () => {
     ${command`
       npm publish
         --access public
-        ${provenance ? '--provenance' : ''}
+        --provenance
         ${canary ? '--tag canary' : ''}
     `}
     ${
