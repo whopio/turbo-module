@@ -66,7 +66,7 @@ const publish = async () => {
   console.log(`${packageJson.name}@${nextVersion}: publishing`);
   await bash`
     ${command`
-      pnpm publish
+      npm publish
         --access public
         --no-git-checks
         ${canary ? '--tag canary' : ''}
