@@ -53,7 +53,8 @@ const publish = async () => {
   const nextVersion = rootPackageJson.version;
   const canary = isCanary(nextVersion);
   const packageJson = await readJson('package.json');
-  const latest = !canary || checkLatestVersionForCanary(packageJson.name);
+  const latest =
+    !canary || (await checkLatestVersionForCanary(packageJson.name));
   const provenance = shouldUseProvenance();
   packageJson.version = nextVersion;
   if (packageJson.dependencies) {
@@ -68,11 +69,11 @@ const publish = async () => {
     ${command`
       npm publish
         --access public
-        --no-git-checks
+        ${provenance ? '--provenance' : ''}
         ${canary ? '--tag canary' : ''}
     `}
     ${
-      canary && (await latest)
+      canary && latest
         ? `
       npm dist-tag add ${packageJson.name}@${nextVersion} latest
     `
