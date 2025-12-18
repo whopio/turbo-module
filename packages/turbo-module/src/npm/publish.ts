@@ -56,7 +56,8 @@ const publish = async () => {
   const latest =
     !canary || (await checkLatestVersionForCanary(packageJson.name));
   const provenance = shouldUseProvenance(env);
-  const shouldTagLatest = canary && latest && !provenance;
+  const shouldTagLatest = canary && latest;
+  const publishTag = shouldTagLatest ? 'latest' : '';
   console.log(
     '[publish debug]',
     JSON.stringify(
@@ -90,20 +91,13 @@ const publish = async () => {
   const publishArgs = [
     '--access public',
     provenance ? '--provenance' : '',
-    canary ? '--tag canary' : '',
+    publishTag ? `--tag ${publishTag}` : '',
   ].filter(Boolean);
   await bash`
     ${command`
       npm publish
         ${publishArgs.join('\n        ')}
     `}
-    ${
-      shouldTagLatest
-        ? `
-      npm dist-tag add ${packageJson.name}@${nextVersion} latest
-    `
-        : ''
-    }
   `;
   console.log(`${packageJson.name}@${nextVersion}: published`);
 };
