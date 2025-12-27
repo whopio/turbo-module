@@ -693,11 +693,17 @@ var createPull = function(prerelease) {
 /* harmony export */ });
 /* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7501);
 
+var formatTitle = function(releaseType, version) {
+    var prefix = _context__WEBPACK_IMPORTED_MODULE_0__/* .prTitlePrefix */ .hJ ? "".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prTitlePrefix */ .hJ, " ") : '';
+    var versionSuffix = version ? " v".concat(version) : '';
+    return "".concat(prefix).concat(releaseType).concat(versionSuffix).trim();
+};
 var getFullReleaseTitle = function(version) {
-    return version ? "Release v".concat(version) : '(turbo-module): release next version';
+    return formatTitle('Stable Release', version);
 };
 var getPrereleaseTitle = function(version) {
-    return version ? "Release v".concat(version) : "(turbo-module): release next ".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, " version");
+    var releaseType = _context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType.charAt */ .kD.charAt(0).toUpperCase() + _context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType.slice */ .kD.slice(1);
+    return formatTitle("".concat(releaseType, " Release"), version);
 };
 
 

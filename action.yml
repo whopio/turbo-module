@@ -34,3 +34,6 @@ inputs:
   max-changelog-commits:
     description: "Maximum commits to scan for changelog generation (0 = unlimited)"
     default: "100"
+  pr-title-prefix:
+    description: "Prefix for release PR titles (e.g., '[Embedded SDK]')"
+    default: ""
