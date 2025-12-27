@@ -12,54 +12,39 @@ const addPull = (
   pulls[type].push({ number, title });
 };
 
-// Check if a commit touches files in the working directory
-const commitTouchesWorkingDir = async (sha: string): Promise<boolean> => {
-  if (workingDirectory === '.') return true; // No filtering needed for root
-
-  try {
-    const { data: commit } = await octo.rest.repos.getCommit({
-      owner,
-      repo,
-      ref: sha,
-    });
-
-    const touchesDir = commit.files?.some(file =>
-      file.filename.startsWith(`${workingDirectory}/`)
-    ) ?? false;
-
-    return touchesDir;
-  } catch (e) {
-    // If we can't fetch the commit, include it to be safe
-    return true;
-  }
-};
-
 const collectCommits = async (head: string, base: string) => {
   const stats: ReleaseStats = {
     authors: new Set(),
     pulls: {},
   };
   let commitCount = 0;
-  for await (const {
-    data: { commits },
-  } of octo.paginate.iterator(octo.rest.repos.compareCommits, {
+
+  // Use listCommits with path filter for efficiency (only fetches commits touching working dir)
+  // This is much faster than comparing all commits and checking each one individually
+  const listOptions: Parameters<typeof octo.rest.repos.listCommits>[0] = {
     owner,
     repo,
-    base,
-    head,
+    sha: head,
     per_page: 100,
-  })) {
+    ...(workingDirectory !== '.' && { path: workingDirectory }),
+  };
+
+  for await (const { data: commits } of octo.paginate.iterator(
+    octo.rest.repos.listCommits,
+    listOptions,
+  )) {
     for (const commit of commits) {
+      // Stop when we reach the base commit
+      if (commit.sha === base || commit.sha.startsWith(base) || base.startsWith(commit.sha)) {
+        console.log(`Reached base commit ${base}, stopping changelog scan`);
+        return stats;
+      }
+
       if (maxChangelogCommits > 0 && commitCount >= maxChangelogCommits) {
         console.log(`Reached max commit limit (${maxChangelogCommits}), stopping changelog scan`);
         return stats;
       }
       commitCount++;
-
-      // Skip commits that don't touch files in the working directory
-      if (!(await commitTouchesWorkingDir(commit.sha))) {
-        continue;
-      }
 
       const message = commit.commit.message.split('\n')[0];
       const PR = /\(#(\d+)\)$/.exec(message)?.[1];

@@ -142,6 +142,34 @@ function _async_to_generator(fn) {
         });
     };
 }
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+function _object_spread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
+        if (typeof Object.getOwnPropertySymbols === "function") {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+            }));
+        }
+        ownKeys.forEach(function(key) {
+            _define_property(target, key, source[key]);
+        });
+    }
+    return target;
+}
 function _ts_generator(thisArg, body) {
     var f, y, t, _ = {
         label: 0,
@@ -250,60 +278,9 @@ var addPull = function(pulls, type, number, title) {
         title: title
     });
 };
-// Check if a commit touches files in the working directory
-var commitTouchesWorkingDir = function(sha) {
-    return _async_to_generator(function() {
-        var _commit_files, _ref, commit, _ref1, touchesDir, e;
-        return _ts_generator(this, function(_state) {
-            switch(_state.label){
-                case 0:
-                    if (context/* workingDirectory */.Tf === '.') return [
-                        2,
-                        true
-                    ]; // No filtering needed for root
-                    _state.label = 1;
-                case 1:
-                    _state.trys.push([
-                        1,
-                        3,
-                        ,
-                        4
-                    ]);
-                    return [
-                        4,
-                        context/* octo.rest.repos.getCommit */.NR.rest.repos.getCommit({
-                            owner: context/* owner */.cR,
-                            repo: context/* repo */.O9,
-                            ref: sha
-                        })
-                    ];
-                case 2:
-                    _ref = _state.sent(), commit = _ref.data;
-                    touchesDir = (_ref1 = (_commit_files = commit.files) === null || _commit_files === void 0 ? void 0 : _commit_files.some(function(file) {
-                        return file.filename.startsWith("".concat(context/* workingDirectory */.Tf, "/"));
-                    })) !== null && _ref1 !== void 0 ? _ref1 : false;
-                    return [
-                        2,
-                        touchesDir
-                    ];
-                case 3:
-                    e = _state.sent();
-                    // If we can't fetch the commit, include it to be safe
-                    return [
-                        2,
-                        true
-                    ];
-                case 4:
-                    return [
-                        2
-                    ];
-            }
-        });
-    })();
-};
 var collectCommits = function(head, base) {
     return _async_to_generator(function() {
-        var stats, commitCount, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, e, err, err1;
+        var stats, commitCount, listOptions, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, e, err, err1;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -312,22 +289,26 @@ var collectCommits = function(head, base) {
                         pulls: {}
                     };
                     commitCount = 0;
+                    // Use listCommits with path filter for efficiency (only fetches commits touching working dir)
+                    // This is much faster than comparing all commits and checking each one individually
+                    listOptions = _object_spread({
+                        owner: context/* owner */.cR,
+                        repo: context/* repo */.O9,
+                        sha: head,
+                        per_page: 100
+                    }, context/* workingDirectory */.Tf !== '.' && {
+                        path: context/* workingDirectory */.Tf
+                    });
                     _iteratorAbruptCompletion = false, _didIteratorError = false;
                     _state.label = 1;
                 case 1:
                     _state.trys.push([
                         1,
+                        15,
                         16,
-                        17,
-                        22
+                        21
                     ]);
-                    _iterator = _async_iterator(context/* octo.paginate.iterator */.NR.paginate.iterator(context/* octo.rest.repos.compareCommits */.NR.rest.repos.compareCommits, {
-                        owner: context/* owner */.cR,
-                        repo: context/* repo */.O9,
-                        base: base,
-                        head: head,
-                        per_page: 100
-                    }));
+                    _iterator = _async_iterator(context/* octo.paginate.iterator */.NR.paginate.iterator(context/* octo.rest.repos.listCommits */.NR.rest.repos.listCommits, listOptions));
                     _state.label = 2;
                 case 2:
                     return [
@@ -337,27 +318,35 @@ var collectCommits = function(head, base) {
                 case 3:
                     if (!(_iteratorAbruptCompletion = !(_step = _state.sent()).done)) return [
                         3,
-                        15
+                        14
                     ];
                     _value = _step.value;
-                    commits = _value.data.commits;
+                    commits = _value.data;
                     _iteratorNormalCompletion = true, _didIteratorError1 = false, _iteratorError1 = undefined;
                     _state.label = 4;
                 case 4:
                     _state.trys.push([
                         4,
+                        11,
                         12,
-                        13,
-                        14
+                        13
                     ]);
                     _iterator1 = commits[Symbol.iterator]();
                     _state.label = 5;
                 case 5:
                     if (!!(_iteratorNormalCompletion = (_step1 = _iterator1.next()).done)) return [
                         3,
-                        11
+                        10
                     ];
                     commit = _step1.value;
+                    // Stop when we reach the base commit
+                    if (commit.sha === base || commit.sha.startsWith(base) || base.startsWith(commit.sha)) {
+                        console.log("Reached base commit ".concat(base, ", stopping changelog scan"));
+                        return [
+                            2,
+                            stats
+                        ];
+                    }
                     if (context/* maxChangelogCommits */.pE > 0 && commitCount >= context/* maxChangelogCommits */.pE) {
                         console.log("Reached max commit limit (".concat(context/* maxChangelogCommits */.pE, "), stopping changelog scan"));
                         return [
@@ -366,43 +355,31 @@ var collectCommits = function(head, base) {
                         ];
                     }
                     commitCount++;
-                    return [
-                        4,
-                        commitTouchesWorkingDir(commit.sha)
-                    ];
-                case 6:
-                    // Skip commits that don't touch files in the working directory
-                    if (!_state.sent()) {
-                        return [
-                            3,
-                            10
-                        ];
-                    }
                     message = commit.commit.message.split('\n')[0];
                     PR = (_exec = /\(#(\d+)\)$/.exec(message)) === null || _exec === void 0 ? void 0 : _exec[1];
                     if (!PR) return [
                         3,
-                        10
+                        9
                     ];
                     pull_number = parseInt(PR);
                     if ((_commit_author = commit.author) === null || _commit_author === void 0 ? void 0 : _commit_author.login) {
                         if ((0,is_action_user/* default */.Z)(commit.author) && message.startsWith('release ')) return [
                             3,
-                            10
+                            9
                         ];
                         if (message.startsWith('(turbo-module): ')) return [
                             3,
-                            10
+                            9
                         ];
                         stats.authors.add(commit.author.login);
                     }
-                    _state.label = 7;
-                case 7:
+                    _state.label = 6;
+                case 6:
                     _state.trys.push([
-                        7,
-                        9,
+                        6,
+                        8,
                         ,
-                        10
+                        9
                     ]);
                     return [
                         4,
@@ -412,7 +389,7 @@ var collectCommits = function(head, base) {
                             pull_number: pull_number
                         })
                     ];
-                case 8:
+                case 7:
                     _ref = _state.sent(), pr = _ref.data;
                     areas = pr.labels.filter(function(param) {
                         var name = param.name;
@@ -445,37 +422,37 @@ var collectCommits = function(head, base) {
                     }
                     return [
                         3,
-                        10
+                        9
                     ];
-                case 9:
+                case 8:
                     e = _state.sent();
                     // PR might not exist in this repo (e.g., monorepo with commits from other repos)
                     console.log("Skipping PR #".concat(pull_number, " - not found in this repo"));
                     addPull(stats.pulls, 'general', pull_number, message);
                     return [
                         3,
-                        10
+                        9
                     ];
-                case 10:
+                case 9:
                     _iteratorNormalCompletion = true;
                     return [
                         3,
                         5
                     ];
-                case 11:
+                case 10:
                     return [
                         3,
-                        14
+                        13
                     ];
-                case 12:
+                case 11:
                     err = _state.sent();
                     _didIteratorError1 = true;
                     _iteratorError1 = err;
                     return [
                         3,
-                        14
+                        13
                     ];
-                case 13:
+                case 12:
                     try {
                         if (!_iteratorNormalCompletion && _iterator1.return != null) {
                             _iterator1.return();
@@ -488,60 +465,60 @@ var collectCommits = function(head, base) {
                     return [
                         7
                     ];
-                case 14:
+                case 13:
                     _iteratorAbruptCompletion = false;
                     return [
                         3,
                         2
                     ];
-                case 15:
+                case 14:
                     return [
                         3,
-                        22
+                        21
                     ];
-                case 16:
+                case 15:
                     err1 = _state.sent();
                     _didIteratorError = true;
                     _iteratorError = err1;
                     return [
                         3,
-                        22
-                    ];
-                case 17:
-                    _state.trys.push([
-                        17,
-                        ,
-                        20,
                         21
+                    ];
+                case 16:
+                    _state.trys.push([
+                        16,
+                        ,
+                        19,
+                        20
                     ]);
                     if (!(_iteratorAbruptCompletion && _iterator.return != null)) return [
                         3,
-                        19
+                        18
                     ];
                     return [
                         4,
                         _iterator.return()
                     ];
-                case 18:
+                case 17:
                     _state.sent();
-                    _state.label = 19;
-                case 19:
+                    _state.label = 18;
+                case 18:
                     return [
                         3,
-                        21
+                        20
                     ];
-                case 20:
+                case 19:
                     if (_didIteratorError) {
                         throw _iteratorError;
                     }
                     return [
                         7
                     ];
-                case 21:
+                case 20:
                     return [
                         7
                     ];
-                case 22:
+                case 21:
                     return [
                         2,
                         stats
