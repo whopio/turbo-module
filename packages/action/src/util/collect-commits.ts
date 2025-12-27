@@ -37,20 +37,26 @@ const collectCommits = async (head: string, base: string) => {
         if (message.startsWith('(turbo-module): ')) continue;
         stats.authors.add(commit.author.login);
       }
-      const { data: pr } = await octo.rest.pulls.get({
-        repo,
-        owner,
-        pull_number,
-      });
-      const areas = pr.labels
-        .filter(({ name }) => /^area: /.test(name))
-        .map(({ name }) => name.replace(/^area: /, ''));
+      try {
+        const { data: pr } = await octo.rest.pulls.get({
+          repo,
+          owner,
+          pull_number,
+        });
+        const areas = pr.labels
+          .filter(({ name }) => /^area: /.test(name))
+          .map(({ name }) => name.replace(/^area: /, ''));
 
-      if (!areas.length) {
+        if (!areas.length) {
+          addPull(stats.pulls, 'general', pull_number, message);
+        } else
+          for (const area of areas)
+            addPull(stats.pulls, area, pull_number, message);
+      } catch (e) {
+        // PR might not exist in this repo (e.g., monorepo with commits from other repos)
+        console.log(`Skipping PR #${pull_number} - not found in this repo`);
         addPull(stats.pulls, 'general', pull_number, message);
-      } else
-        for (const area of areas)
-          addPull(stats.pulls, area, pull_number, message);
+      }
     }
   return stats;
 };

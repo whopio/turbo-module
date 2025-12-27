@@ -245,7 +245,7 @@ var addPull = function(pulls, type, number, title) {
 };
 var collectCommits = function(head, base) {
     return _async_to_generator(function() {
-        var stats, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, err, err1;
+        var stats, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, e, err, err1;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -258,9 +258,9 @@ var collectCommits = function(head, base) {
                 case 1:
                     _state.trys.push([
                         1,
-                        13,
-                        14,
-                        19
+                        15,
+                        16,
+                        21
                     ]);
                     _iterator = _async_iterator(context/* octo.paginate.iterator */.NR.paginate.iterator(context/* octo.rest.repos.compareCommits */.NR.rest.repos.compareCommits, {
                         owner: context/* owner */.cR,
@@ -278,7 +278,7 @@ var collectCommits = function(head, base) {
                 case 3:
                     if (!(_iteratorAbruptCompletion = !(_step = _state.sent()).done)) return [
                         3,
-                        12
+                        14
                     ];
                     _value = _step.value;
                     commits = _value.data.commits;
@@ -287,36 +287,44 @@ var collectCommits = function(head, base) {
                 case 4:
                     _state.trys.push([
                         4,
-                        9,
-                        10,
-                        11
+                        11,
+                        12,
+                        13
                     ]);
                     _iterator1 = commits[Symbol.iterator]();
                     _state.label = 5;
                 case 5:
                     if (!!(_iteratorNormalCompletion = (_step1 = _iterator1.next()).done)) return [
                         3,
-                        8
+                        10
                     ];
                     commit = _step1.value;
                     message = commit.commit.message.split('\n')[0];
                     PR = (_exec = /\(#(\d+)\)$/.exec(message)) === null || _exec === void 0 ? void 0 : _exec[1];
                     if (!PR) return [
                         3,
-                        7
+                        9
                     ];
                     pull_number = parseInt(PR);
                     if ((_commit_author = commit.author) === null || _commit_author === void 0 ? void 0 : _commit_author.login) {
                         if ((0,is_action_user/* default */.Z)(commit.author) && message.startsWith('release ')) return [
                             3,
-                            7
+                            9
                         ];
                         if (message.startsWith('(turbo-module): ')) return [
                             3,
-                            7
+                            9
                         ];
                         stats.authors.add(commit.author.login);
                     }
+                    _state.label = 6;
+                case 6:
+                    _state.trys.push([
+                        6,
+                        8,
+                        ,
+                        9
+                    ]);
                     return [
                         4,
                         context/* octo.rest.pulls.get */.NR.rest.pulls.get({
@@ -325,7 +333,7 @@ var collectCommits = function(head, base) {
                             pull_number: pull_number
                         })
                     ];
-                case 6:
+                case 7:
                     _ref = _state.sent(), pr = _ref.data;
                     areas = pr.labels.filter(function(param) {
                         var name = param.name;
@@ -356,27 +364,39 @@ var collectCommits = function(head, base) {
                             }
                         }
                     }
-                    _state.label = 7;
-                case 7:
+                    return [
+                        3,
+                        9
+                    ];
+                case 8:
+                    e = _state.sent();
+                    // PR might not exist in this repo (e.g., monorepo with commits from other repos)
+                    console.log("Skipping PR #".concat(pull_number, " - not found in this repo"));
+                    addPull(stats.pulls, 'general', pull_number, message);
+                    return [
+                        3,
+                        9
+                    ];
+                case 9:
                     _iteratorNormalCompletion = true;
                     return [
                         3,
                         5
                     ];
-                case 8:
+                case 10:
                     return [
                         3,
-                        11
+                        13
                     ];
-                case 9:
+                case 11:
                     err = _state.sent();
                     _didIteratorError1 = true;
                     _iteratorError1 = err;
                     return [
                         3,
-                        11
+                        13
                     ];
-                case 10:
+                case 12:
                     try {
                         if (!_iteratorNormalCompletion && _iterator1.return != null) {
                             _iterator1.return();
@@ -389,60 +409,60 @@ var collectCommits = function(head, base) {
                     return [
                         7
                     ];
-                case 11:
+                case 13:
                     _iteratorAbruptCompletion = false;
                     return [
                         3,
                         2
                     ];
-                case 12:
+                case 14:
                     return [
                         3,
-                        19
+                        21
                     ];
-                case 13:
+                case 15:
                     err1 = _state.sent();
                     _didIteratorError = true;
                     _iteratorError = err1;
                     return [
                         3,
-                        19
+                        21
                     ];
-                case 14:
+                case 16:
                     _state.trys.push([
-                        14,
+                        16,
                         ,
-                        17,
-                        18
+                        19,
+                        20
                     ]);
                     if (!(_iteratorAbruptCompletion && _iterator.return != null)) return [
                         3,
-                        16
+                        18
                     ];
                     return [
                         4,
                         _iterator.return()
                     ];
-                case 15:
+                case 17:
                     _state.sent();
-                    _state.label = 16;
-                case 16:
+                    _state.label = 18;
+                case 18:
                     return [
                         3,
-                        18
+                        20
                     ];
-                case 17:
+                case 19:
                     if (_didIteratorError) {
                         throw _iteratorError;
                     }
                     return [
                         7
                     ];
-                case 18:
+                case 20:
                     return [
                         7
                     ];
-                case 19:
+                case 21:
                     return [
                         2,
                         stats
