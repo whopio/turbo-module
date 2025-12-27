@@ -14,9 +14,6 @@ import { Pull } from '../util/types';
 import { getPrereleaseTitle, getFullReleaseTitle } from './shared';
 
 const runAction = async () => {
-  const fullReleaseTitle = getFullReleaseTitle();
-  const prereleaseTitle = getPrereleaseTitle();
-
   const stale: Pull[] = [];
   const stalePrerelease: Pull[] = [];
   for await (const { data: pulls } of octo.paginate.iterator(
@@ -31,9 +28,13 @@ const runAction = async () => {
     },
   ))
     for (const pull of pulls) {
-      if (isActionUser(pull.user)) {
-        if (fullReleaseTitle === pull.title) stale.push(pull);
-        else if (prereleaseTitle === pull.title) stalePrerelease.push(pull);
+      // Match by branch pattern instead of title (titles now include versions)
+      if (isActionUser(pull.user) && pull.head.ref.startsWith('turbo-module/release-')) {
+        if (pull.head.ref.includes(`-${prereleaseType}`)) {
+          stalePrerelease.push(pull);
+        } else {
+          stale.push(pull);
+        }
       }
     }
   // close stale PRs and delete the branches
@@ -82,7 +83,6 @@ const addCommentToClosed = async (number: number, replacement: number) => {
 const pull_labels = ['auto-release-pr', 'keep up-to-date'];
 
 export const createPull = async (prerelease: boolean) => {
-  const title = prerelease ? getPrereleaseTitle() : getFullReleaseTitle();
   const releaseLabel = prerelease
     ? `releases: ${prereleaseType}`
     : 'releases: patch';
@@ -109,6 +109,10 @@ export const createPull = async (prerelease: boolean) => {
       : inc(packageJson.version, 'patch');
   }
   if (!newVersion) throw new Error('Could not increase version');
+
+  const title = prerelease
+    ? getPrereleaseTitle(newVersion)
+    : getFullReleaseTitle(newVersion);
 
   const {
     data: {
@@ -171,6 +175,7 @@ export const createPull = async (prerelease: boolean) => {
     body: message,
     head: branch,
     base: baseBranch,
+    draft: true,
   });
   let err = 0;
   while (err < 5) {

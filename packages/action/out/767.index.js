@@ -1410,7 +1410,7 @@ var lengthBuffer = 1000;
 var makeGithubReleaseMessage = function(stats) {
     var message = "\n".concat(Object.entries(stats.pulls).map(function(param) {
         var _param = get_message_sliced_to_array(param, 2), key = _param[0], pulls = _param[1];
-        return "\n### ".concat(capitalise(key), " Changes\n\n").concat(pulls.map(function(param) {
+        return "\n### ".concat(capitalise(key), " Changes\n\n").concat(pulls.slice().reverse().map(function(param) {
             var title = param.title;
             return "- ".concat(title);
         }).join('\n'), "\n");

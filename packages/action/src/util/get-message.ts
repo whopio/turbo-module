@@ -18,7 +18,11 @@ ${Object.entries(stats.pulls)
     ([key, pulls]) => `
 ### ${capitalise(key)} Changes
 
-${pulls.map(({ title }) => `- ${title}`).join('\n')}
+${pulls
+  .slice()
+  .reverse()
+  .map(({ title }) => `- ${title}`)
+  .join('\n')}
 `,
   )
   .join('')}

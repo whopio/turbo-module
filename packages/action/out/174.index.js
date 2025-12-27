@@ -251,12 +251,10 @@ function _ts_generator(thisArg, body) {
 
 var runAction = function() {
     return _async_to_generator(function() {
-        var fullReleaseTitle, prereleaseTitle, stale, stalePrerelease, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, pulls, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, pull, err, _ref, prereleasePull, fullPull;
+        var stale, stalePrerelease, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, pulls, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, pull, err, _ref, prereleasePull, fullPull;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    fullReleaseTitle = (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getFullReleaseTitle */ .n)();
-                    prereleaseTitle = (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getPrereleaseTitle */ .e)();
                     stale = [];
                     stalePrerelease = [];
                     _iteratorAbruptCompletion = false, _didIteratorError = false;
@@ -293,9 +291,13 @@ var runAction = function() {
                     try {
                         for(_iterator1 = pulls[Symbol.iterator](); !(_iteratorNormalCompletion = (_step1 = _iterator1.next()).done); _iteratorNormalCompletion = true){
                             pull = _step1.value;
-                            if ((0,_util_is_action_user__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z)(pull.user)) {
-                                if (fullReleaseTitle === pull.title) stale.push(pull);
-                                else if (prereleaseTitle === pull.title) stalePrerelease.push(pull);
+                            // Match by branch pattern instead of title (titles now include versions)
+                            if ((0,_util_is_action_user__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z)(pull.user) && pull.head.ref.startsWith('turbo-module/release-')) {
+                                if (pull.head.ref.includes("-".concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD))) {
+                                    stalePrerelease.push(pull);
+                                } else {
+                                    stale.push(pull);
+                                }
                             }
                         }
                     } catch (err) {
@@ -468,11 +470,10 @@ var pull_labels = [
 ];
 var createPull = function(prerelease) {
     return _async_to_generator(function() {
-        var title, releaseLabel, primaryVersionFile, _ref, content, packageJson, newVersion, _ref1, _ref_data, sha, shortSha, branch, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, versionFile, filePath, _ref2, fileContent, filePackageJson, err, message, _ref3, pull, _$err, e;
+        var releaseLabel, primaryVersionFile, _ref, content, packageJson, newVersion, title, _ref1, _ref_data, sha, shortSha, branch, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, versionFile, filePath, _ref2, fileContent, filePackageJson, err, message, _ref3, pull, _$err, e;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    title = prerelease ? (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getPrereleaseTitle */ .e)() : (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getFullReleaseTitle */ .n)();
                     releaseLabel = prerelease ? "releases: ".concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD) : 'releases: patch';
                     // Get the first version file to determine current version
                     primaryVersionFile = (0,_context__WEBPACK_IMPORTED_MODULE_1__/* .withWorkingDir */ .QV)(_context__WEBPACK_IMPORTED_MODULE_1__/* .versionFiles[0] */ .dm[0]);
@@ -494,6 +495,7 @@ var createPull = function(prerelease) {
                         newVersion = prerelease ? semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'prerelease', _context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD) : semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'patch');
                     }
                     if (!newVersion) throw new Error('Could not increase version');
+                    title = prerelease ? (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getPrereleaseTitle */ .e)(newVersion) : (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getFullReleaseTitle */ .n)(newVersion);
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.git.getRef */ .NR.rest.git.getRef({
@@ -612,7 +614,8 @@ var createPull = function(prerelease) {
                             title: title,
                             body: message,
                             head: branch,
-                            base: _context__WEBPACK_IMPORTED_MODULE_1__/* .baseBranch */ .a2
+                            base: _context__WEBPACK_IMPORTED_MODULE_1__/* .baseBranch */ .a2,
+                            draft: true
                         })
                     ];
                 case 14:
@@ -690,11 +693,11 @@ var createPull = function(prerelease) {
 /* harmony export */ });
 /* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7501);
 
-var getFullReleaseTitle = function() {
-    return '(turbo-module): release next version';
+var getFullReleaseTitle = function(version) {
+    return version ? "Release v".concat(version) : '(turbo-module): release next version';
 };
-var getPrereleaseTitle = function() {
-    return "(turbo-module): release next ".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, " version");
+var getPrereleaseTitle = function(version) {
+    return version ? "Release v".concat(version) : "(turbo-module): release next ".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, " version");
 };
 
 
