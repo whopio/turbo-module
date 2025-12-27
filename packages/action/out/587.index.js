@@ -10,12 +10,17 @@ exports.modules = {
 /* harmony export */   "NR": () => (/* binding */ octo),
 /* harmony export */   "O9": () => (/* binding */ repo),
 /* harmony export */   "PX": () => (/* binding */ target_issue),
+/* harmony export */   "QV": () => (/* binding */ withWorkingDir),
 /* harmony export */   "RL": () => (/* binding */ target_comment),
+/* harmony export */   "RP": () => (/* binding */ publishPackages),
+/* harmony export */   "a2": () => (/* binding */ baseBranch),
 /* harmony export */   "cR": () => (/* binding */ owner),
+/* harmony export */   "dm": () => (/* binding */ versionFiles),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
+/* harmony export */   "kD": () => (/* binding */ prereleaseType),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
-/* unused harmony export target_pull */
+/* unused harmony exports target_pull, workingDirectory */
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
@@ -29,6 +34,17 @@ var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TO
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
 var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
+// Monorepo support configuration
+var workingDirectory = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('working-directory') || '.';
+var versionFiles = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('version-files') || '["package.json"]');
+var publishPackages = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages') ? JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages')) : undefined;
+var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('prerelease-type') || 'canary';
+var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
+// Helper to join working directory with a path
+var withWorkingDir = function(path) {
+    if (workingDirectory === '.') return path;
+    return "".concat(workingDirectory, "/").concat(path);
+};
 
 
 /***/ }),
@@ -462,7 +478,7 @@ var types = [
     'minor',
     'major'
 ];
-var getPackageJson = function(ref) {
+var getPackageJson = function(path, ref) {
     return type_async_to_generator(function() {
         var _ref, content;
         return type_ts_generator(this, function(_state) {
@@ -473,7 +489,7 @@ var getPackageJson = function(ref) {
                         context/* octo.rest.repos.getContent */.NR.rest.repos.getContent({
                             repo: context/* repo */.O9,
                             owner: context/* owner */.cR,
-                            path: 'package.json',
+                            path: path,
                             ref: ref
                         })
                     ];
@@ -488,14 +504,14 @@ var getPackageJson = function(ref) {
                             }
                         ];
                     }
-                    throw new Error('Could not load main package.json');
+                    throw new Error("Could not load ".concat(path));
             }
         });
     })();
 };
 var performUpdate = function(type) {
     return type_async_to_generator(function() {
-        var _ref, _ref_data, labels, _ref_data_head, branch, releaseTypeLabel, current_type, _ref1, mainPackageJson, _ref2, currentPackageJson, packageSha, currentVersion, newVersion, promises;
+        var _ref, _ref_data, labels, _ref_data_head, branch, releaseTypeLabel, current_type, primaryVersionFile, _ref1, mainPackageJson, currentVersion, newVersion, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, versionFile, filePath, _ref2, currentPackageJson, packageSha, err, promises;
         return type_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -510,36 +526,52 @@ var performUpdate = function(type) {
                     ];
                 case 1:
                     _ref = _state.sent(), _ref_data = _ref.data, labels = _ref_data.labels, _ref_data_head = _ref_data.head, branch = _ref_data_head.ref;
-                    /*  await octo.rest.pulls.updateBranch({
-    repo,
-    owner,
-    pull_number: target_issue.number,
-  }); */ releaseTypeLabel = labels.find(function(param) {
+                    releaseTypeLabel = labels.find(function(param) {
                         var name = param.name;
                         return name.startsWith('releases: ');
                     });
                     current_type = releaseTypeLabel === null || releaseTypeLabel === void 0 ? void 0 : releaseTypeLabel.name.replace('releases: ', '');
-                    if (current_type === 'canary' || type === current_type) return [
+                    // Skip if it's a prerelease PR or already the requested type
+                    if (current_type === context/* prereleaseType */.kD || type === current_type) return [
                         2
                     ];
+                    primaryVersionFile = (0,context/* withWorkingDir */.QV)(context/* versionFiles.0 */.dm[0]);
                     return [
                         4,
-                        getPackageJson('main')
+                        getPackageJson(primaryVersionFile, context/* baseBranch */.a2)
                     ];
                 case 2:
                     _ref1 = _state.sent(), mainPackageJson = _ref1.content;
-                    return [
-                        4,
-                        getPackageJson(branch)
-                    ];
-                case 3:
-                    _ref2 = _state.sent(), currentPackageJson = _ref2.content, packageSha = _ref2.sha;
                     currentVersion = mainPackageJson.version.startsWith('0.0.0') ? '0.0.0' : mainPackageJson.version;
                     newVersion = (0,semver.inc)(currentVersion, type);
                     if (!newVersion) throw new Error("Could not increase ".concat(type, " for ").concat(currentVersion));
+                    _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                    _state.label = 3;
+                case 3:
+                    _state.trys.push([
+                        3,
+                        9,
+                        10,
+                        11
+                    ]);
+                    _iterator = context/* versionFiles */.dm[Symbol.iterator]();
+                    _state.label = 4;
+                case 4:
+                    if (!!(_iteratorNormalCompletion = (_step = _iterator.next()).done)) return [
+                        3,
+                        8
+                    ];
+                    versionFile = _step.value;
+                    filePath = (0,context/* withWorkingDir */.QV)(versionFile);
+                    return [
+                        4,
+                        getPackageJson(filePath, branch)
+                    ];
+                case 5:
+                    _ref2 = _state.sent(), currentPackageJson = _ref2.content, packageSha = _ref2.sha;
                     if (!(currentPackageJson.version !== newVersion)) return [
                         3,
-                        5
+                        7
                     ];
                     currentPackageJson.version = newVersion;
                     return [
@@ -547,17 +579,49 @@ var performUpdate = function(type) {
                         context/* octo.rest.repos.createOrUpdateFileContents */.NR.rest.repos.createOrUpdateFileContents({
                             repo: context/* repo */.O9,
                             owner: context/* owner */.cR,
-                            path: 'package.json',
+                            path: filePath,
                             message: "release ".concat(type, " ").concat(newVersion),
                             content: Buffer.from(JSON.stringify(currentPackageJson, null, 2) + '\n').toString('base64'),
                             sha: packageSha,
                             branch: branch
                         })
                     ];
-                case 4:
+                case 6:
                     _state.sent();
-                    _state.label = 5;
-                case 5:
+                    _state.label = 7;
+                case 7:
+                    _iteratorNormalCompletion = true;
+                    return [
+                        3,
+                        4
+                    ];
+                case 8:
+                    return [
+                        3,
+                        11
+                    ];
+                case 9:
+                    err = _state.sent();
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                    return [
+                        3,
+                        11
+                    ];
+                case 10:
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return != null) {
+                            _iterator.return();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                    return [
+                        7
+                    ];
+                case 11:
                     promises = [
                         context/* octo.rest.issues.addLabels */.NR.rest.issues.addLabels({
                             repo: context/* repo */.O9,
@@ -578,7 +642,7 @@ var performUpdate = function(type) {
                         4,
                         Promise.all(promises)
                     ];
-                case 6:
+                case 12:
                     _state.sent();
                     return [
                         2

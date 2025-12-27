@@ -390,10 +390,18 @@ var release = function() {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var isCanary = function(test) {
-    return /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
+/* unused harmony export isPrerelease */
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7501);
+
+// Check if version matches the configured prerelease type (e.g., canary, beta)
+var isPrerelease = function(test) {
+    var pattern = new RegExp("^\\d+\\.\\d+\\.\\d+-".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, "\\.\\d+$"));
+    return pattern.test(test);
 };
+// Legacy export for backwards compatibility
+var isCanary = isPrerelease;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isCanary);
+
 
 
 /***/ })

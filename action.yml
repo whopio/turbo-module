@@ -17,3 +17,17 @@ inputs:
     description: "Indicates if the same workflow published a new release to npm, required for 'sync' action"
   version:
     description: "The current verison of the package. Required for 'release'"
+  working-directory:
+    description: "Subdirectory to operate in (for monorepos). Paths are relative to this directory."
+    default: "."
+  version-files:
+    description: "JSON array of package.json paths to update when creating release PRs. All files will be updated to the same version."
+    default: '["package.json"]'
+  publish-packages:
+    description: "JSON array of package paths to check for publishing. If not set, scans packages/* directory."
+  prerelease-type:
+    description: "Prerelease identifier to use (e.g., 'canary', 'beta')"
+    default: "canary"
+  base-branch:
+    description: "Base branch for PRs and releases"
+    default: "main"

@@ -15,8 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(semver_functions_inc__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7501);
 /* harmony import */ var _util_get_message__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(767);
-/* harmony import */ var _util_is_action_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1514);
-/* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8089);
+/* harmony import */ var _util_is_action_user__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1514);
+/* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8089);
 function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
@@ -251,12 +251,14 @@ function _ts_generator(thisArg, body) {
 
 var runAction = function() {
     return _async_to_generator(function() {
-        var stale, staleCanary, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, pulls, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, pull, err, _ref, canaryPull, fullPull;
+        var fullReleaseTitle, prereleaseTitle, stale, stalePrerelease, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, pulls, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, pull, err, _ref, prereleasePull, fullPull;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
+                    fullReleaseTitle = (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getFullReleaseTitle */ .n)();
+                    prereleaseTitle = (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getPrereleaseTitle */ .e)();
                     stale = [];
-                    staleCanary = [];
+                    stalePrerelease = [];
                     _iteratorAbruptCompletion = false, _didIteratorError = false;
                     _state.label = 1;
                 case 1:
@@ -291,9 +293,9 @@ var runAction = function() {
                     try {
                         for(_iterator1 = pulls[Symbol.iterator](); !(_iteratorNormalCompletion = (_step1 = _iterator1.next()).done); _iteratorNormalCompletion = true){
                             pull = _step1.value;
-                            if ((0,_util_is_action_user__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z)(pull.user)) {
-                                if (_shared__WEBPACK_IMPORTED_MODULE_4__/* .fullReleaseTitle */ .o === pull.title) stale.push(pull);
-                                else if (_shared__WEBPACK_IMPORTED_MODULE_4__/* .canaryReleaseTitle */ .G === pull.title) staleCanary.push(pull);
+                            if ((0,_util_is_action_user__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z)(pull.user)) {
+                                if (fullReleaseTitle === pull.title) stale.push(pull);
+                                else if (prereleaseTitle === pull.title) stalePrerelease.push(pull);
                             }
                         }
                     } catch (err) {
@@ -368,7 +370,7 @@ var runAction = function() {
                     // close stale PRs and delete the branches
                     return [
                         4,
-                        Promise.all(_to_consumable_array(stale).concat(_to_consumable_array(staleCanary)).map(function(stalePull) {
+                        Promise.all(_to_consumable_array(stale).concat(_to_consumable_array(stalePrerelease)).map(function(stalePull) {
                             return _async_to_generator(function() {
                                 return _ts_generator(this, function(_state) {
                                     switch(_state.label){
@@ -415,13 +417,13 @@ var runAction = function() {
                     _ref = _sliced_to_array.apply(void 0, [
                         _state.sent(),
                         2
-                    ]), canaryPull = _ref[0], fullPull = _ref[1];
+                    ]), prereleasePull = _ref[0], fullPull = _ref[1];
                     // add comments to closed PRs that link to the newly created PRs
                     return [
                         4,
                         Promise.all([
-                            Promise.all(staleCanary.map(function(pull) {
-                                return addCommentToClosed(pull.number, canaryPull.number);
+                            Promise.all(stalePrerelease.map(function(pull) {
+                                return addCommentToClosed(pull.number, prereleasePull.number);
                             })),
                             Promise.all(stale.map(function(pull) {
                                 return addCommentToClosed(pull.number, fullPull.number);
@@ -466,18 +468,20 @@ var pull_labels = [
 ];
 var createPull = function(prerelease) {
     return _async_to_generator(function() {
-        var title, releaseLabel, _ref, content, packageJson, newVersion, _ref1, _ref_data, sha, shortSha, branch, message, _ref2, pull, err, e;
+        var title, releaseLabel, primaryVersionFile, _ref, content, packageJson, newVersion, _ref1, _ref_data, sha, shortSha, branch, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, versionFile, filePath, _ref2, fileContent, filePackageJson, err, message, _ref3, pull, _$err, e;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    title = prerelease ? _shared__WEBPACK_IMPORTED_MODULE_4__/* .canaryReleaseTitle */ .G : _shared__WEBPACK_IMPORTED_MODULE_4__/* .fullReleaseTitle */ .o;
-                    releaseLabel = prerelease ? 'releases: canary' : 'releases: patch';
+                    title = prerelease ? (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getPrereleaseTitle */ .e)() : (0,_shared__WEBPACK_IMPORTED_MODULE_3__/* .getFullReleaseTitle */ .n)();
+                    releaseLabel = prerelease ? "releases: ".concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD) : 'releases: patch';
+                    // Get the first version file to determine current version
+                    primaryVersionFile = (0,_context__WEBPACK_IMPORTED_MODULE_1__/* .withWorkingDir */ .QV)(_context__WEBPACK_IMPORTED_MODULE_1__/* .versionFiles[0] */ .dm[0]);
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.repos.getContent */ .NR.rest.repos.getContent({
                             repo: _context__WEBPACK_IMPORTED_MODULE_1__/* .repo */ .O9,
                             owner: _context__WEBPACK_IMPORTED_MODULE_1__/* .owner */ .cR,
-                            path: 'package.json'
+                            path: primaryVersionFile
                         })
                     ];
                 case 1:
@@ -485,24 +489,23 @@ var createPull = function(prerelease) {
                     if (!('content' in content)) throw new Error('Could not get package.json contents');
                     packageJson = JSON.parse(Buffer.from(content.content, 'base64').toString());
                     if (!packageJson.version || packageJson.version.startsWith('0.0.0')) {
-                        newVersion = prerelease ? '0.0.1-canary.0' : '0.0.1';
+                        newVersion = prerelease ? "0.0.1-".concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD, ".0") : '0.0.1';
                     } else {
-                        newVersion = prerelease ? semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'prerelease', 'canary') : semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'patch');
+                        newVersion = prerelease ? semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'prerelease', _context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD) : semver_functions_inc__WEBPACK_IMPORTED_MODULE_0___default()(packageJson.version, 'patch');
                     }
                     if (!newVersion) throw new Error('Could not increase version');
-                    packageJson.version = newVersion;
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.git.getRef */ .NR.rest.git.getRef({
                             owner: _context__WEBPACK_IMPORTED_MODULE_1__/* .owner */ .cR,
                             repo: _context__WEBPACK_IMPORTED_MODULE_1__/* .repo */ .O9,
-                            ref: "heads/main"
+                            ref: "heads/".concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .baseBranch */ .a2)
                         })
                     ];
                 case 2:
                     _ref1 = _state.sent(), _ref_data = _ref1.data, sha = _ref_data.object.sha;
                     shortSha = sha.slice(0, 6) + sha.slice(-6);
-                    branch = prerelease ? "turbo-module/release-".concat(shortSha, "-canary") : "turbo-module/release-".concat(shortSha);
+                    branch = prerelease ? "turbo-module/release-".concat(shortSha, "-").concat(_context__WEBPACK_IMPORTED_MODULE_1__/* .prereleaseType */ .kD) : "turbo-module/release-".concat(shortSha);
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.git.createRef */ .NR.rest.git.createRef({
@@ -514,25 +517,92 @@ var createPull = function(prerelease) {
                     ];
                 case 3:
                     _state.sent();
+                    _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                    _state.label = 4;
+                case 4:
+                    _state.trys.push([
+                        4,
+                        10,
+                        11,
+                        12
+                    ]);
+                    _iterator = _context__WEBPACK_IMPORTED_MODULE_1__/* .versionFiles */ .dm[Symbol.iterator]();
+                    _state.label = 5;
+                case 5:
+                    if (!!(_iteratorNormalCompletion = (_step = _iterator.next()).done)) return [
+                        3,
+                        9
+                    ];
+                    versionFile = _step.value;
+                    filePath = (0,_context__WEBPACK_IMPORTED_MODULE_1__/* .withWorkingDir */ .QV)(versionFile);
+                    console.log("Updating version in ".concat(filePath, " to ").concat(newVersion));
+                    return [
+                        4,
+                        _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.repos.getContent */ .NR.rest.repos.getContent({
+                            repo: _context__WEBPACK_IMPORTED_MODULE_1__/* .repo */ .O9,
+                            owner: _context__WEBPACK_IMPORTED_MODULE_1__/* .owner */ .cR,
+                            path: filePath,
+                            ref: branch
+                        })
+                    ];
+                case 6:
+                    _ref2 = _state.sent(), fileContent = _ref2.data;
+                    if (!('content' in fileContent)) throw new Error("Could not get ".concat(filePath, " contents"));
+                    filePackageJson = JSON.parse(Buffer.from(fileContent.content, 'base64').toString());
+                    filePackageJson.version = newVersion;
                     return [
                         4,
                         _context__WEBPACK_IMPORTED_MODULE_1__/* .octo.rest.repos.createOrUpdateFileContents */ .NR.rest.repos.createOrUpdateFileContents({
                             repo: _context__WEBPACK_IMPORTED_MODULE_1__/* .repo */ .O9,
                             owner: _context__WEBPACK_IMPORTED_MODULE_1__/* .owner */ .cR,
-                            path: 'package.json',
-                            message: "release patch ".concat(packageJson.version),
-                            content: Buffer.from(JSON.stringify(packageJson, null, 2) + '\n').toString('base64'),
-                            sha: content.sha,
+                            path: filePath,
+                            message: "release: ".concat(newVersion),
+                            content: Buffer.from(JSON.stringify(filePackageJson, null, 2) + '\n').toString('base64'),
+                            sha: fileContent.sha,
                             branch: branch
                         })
                     ];
-                case 4:
+                case 7:
                     _state.sent();
+                    _state.label = 8;
+                case 8:
+                    _iteratorNormalCompletion = true;
+                    return [
+                        3,
+                        5
+                    ];
+                case 9:
+                    return [
+                        3,
+                        12
+                    ];
+                case 10:
+                    err = _state.sent();
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                    return [
+                        3,
+                        12
+                    ];
+                case 11:
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return != null) {
+                            _iterator.return();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                    return [
+                        7
+                    ];
+                case 12:
                     return [
                         4,
                         (0,_util_get_message__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)(prerelease)
                     ];
-                case 5:
+                case 13:
                     message = _state.sent().message;
                     return [
                         4,
@@ -542,25 +612,25 @@ var createPull = function(prerelease) {
                             title: title,
                             body: message,
                             head: branch,
-                            base: 'main'
+                            base: _context__WEBPACK_IMPORTED_MODULE_1__/* .baseBranch */ .a2
                         })
                     ];
-                case 6:
-                    _ref2 = _state.sent(), pull = _ref2.data;
-                    err = 0;
-                    _state.label = 7;
-                case 7:
-                    if (!(err < 5)) return [
+                case 14:
+                    _ref3 = _state.sent(), pull = _ref3.data;
+                    _$err = 0;
+                    _state.label = 15;
+                case 15:
+                    if (!(_$err < 5)) return [
                         3,
-                        13
+                        21
                     ];
-                    _state.label = 8;
-                case 8:
+                    _state.label = 16;
+                case 16:
                     _state.trys.push([
-                        8,
-                        10,
+                        16,
+                        18,
                         ,
-                        12
+                        20
                     ]);
                     return [
                         4,
@@ -573,34 +643,34 @@ var createPull = function(prerelease) {
                             ])
                         })
                     ];
-                case 9:
+                case 17:
                     _state.sent();
                     return [
                         2,
                         pull
                     ];
-                case 10:
+                case 18:
                     e = _state.sent();
                     console.error(e);
-                    err++;
+                    _$err++;
                     return [
                         4,
                         new Promise(function(resolve) {
                             return setTimeout(resolve, 300);
                         })
                     ];
-                case 11:
+                case 19:
                     _state.sent();
                     return [
                         3,
-                        12
+                        20
                     ];
-                case 12:
+                case 20:
                     return [
                         3,
-                        7
+                        15
                     ];
-                case 13:
+                case 21:
                     throw new Error('Could not add labels to PR');
             }
         });
@@ -615,11 +685,17 @@ var createPull = function(prerelease) {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "G": () => (/* binding */ canaryReleaseTitle),
-/* harmony export */   "o": () => (/* binding */ fullReleaseTitle)
+/* harmony export */   "e": () => (/* binding */ getPrereleaseTitle),
+/* harmony export */   "n": () => (/* binding */ getFullReleaseTitle)
 /* harmony export */ });
-var fullReleaseTitle = '(turbo-module): release next version';
-var canaryReleaseTitle = '(turbo-module): release next canary version';
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7501);
+
+var getFullReleaseTitle = function() {
+    return '(turbo-module): release next version';
+};
+var getPrereleaseTitle = function() {
+    return "(turbo-module): release next ".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, " version");
+};
 
 
 /***/ })

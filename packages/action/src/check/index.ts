@@ -3,9 +3,18 @@ import { bash, command } from '../util/exec';
 import isCanary from '../util/is-canary';
 import { gt } from 'semver';
 import { getFolder, getJsonFile, JSONFile } from '../util/get-file';
+import {
+  publishPackages,
+  prereleaseType,
+  versionFiles,
+  withWorkingDir,
+} from '../context';
 
-const versionParserRegexp =
-  /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d+)?)/;
+// Dynamic regex that supports the configured prerelease type
+const createVersionParserRegexp = () =>
+  new RegExp(
+    `^(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*@(\\d+\\.\\d+\\.\\d+(?:-${prereleaseType}\\.\\d+)?)`,
+  );
 
 const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
   try {
@@ -23,11 +32,12 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
     try {
       const [res] = await bash`
         ${command`
-          npm view 
-            ${packageJson.name}@${isCanary(rootVersion) ? 'canary' : 'latest'}
+          npm view
+            ${packageJson.name}@${isCanary(rootVersion) ? prereleaseType : 'latest'}
         `}
       `;
       if (!res) throw new Error('Únexpected error');
+      const versionParserRegexp = createVersionParserRegexp();
       const [, , currentVersion] =
         versionParserRegexp.exec(res.stdout.trim()) || [];
       if (!currentVersion)
@@ -50,12 +60,31 @@ const checkPackage = async (pkg: JSONFile, rootVersion: string) => {
 };
 
 const checkPackages = async (rootVersion: string) => {
-  const folders = await getFolder('packages');
+  // If publish-packages is configured, use those specific paths
+  if (publishPackages && publishPackages.length > 0) {
+    console.log('checking configured packages: ' + publishPackages.join(', '));
+    return (
+      await Promise.all(
+        publishPackages.map(async (pkgPath) => {
+          const fullPath = withWorkingDir(pkgPath);
+          // If path doesn't end with package.json, append it
+          const jsonPath = fullPath.endsWith('package.json')
+            ? fullPath
+            : `${fullPath}/package.json`;
+          return checkPackage(jsonPath as JSONFile, rootVersion);
+        }),
+      )
+    ).filter(Boolean) as string[];
+  }
+
+  // Otherwise, scan packages/* directory (legacy behavior)
+  const packagesDir = withWorkingDir('packages');
+  const folders = await getFolder(packagesDir);
   console.log('checking ' + folders.map(({ path }) => path).join());
   return (
     await Promise.all(
       folders.map(async ({ path }) =>
-        checkPackage(`${path}/package.json`, rootVersion),
+        checkPackage(`${path}/package.json` as JSONFile, rootVersion),
       ),
     )
   ).filter(Boolean) as string[];
@@ -69,10 +98,17 @@ const checkPackages = async (rootVersion: string) => {
  * inteded to be ran as part of a workflow
  */
 const canPublish = async () => {
+  // Use the first version file as the source of truth for the version
+  const versionFilePath = withWorkingDir(versionFiles[0]);
   const {
     content: { version },
-  } = await getJsonFile<{ version: string }>('package.json');
-  console.log('version:', version, 'is canary:', isCanary(version));
+  } = await getJsonFile<{ version: string }>(versionFilePath as JSONFile);
+  console.log(
+    'version:',
+    version,
+    `is ${prereleaseType}:`,
+    isCanary(version),
+  );
   // any version starting with 0.0.0 is considered a initial dev
   // version and will not be published
   if (version.startsWith('0.0.0')) {

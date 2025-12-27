@@ -10,12 +10,17 @@ exports.modules = {
 /* harmony export */   "NR": () => (/* binding */ octo),
 /* harmony export */   "O9": () => (/* binding */ repo),
 /* harmony export */   "PX": () => (/* binding */ target_issue),
+/* harmony export */   "QV": () => (/* binding */ withWorkingDir),
 /* harmony export */   "RL": () => (/* binding */ target_comment),
+/* harmony export */   "RP": () => (/* binding */ publishPackages),
+/* harmony export */   "a2": () => (/* binding */ baseBranch),
 /* harmony export */   "cR": () => (/* binding */ owner),
+/* harmony export */   "dm": () => (/* binding */ versionFiles),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
+/* harmony export */   "kD": () => (/* binding */ prereleaseType),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
-/* unused harmony export target_pull */
+/* unused harmony exports target_pull, workingDirectory */
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
@@ -29,6 +34,17 @@ var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TO
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
 var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
+// Monorepo support configuration
+var workingDirectory = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('working-directory') || '.';
+var versionFiles = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('version-files') || '["package.json"]');
+var publishPackages = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages') ? JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages')) : undefined;
+var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('prerelease-type') || 'canary';
+var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
+// Helper to join working directory with a path
+var withWorkingDir = function(path) {
+    if (workingDirectory === '.') return path;
+    return "".concat(workingDirectory, "/").concat(path);
+};
 
 
 /***/ }),

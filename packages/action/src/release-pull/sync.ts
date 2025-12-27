@@ -2,7 +2,7 @@ import isActionUser from '../util/is-action-user';
 import { octo, owner, repo } from '../context';
 import getReleaseMessage from '../util/get-message';
 import { Pull } from '../util/types';
-import { canaryReleaseTitle, fullReleaseTitle } from './shared';
+import { getFullReleaseTitle, getPrereleaseTitle } from './shared';
 import { createPull } from './create';
 
 const syncPull = async (pull: Pull, prerelease: boolean) => {
@@ -19,8 +19,11 @@ const syncPull = async (pull: Pull, prerelease: boolean) => {
 };
 
 const runAction = async () => {
+  const fullReleaseTitle = getFullReleaseTitle();
+  const prereleaseTitle = getPrereleaseTitle();
+
   let full: Promise<unknown> | undefined;
-  let canary: Promise<unknown> | undefined;
+  let prerelease: Promise<unknown> | undefined;
   for await (const { data: pulls } of octo.paginate.iterator(
     octo.rest.pulls.list,
     {
@@ -39,21 +42,21 @@ const runAction = async () => {
             if (!full) full = syncPull(pull, false);
             break;
           }
-          case canaryReleaseTitle: {
-            if (!canary) canary = syncPull(pull, true);
+          case prereleaseTitle: {
+            if (!prerelease) prerelease = syncPull(pull, true);
             break;
           }
         }
       }
-      if (full && canary) break;
+      if (full && prerelease) break;
     }
-    if (full && canary) break;
+    if (full && prerelease) break;
   }
 
   if (!full) full = createPull(false);
-  if (!canary) canary = createPull(true);
+  if (!prerelease) prerelease = createPull(true);
 
-  await Promise.all([full, canary]);
+  await Promise.all([full, prerelease]);
 };
 
 export default runAction;

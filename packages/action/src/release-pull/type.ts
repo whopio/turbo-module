@@ -1,16 +1,26 @@
 import { inc } from 'semver';
-import { octo, owner, repo, target_comment, target_issue } from '../context';
+import {
+  octo,
+  owner,
+  repo,
+  target_comment,
+  target_issue,
+  versionFiles,
+  prereleaseType,
+  baseBranch,
+  withWorkingDir,
+} from '../context';
 import getCodeOwners from '../util/get-codeowners';
 
 const types = ['patch', 'minor', 'major'] as const;
 
 type ReleaseTypes = (typeof types)[number];
 
-const getPackageJson = async (ref?: string) => {
+const getPackageJson = async (path: string, ref?: string) => {
   const { data: content } = await octo.rest.repos.getContent({
     repo,
     owner,
-    path: 'package.json',
+    path,
     ref,
   });
   if ('content' in content) {
@@ -23,7 +33,7 @@ const getPackageJson = async (ref?: string) => {
       sha: content.sha,
     };
   }
-  throw new Error('Could not load main package.json');
+  throw new Error(`Could not load ${path}`);
 };
 
 const performUpdate = async (type: ReleaseTypes) => {
@@ -39,19 +49,18 @@ const performUpdate = async (type: ReleaseTypes) => {
     owner,
     pull_number: target_issue.number,
   });
-  /*  await octo.rest.pulls.updateBranch({
-    repo,
-    owner,
-    pull_number: target_issue.number,
-  }); */
+
   const releaseTypeLabel = labels.find(({ name }) =>
     name.startsWith('releases: '),
   );
   const current_type = releaseTypeLabel?.name.replace('releases: ', '');
-  if (current_type === 'canary' || type === current_type) return;
-  const { content: mainPackageJson } = await getPackageJson('main');
-  const { content: currentPackageJson, sha: packageSha } = await getPackageJson(
-    branch,
+  // Skip if it's a prerelease PR or already the requested type
+  if (current_type === prereleaseType || type === current_type) return;
+
+  const primaryVersionFile = withWorkingDir(versionFiles[0]);
+  const { content: mainPackageJson } = await getPackageJson(
+    primaryVersionFile,
+    baseBranch,
   );
   const currentVersion = mainPackageJson.version.startsWith('0.0.0')
     ? '0.0.0'
@@ -60,20 +69,27 @@ const performUpdate = async (type: ReleaseTypes) => {
   if (!newVersion)
     throw new Error(`Could not increase ${type} for ${currentVersion}`);
 
-  if (currentPackageJson.version !== newVersion) {
-    currentPackageJson.version = newVersion;
+  // Update all version files
+  for (const versionFile of versionFiles) {
+    const filePath = withWorkingDir(versionFile);
+    const { content: currentPackageJson, sha: packageSha } =
+      await getPackageJson(filePath, branch);
 
-    await octo.rest.repos.createOrUpdateFileContents({
-      repo,
-      owner,
-      path: 'package.json',
-      message: `release ${type} ${newVersion}`,
-      content: Buffer.from(
-        JSON.stringify(currentPackageJson, null, 2) + '\n',
-      ).toString('base64'),
-      sha: packageSha,
-      branch,
-    });
+    if (currentPackageJson.version !== newVersion) {
+      currentPackageJson.version = newVersion;
+
+      await octo.rest.repos.createOrUpdateFileContents({
+        repo,
+        owner,
+        path: filePath,
+        message: `release ${type} ${newVersion}`,
+        content: Buffer.from(
+          JSON.stringify(currentPackageJson, null, 2) + '\n',
+        ).toString('base64'),
+        sha: packageSha,
+        branch,
+      });
+    }
   }
 
   const promises: Promise<unknown>[] = [

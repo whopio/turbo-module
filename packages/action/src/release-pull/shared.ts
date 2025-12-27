@@ -1,2 +1,5 @@
-export const fullReleaseTitle = '(turbo-module): release next version';
-export const canaryReleaseTitle = '(turbo-module): release next canary version';
+import { prereleaseType } from '../context';
+
+export const getFullReleaseTitle = () => '(turbo-module): release next version';
+export const getPrereleaseTitle = () =>
+  `(turbo-module): release next ${prereleaseType} version`;

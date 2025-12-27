@@ -554,6 +554,8 @@ var is_canary = __webpack_require__(9911);
 var semver = __webpack_require__(4122);
 // EXTERNAL MODULE: ./dist/util/get-file.js
 var get_file = __webpack_require__(2703);
+// EXTERNAL MODULE: ./dist/context.js
+var context = __webpack_require__(7501);
 ;// CONCATENATED MODULE: ./dist/check/index.js
 function check_array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
@@ -753,7 +755,7 @@ function check_ts_generator(thisArg, body) {
 }
 function _templateObject() {
     var data = _tagged_template_literal([
-        "\n          npm view \n            ",
+        "\n          npm view\n            ",
         "@",
         "\n        "
     ]);
@@ -777,10 +779,14 @@ function _templateObject1() {
 
 
 
-var versionParserRegexp = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*@(\d+\.\d+\.\d+(?:-canary\.\d+)?)/;
+
+// Dynamic regex that supports the configured prerelease type
+var createVersionParserRegexp = function() {
+    return new RegExp("^(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*@(\\d+\\.\\d+\\.\\d+(?:-".concat(context/* prereleaseType */.kD, "\\.\\d+)?)"));
+};
 var checkPackage = function(pkg, rootVersion) {
     return check_async_to_generator(function() {
-        var _ref, packageJson, log, _ref1, res, _ref2, currentVersion, _e, unused;
+        var _ref, packageJson, log, _ref1, res, versionParserRegexp, _ref2, currentVersion, _e, unused;
         return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -821,7 +827,7 @@ var checkPackage = function(pkg, rootVersion) {
                     ]);
                     return [
                         4,
-                        bash(_templateObject1(), command(_templateObject(), packageJson.name, (0,is_canary/* default */.Z)(rootVersion) ? 'canary' : 'latest'))
+                        bash(_templateObject1(), command(_templateObject(), packageJson.name, (0,is_canary/* default */.Z)(rootVersion) ? context/* prereleaseType */.kD : 'latest'))
                     ];
                 case 3:
                     _ref1 = _sliced_to_array.apply(void 0, [
@@ -829,6 +835,7 @@ var checkPackage = function(pkg, rootVersion) {
                         1
                     ]), res = _ref1[0];
                     if (!res) throw new Error('Únexpected error');
+                    versionParserRegexp = createVersionParserRegexp();
                     _ref2 = _sliced_to_array(versionParserRegexp.exec(res.stdout.trim()) || [], 3), currentVersion = _ref2[2];
                     if (!currentVersion) throw new Error('Could not parse version from npm view response');
                     if ((0,semver.gt)(rootVersion, currentVersion)) {
@@ -871,15 +878,45 @@ var checkPackage = function(pkg, rootVersion) {
 };
 var checkPackages = function(rootVersion) {
     return check_async_to_generator(function() {
-        var folders;
+        var packagesDir, folders;
         return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
+                    if (!(context/* publishPackages */.RP && context/* publishPackages.length */.RP.length > 0)) return [
+                        3,
+                        2
+                    ];
+                    console.log('checking configured packages: ' + context/* publishPackages.join */.RP.join(', '));
                     return [
                         4,
-                        (0,get_file/* getFolder */.zZ)('packages')
+                        Promise.all(context/* publishPackages.map */.RP.map(function(pkgPath) {
+                            return check_async_to_generator(function() {
+                                var fullPath, jsonPath;
+                                return check_ts_generator(this, function(_state) {
+                                    fullPath = (0,context/* withWorkingDir */.QV)(pkgPath);
+                                    // If path doesn't end with package.json, append it
+                                    jsonPath = fullPath.endsWith('package.json') ? fullPath : "".concat(fullPath, "/package.json");
+                                    return [
+                                        2,
+                                        checkPackage(jsonPath, rootVersion)
+                                    ];
+                                });
+                            })();
+                        }))
                     ];
                 case 1:
+                    return [
+                        2,
+                        _state.sent().filter(Boolean)
+                    ];
+                case 2:
+                    // Otherwise, scan packages/* directory (legacy behavior)
+                    packagesDir = (0,context/* withWorkingDir */.QV)('packages');
+                    return [
+                        4,
+                        (0,get_file/* getFolder */.zZ)(packagesDir)
+                    ];
+                case 3:
                     folders = _state.sent();
                     console.log('checking ' + folders.map(function(param) {
                         var path = param.path;
@@ -899,7 +936,7 @@ var checkPackages = function(rootVersion) {
                             })();
                         }))
                     ];
-                case 2:
+                case 4:
                     return [
                         2,
                         _state.sent().filter(Boolean)
@@ -916,17 +953,19 @@ var checkPackages = function(rootVersion) {
  * inteded to be ran as part of a workflow
  */ var canPublish = function() {
     return check_async_to_generator(function() {
-        var _ref, version, publishable;
+        var versionFilePath, _ref, version, publishable;
         return check_ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
+                    // Use the first version file as the source of truth for the version
+                    versionFilePath = (0,context/* withWorkingDir */.QV)(context/* versionFiles.0 */.dm[0]);
                     return [
                         4,
-                        (0,get_file/* getJsonFile */.n0)('package.json')
+                        (0,get_file/* getJsonFile */.n0)(versionFilePath)
                     ];
                 case 1:
                     _ref = _state.sent(), version = _ref.content.version;
-                    console.log('version:', version, 'is canary:', (0,is_canary/* default */.Z)(version));
+                    console.log('version:', version, "is ".concat(context/* prereleaseType */.kD, ":"), (0,is_canary/* default */.Z)(version));
                     if (!version.startsWith('0.0.0')) return [
                         3,
                         2
@@ -970,12 +1009,17 @@ var checkPackages = function(rootVersion) {
 /* harmony export */   "NR": () => (/* binding */ octo),
 /* harmony export */   "O9": () => (/* binding */ repo),
 /* harmony export */   "PX": () => (/* binding */ target_issue),
+/* harmony export */   "QV": () => (/* binding */ withWorkingDir),
 /* harmony export */   "RL": () => (/* binding */ target_comment),
+/* harmony export */   "RP": () => (/* binding */ publishPackages),
+/* harmony export */   "a2": () => (/* binding */ baseBranch),
 /* harmony export */   "cR": () => (/* binding */ owner),
+/* harmony export */   "dm": () => (/* binding */ versionFiles),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
+/* harmony export */   "kD": () => (/* binding */ prereleaseType),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
-/* unused harmony export target_pull */
+/* unused harmony exports target_pull, workingDirectory */
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
@@ -989,6 +1033,17 @@ var octo = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(GITHUB_TO
 var _context_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo, _context_payload = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 var owner = _context_repo.owner, repo = _context_repo.repo, commit_hash = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha, target_issue = _context_payload.issue, target_comment = _context_payload.comment, target_pull = _context_payload.pull_request;
 var initial_commit = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('initial-commit');
+// Monorepo support configuration
+var workingDirectory = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('working-directory') || '.';
+var versionFiles = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('version-files') || '["package.json"]');
+var publishPackages = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages') ? JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages')) : undefined;
+var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('prerelease-type') || 'canary';
+var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
+// Helper to join working directory with a path
+var withWorkingDir = function(path) {
+    if (workingDirectory === '.') return path;
+    return "".concat(workingDirectory, "/").concat(path);
+};
 
 
 /***/ }),
@@ -1228,10 +1283,18 @@ var getJsonFile = function(path, ref) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var isCanary = function(test) {
-    return /^\d+\.\d+\.\d+-canary\.\d+$/.test(test);
+/* unused harmony export isPrerelease */
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7501);
+
+// Check if version matches the configured prerelease type (e.g., canary, beta)
+var isPrerelease = function(test) {
+    var pattern = new RegExp("^\\d+\\.\\d+\\.\\d+-".concat(_context__WEBPACK_IMPORTED_MODULE_0__/* .prereleaseType */ .kD, "\\.\\d+$"));
+    return pattern.test(test);
 };
+// Legacy export for backwards compatibility
+var isCanary = isPrerelease;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isCanary);
+
 
 
 /***/ })

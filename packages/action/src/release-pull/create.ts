@@ -1,13 +1,24 @@
 import inc from 'semver/functions/inc';
-import { octo, owner, repo } from '../context';
+import {
+  octo,
+  owner,
+  repo,
+  versionFiles,
+  prereleaseType,
+  baseBranch,
+  withWorkingDir,
+} from '../context';
 import getReleaseMessage from '../util/get-message';
 import isActionUser from '../util/is-action-user';
 import { Pull } from '../util/types';
-import { canaryReleaseTitle, fullReleaseTitle } from './shared';
+import { getPrereleaseTitle, getFullReleaseTitle } from './shared';
 
 const runAction = async () => {
+  const fullReleaseTitle = getFullReleaseTitle();
+  const prereleaseTitle = getPrereleaseTitle();
+
   const stale: Pull[] = [];
-  const staleCanary: Pull[] = [];
+  const stalePrerelease: Pull[] = [];
   for await (const { data: pulls } of octo.paginate.iterator(
     octo.rest.pulls.list,
     {
@@ -22,12 +33,12 @@ const runAction = async () => {
     for (const pull of pulls) {
       if (isActionUser(pull.user)) {
         if (fullReleaseTitle === pull.title) stale.push(pull);
-        else if (canaryReleaseTitle === pull.title) staleCanary.push(pull);
+        else if (prereleaseTitle === pull.title) stalePrerelease.push(pull);
       }
     }
   // close stale PRs and delete the branches
   await Promise.all(
-    [...stale, ...staleCanary].map(async (stalePull) => {
+    [...stale, ...stalePrerelease].map(async (stalePull) => {
       await octo.rest.pulls.update({
         repo,
         owner,
@@ -42,15 +53,15 @@ const runAction = async () => {
     }),
   );
 
-  const [canaryPull, fullPull] = await Promise.all([
+  const [prereleasePull, fullPull] = await Promise.all([
     createPull(true),
     createPull(false),
   ]);
   // add comments to closed PRs that link to the newly created PRs
   await Promise.all([
     Promise.all(
-      staleCanary.map((pull) =>
-        addCommentToClosed(pull.number, canaryPull.number),
+      stalePrerelease.map((pull) =>
+        addCommentToClosed(pull.number, prereleasePull.number),
       ),
     ),
     Promise.all(
@@ -71,28 +82,34 @@ const addCommentToClosed = async (number: number, replacement: number) => {
 const pull_labels = ['auto-release-pr', 'keep up-to-date'];
 
 export const createPull = async (prerelease: boolean) => {
-  const title = prerelease ? canaryReleaseTitle : fullReleaseTitle;
-  const releaseLabel = prerelease ? 'releases: canary' : 'releases: patch';
+  const title = prerelease ? getPrereleaseTitle() : getFullReleaseTitle();
+  const releaseLabel = prerelease
+    ? `releases: ${prereleaseType}`
+    : 'releases: patch';
+
+  // Get the first version file to determine current version
+  const primaryVersionFile = withWorkingDir(versionFiles[0]);
   const { data: content } = await octo.rest.repos.getContent({
     repo,
     owner,
-    path: 'package.json',
+    path: primaryVersionFile,
   });
   if (!('content' in content))
     throw new Error('Could not get package.json contents');
   const packageJson = JSON.parse(
     Buffer.from(content.content, 'base64').toString(),
   ) as { version?: string };
+
   let newVersion: string | null;
   if (!packageJson.version || packageJson.version.startsWith('0.0.0')) {
-    newVersion = prerelease ? '0.0.1-canary.0' : '0.0.1';
+    newVersion = prerelease ? `0.0.1-${prereleaseType}.0` : '0.0.1';
   } else {
     newVersion = prerelease
-      ? inc(packageJson.version, 'prerelease', 'canary')
+      ? inc(packageJson.version, 'prerelease', prereleaseType)
       : inc(packageJson.version, 'patch');
   }
   if (!newVersion) throw new Error('Could not increase version');
-  packageJson.version = newVersion;
+
   const {
     data: {
       object: { sha },
@@ -100,29 +117,52 @@ export const createPull = async (prerelease: boolean) => {
   } = await octo.rest.git.getRef({
     owner,
     repo,
-    ref: `heads/main`,
+    ref: `heads/${baseBranch}`,
   });
   const shortSha = sha.slice(0, 6) + sha.slice(-6);
   const branch = prerelease
-    ? `turbo-module/release-${shortSha}-canary`
+    ? `turbo-module/release-${shortSha}-${prereleaseType}`
     : `turbo-module/release-${shortSha}`;
+
   await octo.rest.git.createRef({
     owner,
     repo,
     sha,
     ref: `refs/heads/${branch}`,
   });
-  await octo.rest.repos.createOrUpdateFileContents({
-    repo,
-    owner,
-    path: 'package.json',
-    message: `release patch ${packageJson.version}`,
-    content: Buffer.from(JSON.stringify(packageJson, null, 2) + '\n').toString(
-      'base64',
-    ),
-    sha: content.sha,
-    branch,
-  });
+
+  // Update all version files with the new version
+  for (const versionFile of versionFiles) {
+    const filePath = withWorkingDir(versionFile);
+    console.log(`Updating version in ${filePath} to ${newVersion}`);
+
+    const { data: fileContent } = await octo.rest.repos.getContent({
+      repo,
+      owner,
+      path: filePath,
+      ref: branch,
+    });
+    if (!('content' in fileContent))
+      throw new Error(`Could not get ${filePath} contents`);
+
+    const filePackageJson = JSON.parse(
+      Buffer.from(fileContent.content, 'base64').toString(),
+    ) as { version?: string };
+    filePackageJson.version = newVersion;
+
+    await octo.rest.repos.createOrUpdateFileContents({
+      repo,
+      owner,
+      path: filePath,
+      message: `release: ${newVersion}`,
+      content: Buffer.from(
+        JSON.stringify(filePackageJson, null, 2) + '\n',
+      ).toString('base64'),
+      sha: fileContent.sha,
+      branch,
+    });
+  }
+
   const { message } = await getReleaseMessage(prerelease);
   const { data: pull } = await octo.rest.pulls.create({
     repo,
@@ -130,7 +170,7 @@ export const createPull = async (prerelease: boolean) => {
     title,
     body: message,
     head: branch,
-    base: 'main',
+    base: baseBranch,
   });
   let err = 0;
   while (err < 5) {

@@ -16,3 +16,20 @@ export const {
 } = context;
 
 export const initial_commit: string | undefined = getInput('initial-commit');
+
+// Monorepo support configuration
+export const workingDirectory: string = getInput('working-directory') || '.';
+export const versionFiles: string[] = JSON.parse(
+  getInput('version-files') || '["package.json"]',
+);
+export const publishPackages: string[] | undefined = getInput('publish-packages')
+  ? JSON.parse(getInput('publish-packages'))
+  : undefined;
+export const prereleaseType: string = getInput('prerelease-type') || 'canary';
+export const baseBranch: string = getInput('base-branch') || 'main';
+
+// Helper to join working directory with a path
+export const withWorkingDir = (path: string): string => {
+  if (workingDirectory === '.') return path;
+  return `${workingDirectory}/${path}`;
+};
