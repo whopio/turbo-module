@@ -27,6 +27,7 @@ export const publishPackages: string[] | undefined = getInput('publish-packages'
   : undefined;
 export const prereleaseType: string = getInput('prerelease-type') || 'canary';
 export const baseBranch: string = getInput('base-branch') || 'main';
+export const maxChangelogCommits: number = parseInt(getInput('max-changelog-commits') || '100', 10);
 
 // Helper to join working directory with a path
 export const withWorkingDir = (path: string): string => {

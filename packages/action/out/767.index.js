@@ -18,6 +18,7 @@ exports.modules = {
 /* harmony export */   "dm": () => (/* binding */ versionFiles),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
 /* harmony export */   "kD": () => (/* binding */ prereleaseType),
+/* harmony export */   "pE": () => (/* binding */ maxChangelogCommits),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
 /* unused harmony exports target_pull, workingDirectory */
@@ -40,6 +41,7 @@ var versionFiles = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getI
 var publishPackages = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages') ? JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages')) : undefined;
 var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('prerelease-type') || 'canary';
 var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
+var maxChangelogCommits = parseInt((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('max-changelog-commits') || '100', 10);
 // Helper to join working directory with a path
 var withWorkingDir = function(path) {
     if (workingDirectory === '.') return path;
@@ -245,7 +247,7 @@ var addPull = function(pulls, type, number, title) {
 };
 var collectCommits = function(head, base) {
     return _async_to_generator(function() {
-        var stats, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, e, err, err1;
+        var stats, commitCount, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, commits, _iteratorNormalCompletion, _didIteratorError1, _iteratorError1, _iterator1, _step1, commit, _exec, _commit_author, message, PR, pull_number, _ref, pr, areas, _iteratorNormalCompletion1, _didIteratorError2, _iteratorError2, _iterator2, _step2, area, e, err, err1;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -253,6 +255,7 @@ var collectCommits = function(head, base) {
                         authors: new Set(),
                         pulls: {}
                     };
+                    commitCount = 0;
                     _iteratorAbruptCompletion = false, _didIteratorError = false;
                     _state.label = 1;
                 case 1:
@@ -299,6 +302,14 @@ var collectCommits = function(head, base) {
                         10
                     ];
                     commit = _step1.value;
+                    if (context/* maxChangelogCommits */.pE > 0 && commitCount >= context/* maxChangelogCommits */.pE) {
+                        console.log("Reached max commit limit (".concat(context/* maxChangelogCommits */.pE, "), stopping changelog scan"));
+                        return [
+                            2,
+                            stats
+                        ];
+                    }
+                    commitCount++;
                     message = commit.commit.message.split('\n')[0];
                     PR = (_exec = /\(#(\d+)\)$/.exec(message)) === null || _exec === void 0 ? void 0 : _exec[1];
                     if (!PR) return [

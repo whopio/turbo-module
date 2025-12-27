@@ -18,6 +18,7 @@ exports.modules = {
 /* harmony export */   "dm": () => (/* binding */ versionFiles),
 /* harmony export */   "hl": () => (/* binding */ commit_hash),
 /* harmony export */   "kD": () => (/* binding */ prereleaseType),
+/* harmony export */   "pE": () => (/* binding */ maxChangelogCommits),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
 /* unused harmony exports target_pull, workingDirectory */
@@ -40,6 +41,7 @@ var versionFiles = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getI
 var publishPackages = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages') ? JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('publish-packages')) : undefined;
 var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('prerelease-type') || 'canary';
 var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
+var maxChangelogCommits = parseInt((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('max-changelog-commits') || '100', 10);
 // Helper to join working directory with a path
 var withWorkingDir = function(path) {
     if (workingDirectory === '.') return path;

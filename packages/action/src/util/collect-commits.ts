@@ -1,4 +1,4 @@
-import { octo, owner, repo } from '../context';
+import { octo, owner, repo, maxChangelogCommits } from '../context';
 import isActionUser from './is-action-user';
 import { ReleasePulls, ReleaseStats } from './types';
 
@@ -17,6 +17,7 @@ const collectCommits = async (head: string, base: string) => {
     authors: new Set(),
     pulls: {},
   };
+  let commitCount = 0;
   for await (const {
     data: { commits },
   } of octo.paginate.iterator(octo.rest.repos.compareCommits, {
@@ -25,8 +26,13 @@ const collectCommits = async (head: string, base: string) => {
     base,
     head,
     per_page: 100,
-  }))
+  })) {
     for (const commit of commits) {
+      if (maxChangelogCommits > 0 && commitCount >= maxChangelogCommits) {
+        console.log(`Reached max commit limit (${maxChangelogCommits}), stopping changelog scan`);
+        return stats;
+      }
+      commitCount++;
       const message = commit.commit.message.split('\n')[0];
       const PR = /\(#(\d+)\)$/.exec(message)?.[1];
       if (!PR) continue;
@@ -58,6 +64,7 @@ const collectCommits = async (head: string, base: string) => {
         addPull(stats.pulls, 'general', pull_number, message);
       }
     }
+  }
   return stats;
 };
 

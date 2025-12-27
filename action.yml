@@ -31,3 +31,6 @@ inputs:
   base-branch:
     description: "Base branch for PRs and releases"
     default: "main"
+  max-changelog-commits:
+    description: "Maximum commits to scan for changelog generation (0 = unlimited)"
+    default: "100"
