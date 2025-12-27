@@ -1,4 +1,4 @@
-import { octo, owner, repo, maxChangelogCommits } from '../context';
+import { octo, owner, repo, maxChangelogCommits, workingDirectory } from '../context';
 import isActionUser from './is-action-user';
 import { ReleasePulls, ReleaseStats } from './types';
 
@@ -10,6 +10,28 @@ const addPull = (
 ) => {
   if (!pulls[type]) pulls[type] = [];
   pulls[type].push({ number, title });
+};
+
+// Check if a commit touches files in the working directory
+const commitTouchesWorkingDir = async (sha: string): Promise<boolean> => {
+  if (workingDirectory === '.') return true; // No filtering needed for root
+
+  try {
+    const { data: commit } = await octo.rest.repos.getCommit({
+      owner,
+      repo,
+      ref: sha,
+    });
+
+    const touchesDir = commit.files?.some(file =>
+      file.filename.startsWith(`${workingDirectory}/`)
+    ) ?? false;
+
+    return touchesDir;
+  } catch (e) {
+    // If we can't fetch the commit, include it to be safe
+    return true;
+  }
 };
 
 const collectCommits = async (head: string, base: string) => {
@@ -33,6 +55,12 @@ const collectCommits = async (head: string, base: string) => {
         return stats;
       }
       commitCount++;
+
+      // Skip commits that don't touch files in the working directory
+      if (!(await commitTouchesWorkingDir(commit.sha))) {
+        continue;
+      }
+
       const message = commit.commit.message.split('\n')[0];
       const PR = /\(#(\d+)\)$/.exec(message)?.[1];
       if (!PR) continue;

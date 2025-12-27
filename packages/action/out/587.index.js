@@ -13,6 +13,7 @@ exports.modules = {
 /* harmony export */   "QV": () => (/* binding */ withWorkingDir),
 /* harmony export */   "RL": () => (/* binding */ target_comment),
 /* harmony export */   "RP": () => (/* binding */ publishPackages),
+/* harmony export */   "Tf": () => (/* binding */ workingDirectory),
 /* harmony export */   "a2": () => (/* binding */ baseBranch),
 /* harmony export */   "cR": () => (/* binding */ owner),
 /* harmony export */   "dm": () => (/* binding */ versionFiles),
@@ -21,7 +22,7 @@ exports.modules = {
 /* harmony export */   "pE": () => (/* binding */ maxChangelogCommits),
 /* harmony export */   "sS": () => (/* binding */ initial_commit)
 /* harmony export */ });
-/* unused harmony exports target_pull, workingDirectory */
+/* unused harmony export target_pull */
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1416);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7036);
