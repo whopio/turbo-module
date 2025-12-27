@@ -467,7 +467,7 @@ var addCommentToClosed = function(number, replacement) {
 var pull_labels = [
     'auto-release-pr',
     'keep up-to-date'
-];
+].concat(_to_consumable_array(_context__WEBPACK_IMPORTED_MODULE_1__/* .prLabels */ .Zh));
 var createPull = function(prerelease) {
     return _async_to_generator(function() {
         var releaseLabel, primaryVersionFile, _ref, content, packageJson, newVersion, title, _ref1, _ref_data, sha, shortSha, branch, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, versionFile, filePath, _ref2, fileContent, filePackageJson, err, message, _ref3, pull, _$err, e;

@@ -7,6 +7,7 @@ import {
   prereleaseType,
   baseBranch,
   withWorkingDir,
+  prLabels,
 } from '../context';
 import getReleaseMessage from '../util/get-message';
 import isActionUser from '../util/is-action-user';
@@ -80,7 +81,7 @@ const addCommentToClosed = async (number: number, replacement: number) => {
   });
 };
 
-const pull_labels = ['auto-release-pr', 'keep up-to-date'];
+const pull_labels = ['auto-release-pr', 'keep up-to-date', ...prLabels];
 
 export const createPull = async (prerelease: boolean) => {
   const releaseLabel = prerelease

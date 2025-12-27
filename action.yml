@@ -37,3 +37,6 @@ inputs:
   pr-title-prefix:
     description: "Prefix for release PR titles (e.g., '[Embedded SDK]')"
     default: ""
+  pr-labels:
+    description: "JSON array of additional labels to add to release PRs"
+    default: "[]"

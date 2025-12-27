@@ -1013,6 +1013,7 @@ var checkPackages = function(rootVersion) {
 /* harmony export */   "RL": () => (/* binding */ target_comment),
 /* harmony export */   "RP": () => (/* binding */ publishPackages),
 /* harmony export */   "Tf": () => (/* binding */ workingDirectory),
+/* harmony export */   "Zh": () => (/* binding */ prLabels),
 /* harmony export */   "a2": () => (/* binding */ baseBranch),
 /* harmony export */   "cR": () => (/* binding */ owner),
 /* harmony export */   "dm": () => (/* binding */ versionFiles),
@@ -1044,6 +1045,7 @@ var prereleaseType = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('pr
 var baseBranch = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-branch') || 'main';
 var maxChangelogCommits = parseInt((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('max-changelog-commits') || '100', 10);
 var prTitlePrefix = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('pr-title-prefix') || '';
+var prLabels = JSON.parse((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('pr-labels') || '[]');
 // Helper to join working directory with a path
 var withWorkingDir = function(path) {
     if (workingDirectory === '.') return path;

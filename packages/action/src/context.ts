@@ -29,6 +29,7 @@ export const prereleaseType: string = getInput('prerelease-type') || 'canary';
 export const baseBranch: string = getInput('base-branch') || 'main';
 export const maxChangelogCommits: number = parseInt(getInput('max-changelog-commits') || '100', 10);
 export const prTitlePrefix: string = getInput('pr-title-prefix') || '';
+export const prLabels: string[] = JSON.parse(getInput('pr-labels') || '[]');
 
 // Helper to join working directory with a path
 export const withWorkingDir = (path: string): string => {
